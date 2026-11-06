@@ -1,0 +1,103 @@
+# Attribution
+
+This kit's original files (the `comfyui` skill, `comfy_client.py`, the installers, `gen_quick_index.py`, the
+docs, and the activation snippet) are **Apache-2.0** licensed, see `LICENSE` and `NOTICE`.
+
+Releases up to and including **v3.1.0 were MIT**. That grant stands for anyone who took those versions;
+the repository is Apache-2.0 from **v3.2.0** onward.
+
+The installer **fetches** the following third-party components from their own repositories at install time.
+They are NOT redistributed in this repo; each keeps its own license. Credit to their authors:
+
+| Component | Author / Org | Source | License |
+|-----------|--------------|--------|---------|
+| `comfyui-mcp` (MCP driver, Layer 2) | artokun | https://github.com/artokun/comfyui-mcp | MIT |
+| `anthropic-claude` per-model prompt templates (research input for `MODELS.md`) | alexmunteanu | https://github.com/alexmunteanu/comfyui-anthropic-claude | see repo |
+| `comfyui-custom-node-skills` (node-building skills, Layer 4) | jtydhr88 (Terry Jia) | https://github.com/jtydhr88/comfyui-custom-node-skills | see repo |
+| `workflow_templates` (template library) | Comfy-Org | https://github.com/Comfy-Org/workflow_templates | see repo |
+| `anthropic-claude` (`AnthropicClaudeNode`, Layer 3) | alexmunteanu | https://github.com/alexmunteanu/comfyui-anthropic-claude | see repo |
+| `comfyui_claude_prompt_generator` (`ClaudeCustomPrompt`, Layer 3) | PauldeLavallaz | https://github.com/PauldeLavallaz/comfyui_claude_prompt_generator | see repo |
+| `ClaudeNode` (official partner node) | Comfy-Org | ships with ComfyUI | see ComfyUI |
+| ComfyUI itself | Comfy-Org | https://github.com/comfyanonymous/ComfyUI | GPL-3.0 |
+
+If you redistribute a build that bundles any of these, comply with that component's license. The kit keeps them
+as fetch-at-install precisely so this repo stays clean and license-clear.
+
+## Optional components (you install these yourself for specific features)
+
+These are NOT fetched by the installer and NOT redistributed here. The kit documents how to use them and
+recommends them for specific capabilities (multi-shot video, restoration, upscaling); you install them yourself
+when you want those features. Credit and licenses:
+
+| Component | Author / Org | Source | License |
+|-----------|--------------|--------|---------|
+| `ComfyUI-PromptRelay` (Prompt Relay nodes, LTX-2.3 / Wan) | kijai | https://github.com/kijai/ComfyUI-PromptRelay | no license file |
+| `ComfyUI-SUPIR` (SUPIR restore nodes) | kijai / XPixel Group | https://github.com/kijai/ComfyUI-SUPIR | NON-COMMERCIAL (XPixel) |
+| `WhatDreamsCost-ComfyUI` (LTX Director 2.0) | WhatDreamsCost | https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI | GPL-3.0 |
+| Real-ESRGAN (upscale models) | Xintao Wang / BasicSR | https://github.com/xinntao/Real-ESRGAN | BSD-3-Clause |
+| KJNodes (LTX-2.3 NAG / GGUF / chunk-FF / multi-guide; the Set_ / Get_ wires Smart Upscaler's engine switch needs) | kijai | https://github.com/kijai/ComfyUI-KJNodes | see repo |
+| rgthree-comfy (the before/after Image Comparer in the Smart Upscaler workflow) | rgthree | https://github.com/rgthree/rgthree-comfy | MIT |
+| ComfyUI-CacheDiT (LTX-2 inference caching) | Jasonzzt | https://github.com/Jasonzzt/ComfyUI-CacheDiT | see repo |
+| ComfyUI-MelBandRoFormer (audio stem separation) | community | Comfy Registry: ComfyUI-MelBandRoFormer | see repo |
+| ComfyUI-Frame-Interpolation (FILM / RIFE) | Fannovel16 | https://github.com/Fannovel16/ComfyUI-Frame-Interpolation | see repo |
+| comfyui-inpaint-cropandstitch (Flux.2 masked inpaint) | community | Comfy Registry: comfyui-inpaint-cropandstitch | see repo |
+| Smart Image Crop and Stitch (auto-sized high-res inpaint crop/stitch) | HallettVisual | https://github.com/HallettVisual/ComfyUI-Smart-Image-Crop-and-Stitch | Apache-2.0 |
+| fal Krea 2 Style LoRAs (~1503 community style LoRAs) | ilkerzgi / fal | https://huggingface.co/ilkerzgi/fal-Krea-2-Style-LoRAs | Krea 2 Community License |
+| LTX-2.3 3DREAL IC-LoRA (3D render to photoreal) | fal | https://huggingface.co/fal/LTX-2.3-3DREAL-LoRA | other |
+| ComfyUI-Krea2TextEncoder (Krea2 image+mask control) | ethanfel | https://github.com/ethanfel/ComfyUI-Krea2TextEncoder | MIT |
+| Anima ControlNet-LLLite (control + inpainting patches for Anima) | kohya-ss (original), repacked by Comfy-Org | https://huggingface.co/kohya-ss/Anima-LLLite | NON-COMMERCIAL (circlestone-labs) |
+| `krea2_style_reference` LoRA (Krea 2 Turbo image style reference) | ostris | https://huggingface.co/ostris/krea2_turbo_style_reference | Krea 2 Community License |
+| ComfyUI-Krea2-Ostris-Edit (Krea 2 instruction-edit nodes) | ostris | https://github.com/ostris/ComfyUI-Krea2-Ostris-Edit | see repo |
+| krea2-detail-enhancer-edit-lora (Krea 2 detail enhancer) | reverentelusarca | https://huggingface.co/reverentelusarca/krea2-detail-enhancer-edit-lora | see repo |
+| PiD / Pixel Diffusion Decoder (VAE-replacement decoder) | NVIDIA (nv-tlabs) | https://github.com/nv-tlabs/PiD | see repo |
+| GAP LTX 2.3 Motion (lipsync / storyboard) | GeekatplayStudio | https://github.com/GeekatplayStudio/LTX-2-3-LipSync | MIT |
+| ComfyUI-Flux2Klein-Enhancer (Flux.2 Klein identity-transfer suite) | capitan01R | https://github.com/capitan01R/ComfyUI-Flux2Klein-Enhancer | PolyForm Noncommercial 1.0.0 |
+
+The research method **Prompt Relay** (Gordon Chen, Ziqi Huang, Ziwei Liu; S-Lab, NTU; arXiv 2604.10030) and the
+model weights it leans on (alibaba-pai Z-Image ControlNet, Apache-2.0; Lightricks LTX-2.3 and the gated HDR
+IC-LoRA, license:other) are credited inline at each `MODELS.md` entry's `Source:` line. **SUPIR is
+non-commercial**: do not use it in a commercial pipeline. The **ComfyUI-Flux2Klein-Enhancer** suite (capitan01R) is
+**PolyForm Noncommercial 1.0.0**: free for personal, research, and nonprofit use; commercial use needs a separate
+license from the author.
+
+The advanced-technique tools documented in [docs/ADVANCED.md](docs/ADVANCED.md) (temporal stability, PBR / material
+passes, max-detail and EXR I/O) are each credited inline there with author, repo, and license. Several are
+NONCOMMERCIAL (rgb2x / RGB-X by Adobe Research, Ubisoft CHORD, NVIDIA UniRelight, and the MultiDiffusion part of
+ComfyUI-TiledDiffusion under CC-BY-NC-SA, RMBG-2.0 by BRIA under CC-BY-NC, and MatAnyone / MatAnyone2 under the NTU
+S-Lab research license); the rest are Apache-2.0 / MIT / openrail / GPL. The kit documents and
+points to them; it redistributes none.
+
+LTX-2 LoRA training (separate from ComfyUI) uses the official Lightricks trainer + their `train-model` Claude skill
+(github.com/Lightricks/LTX-2, repo license "Other"); the kit documents it in [docs/LTX2_TRAINING.md](docs/LTX2_TRAINING.md)
+and points to it, vendoring nothing.
+
+## MODELS.md provenance
+
+`skills/comfyui/MODELS.md` is original writing by this kit, distilled from official sources: each model maker's
+documentation and model cards, the ComfyUI tutorials at docs.comfy.org, and the per-model prompt templates from
+the `anthropic-claude` node (credited above). Its own "Sources and provenance" section lists the makers. Model
+specs change over time, so each entry links its official source for re-verification.
+
+## Adapted patterns (no files vendored)
+
+Two patterns are adapted from **`Comfy-Org/comfy-skills`** (Comfy Org, MIT, https://github.com/Comfy-Org/comfy-skills):
+the "validate the graph has an output/save node before running, since API and partner nodes omit one" guardrail in
+`SKILL.md`, and the multi-reference identity-compositing technique in `docs/ADVANCED.md`. Their repo targets Comfy
+Cloud (a hosted MCP); the patterns are re-expressed here for the local stack. No files are copied or vendored.
+
+## Companion pack - ComfyUI-Smart-Upscaler
+
+**ComfyUI-Smart-Upscaler** - eleven nodes for tiled upscaling that reads the whole image once and then writes a
+separate, verified prompt for every tile - is authored by **Slava Sexton** (this kit's author), Apache-2.0 licensed,
+version 1.0.0. **Not published yet:** there is no public repository or Registry entry as of 2026-08-01, so this
+row carries no URL; it gains one when the pack ships. Documented in `docs/NODE_LIBRARY/smart-upscaler.md`.
+Its shipped workflow depends on two third-party packs, both credited in the table above: **ComfyUI-KJNodes**
+(kijai) and **rgthree-comfy** (rgthree).
+
+## Companion pack - ComfyUI-OCIO
+
+**[ComfyUI-OCIO](https://github.com/SlavaSexton/ComfyUI-OCIO)** - Nuke-style OpenColorIO color nodes (Read /
+Write, ColorSpace, LogConvert, Display, CDLTransform, FileTransform, LookTransform) - is authored by
+**Slava Sexton** (this kit's author), Apache-2.0 licensed. Where this kit uses, recommends, bundles, builds on, or draws
+the idea from those nodes - in full or in part, as a derivative or as the design - they are credited to
+**Slava Sexton**.
