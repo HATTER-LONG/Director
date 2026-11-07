@@ -1,9 +1,11 @@
 ---
 name: h3-cinematic-director
-description: Convert approved scripts, shot briefs, storyboards, keyframes, character sheets, scene assets, prop sheets, and sound briefs into director-level storyboards and production-ready MiniMax H3 prompts. Use when the user explicitly invokes $h3-cinematic-director or asks for H3 shot design, T2VA/I2VA/FL2VA/L2VA/Ref2VA prompting, camera and performance direction, first/last-frame interpolation, multi-reference control, character/scene continuity auditing, or single-variable repair. Preserve approved story content and never import or reveal private content from another project.
+description: 设计或修复 H3 镜头的站位、表演、摄影、动作终点与连续性。用于需要导演判断的镜头设计或单变量返工；最终格式交 h3-prompt-writing，节点和模型问题交 minimax-h3。
 ---
 
 # H3 Cinematic Director
+
+Director 当前本地模式、参数与跨段接法统一见 [部署能力](../../../docs/workflow/references/local-model-capabilities.md)，通用模式说明不覆盖实际适配器。构图、参考和状态变化反复跑偏时，按 [共性问题排查](../../../docs/workflow/references/h3-prompt-diagnosis.md) 定位原因。
 
 ## Purpose
 
@@ -14,7 +16,7 @@ Operate as one explicit, self-contained application for four jobs:
 3. `continuity-audit` — compare neighboring shots, keyframes, and assets for continuity failures.
 4. `single-variable-repair` — repair one failed variable without redesigning the approved shot.
 
-Treat Higgsfield-style director vocabulary as an internal control layer. Keep MiniMax H3's external field names, order, labels, and timing unchanged.
+Treat director vocabulary as an internal design layer. Compile through h3-prompt-writing and the Director profile; do not maintain a competing output format.
 
 ## Invocation
 
@@ -29,7 +31,7 @@ If no application is named, infer the smallest applicable job from the request. 
 
 ## Information Boundary
 
-- Use only story, assets, and decisions supplied in the current task or explicitly retrieved with permission.
+- Use story, assets, and decisions from the current project and authorized task context.
 - Reuse method, terminology, and checklists; never reuse project-specific names, dialogue, plot beats, shot content, images, or private prompts.
 - Treat approved script and approved assets as canonical. Flag contradictions instead of silently inventing replacements.
 - Do not add plot, characters, props, effects, dialogue, or cuts merely to make an image more spectacular.
@@ -42,6 +44,10 @@ Translate dramatic intention into visible and audible evidence:
 
 Every instruction must be observable or measurable. Replace vague language such as “cinematic,” “emotional,” or “dynamic” with subject position, action, muscle response, camera path, focal behavior, light source, material behavior, timing, and sound.
 
+## 按需阅读
+
+需要设计或修复空间、接触、取景、环境与动作编排、特效或竖屏遮挡时，读 [镜头描述](references/shot-description.md) 的对应章节。只改格式时直接交 h3-prompt-writing。采用的导演结论回填当前分镜，不建立平行镜头事实。
+
 ## Workflow
 
 ### 1. Lock the approved beat
@@ -53,7 +59,7 @@ Before designing or prompting, state internally:
 - the character objective and immediate obstacle;
 - the required end state that enables the next shot.
 
-If the shot changes none of these, remove it or mark it as an unjustified insert.
+If the shot changes none of these, check whether holding the image serves performance, tension or rhythm. Remove only an insert that has no useful function.
 
 ### 2. Build the continuity ledger
 
@@ -70,16 +76,13 @@ Classify facts as `hard continuity`, `soft continuity`, or `expressive variation
 
 ### 3. Choose the generation mode
 
-- `T2VA`: use only for concept exploration or shots without reliable assets.
+- `T2VA`: use for an authorized text-only task; do not switch to it merely because a required reference is missing.
 - `I2VA`: use one approved first frame when the action develops forward with moderate change.
 - `FL2VA`: use approved first and last frames for continuous movement or visible state change.
 - `L2VA`: use one approved last frame when the shot must converge precisely on it.
-- `Ref2VA`: use multiple references when identity, environment, prop, action, camera, style, or voice must be separated and controlled.
+- `Ref2VA`: use the selected workflow's reference inputs, including a single image in the current local workflow, to guide identity, environment, props, action, camera, style, or voice.
 
-For the user's local checkpoints:
-
-- Prefer `minimax_h3_fl2va_int8_convrot.safetensors` for T2VA/I2VA/FL2VA/L2VA and clean keyframe interpolation.
-- Prefer `minimax_h3_hybrid_fl2va_ref2va_b25-49-int8.safetensors` when several references are necessary. Treat it as a hybrid tradeoff and keep high-priority references few and unambiguous.
+Use the actual selected node and workflow to identify available modes, checkpoints and reference roles. Do not select or replace a model from an embedded filename preference. Read minimax-h3 only when runtime capability needs checking.
 
 ### 4. Assign each reference one job
 
@@ -93,25 +96,23 @@ Use a small hierarchy:
 6. style or color treatment;
 7. voice or audio.
 
-Never ask one ambiguous image to control identity, action, style, and composition unless it is also the exact keyframe. Reference priority is:
-
-`identity/assets > scene layout > prop state > action pose > camera example > style decoration`
+Assign explicit roles and scopes to each reference. One complete image may supply several compatible facts; do not force its pose or framing onto the shot when it is only an identity or layout reference. Resolve conflicts against the approved scene and shot, rather than applying one fixed reference priority to every shot.
 
 Use one canonical facial source whenever possible. Use front, profile, and rear sheets to support rotation, not to create competing identities.
 
 ### 5. Plan the shot in director controls
 
-Build these controls before writing H3 fields:
+Choose the controls needed for the shot before writing H3 fields; this is not a mandatory field-filling template:
 
 - `location map`: foreground, midground, background, entrances, exits, landmarks, left/right relations;
-- `first-frame lock`: the image is already active, spatially clear, and compatible with the incoming cut;
-- `format`: aspect ratio, duration, one shot or explicit cut times;
+- `opening state`: the initial visible state and framing are clear and compatible with the incoming cut; a reference image does not lock the first frame;
+- `format`: aspect ratio, effective duration, one shot or ordered cuts; exact cut times only when explicitly required;
 - `optics`: FOV or lens feel, camera height, distance, depth of field, focus targets;
 - `camera`: one motivated movement with direction, amplitude, speed, and stopping point;
 - `action`: intention, anticipation, exertion, contact/near-miss, reaction, recovery, consequence;
 - `performance`: gaze, breath, jaw, shoulders, hands, weight shift, hesitation, protective motion;
 - `physics`: gravity, momentum, contact, balance, cloth drag, hair follow-through, material deformation;
-- `lighting/color`: source direction, Kelvin value, contrast, exposure behavior, palette, material response;
+- `lighting/color`: relevant source direction, contrast, palette and material response; use numerical values only when established and useful;
 - `sound`: ambience, synchronous foley, voice, subjective sound, silence, non-diegetic score;
 - `positive locks`: elements that remain stable through the shot.
 
@@ -119,7 +120,7 @@ Load [references/director-keywords.md](references/director-keywords.md) when the
 
 ### 6. Design the shot or shot group
 
-For every shot, provide:
+Record the relevant decisions in the existing storyboard; do not expand every shot to include every item below:
 
 - shot number and duration;
 - dramatic purpose;
@@ -134,15 +135,9 @@ For every shot, provide:
 
 Continuous action may use multiple storyboard frames under one shot number. Label them `S17-A`, `S17-B`, `S17-C` or equivalent; do not mislabel every action phase as a new editorial shot.
 
-### 7. Translate into the exact H3 schema
+### 7. Compile through the format owner
 
-Load [references/h3-formats.md](references/h3-formats.md). Preserve exact field names, field order, reference labels, shot numbering, dialogue tags, and effective duration.
-
-- H3 base modes output only the applicable alignment instruction plus `integrated_multimodal_description`, `overall_soundscape`, and `non_diegetic_music`.
-- Ref2VA outputs only `subject_definitions`, `summary`, `retention_analysis`, `detailed_description`, `overall_soundscape`, and `non_diegetic_music` in that order.
-- Write H3 fields in English. Preserve dialogue, lyrics, and visible text in their original language.
-- Put Higgsfield-derived control language inside the H3 visual timeline; never create extra external sections that violate the H3 schema.
-- Match the described timeline to the requested 4–15 second duration.
+Use [h3-prompt-writing](../h3-prompt-writing/SKILL.md) for the selected mode and Director profile. Put the approved camera, performance and sound decisions into its fields; do not define a second schema here. Match the actual reference order and effective duration, and preserve the source dialogue and visible text.
 
 ### 8. Audit before delivery
 
@@ -153,7 +148,7 @@ Load [references/continuity-audit.md](references/continuity-audit.md) and reject
 - a character, prop, or scene element appears, disappears, mirrors, duplicates, or changes state without cause;
 - the camera crosses the axis or loses the intended geography;
 - force, pain, balance, contact, or recovery is physically false;
-- the first frame, last frame, or reference role is not respected;
+- the required opening or end state, or the assigned reference role, is not respected;
 - a cut breaks gaze, motion, light, sound, or screen direction;
 - timing exceeds the available duration;
 - sound contradicts the image or masks essential dialogue.
@@ -182,13 +177,13 @@ Do not redesign passing elements.
 
 ### single-variable-repair
 
-State the failed variable, preserve all approved variables, and provide only the replacement prompt clause or replacement keyframe instruction needed. If the source keyframe itself is wrong, say so explicitly.
+State the failed variable and preserve approved story and shot decisions. For a local defect, replace the affected clause and read the whole prompt for contradictions. If accumulated patches conflict, consolidate the current prompt against the storyboard. Identify an incorrect source reference when that is the cause.
 
 ## Repair Discipline
 
-- Change one high-impact variable per test.
+- Prefer one main hypothesis per comparison. Clear proven contradictions together when necessary, record all changed inputs, and do not attribute a multi-variable improvement to a single cause.
 - Prefer positive locks in the main description: “the same coat remains fastened,” “the doorway stays frame-left,” “the prop remains in the right hand.”
-- End with short, concrete failure exclusions only for known H3 risks: no identity drift, no duplicated people, no extra limbs, no prop morphing, no mirrored layout, no random text, no disappearing companion.
+- Add a brief exclusion only for a demonstrated risk relevant to this shot. Prefer a clear positive state or action over a generic list of prohibitions.
 - If a remote face is too small to carry emotion, preserve identity through silhouette, hair, costume color, and posture, then cut closer when emotion matters.
 - If several NPCs appear, specify diversity by age, face shape, hair, clothing, body type, occupation, color, and behavior; never rely on “a varied crowd.”
 

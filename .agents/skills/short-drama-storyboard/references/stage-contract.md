@@ -1,5 +1,7 @@
 # 分镜阶段契约
 
+本表的结构规则用于已采用五文档格式的项目，字段语法以 [交接格式](../../short-drama/references/creator-documents.md) 为准；其他项目保留同样的来源和状态要求，沿用原格式。授权与项目优先级见 [AGENTS](../../../../AGENTS.md#文档职责与规则来源)。
+
 本阶段只拥有 `剧集/<EP>/分镜.md` 中的 `SHOT-...`、镜头职责、来源、时长、起止边界、声音、视觉依据和
 冻结关键帧。它继承剧本事实与视觉设定，不改写剧情或资产身份。
 
@@ -46,15 +48,7 @@
 
 ### `CON`
 
-| ID | Class | Knowledge |
-|---|---|---|
-| CON-01 | structural_invariant | Linked end and next start states match or have an explicit owner revision. |
-| CON-02 | reviewed_invariant | Knowledge, injury, ownership, weather, light, or physical state does not teleport/regress without story cause. |
-| CON-03 | craft_default | Track downstream-relevant deltas, not the whole 设定集 in every shot. |
-| CON-04 | structural_invariant | A continuity change states before, after, cause/source scene, effective range, and affected visible IDs. |
-| CON-05 | taste_option | Declared montage, ellipsis, dream, or subjective imagery may intentionally break ordinary continuity. |
-| CON-06 | structural_invariant | A continuity change names every existing downstream document it affects; future work is described, not pre-created. |
-| CON-07 | structural_invariant | A continuity lock declared in `视觉设定.md` fixes one verbatim surface plus its shot and image scope; every in-scope frozen keyframe, motion prompt, and named image prompt carries that surface unchanged. |
+共同遵守 [跨阶段连续性 CON-01 至 CON-07](../../short-drama/references/contract-and-ownership.md#跨阶段连续性)。本阶段检查与其输出有关的状态和下游引用，规则正文只在该处维护。
 
 规则分级由高到低：`structural_invariant`（结构缺陷，阻断）、
 `reviewed_invariant`（需证据判断）、`craft_default`（常用做法，可覆盖）、

@@ -1,4 +1,4 @@
 interface:
-  display_name: "MiniMax H3 Prompt Writer"
-  short_description: "Direct H3 video, references, dialogue and sound"
-  default_prompt: "Use $minimax-h3-prompt-writer to turn my idea and reference media into a precise audiovisual prompt for my H3 interface."
+  display_name: "H3 提示词诊断"
+  short_description: "检查 H3 参考绑定、对白、声音与续镜问题，并提供离线校验。"
+  default_prompt: "使用 $minimax-h3-prompt-writer 检查现有 H3 提示词、实际参考与输出问题，保留已定剧情并修正有证据的问题。"

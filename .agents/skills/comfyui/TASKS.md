@@ -39,8 +39,7 @@ are local-first.
 
 ## generate-image with Krea (hosted API or open weights)
 - **Decide the fork first:** a **moodboard** from krea.ai, or more than one style reference image, forces the
-  hosted path. Output above 1K, or free generation, forces the local path. Read the sibling `krea` skill (invoke by name, or beside this skill on disk) before
-  building either; the full Krea 2 local graph stays in `MODELS.md`.
+  hosted path. Output above 1K, or free generation, forces the local path. Check current official endpoint documentation before building either; the local graph is in `MODELS.md`.
 - **Hosted chain:** `LoadImage` -> `Krea2StyleReferenceNode` (chain node to node, max 10) ->
   `Krea2ImageNode` -> `SaveImage`. Pick the tier by budget as much as by look: Medium Turbo 0.015, Medium 0.03,
   Large 0.06 USD per image, and a moodboard raises the rate. `creativity` is a combo (`raw` / `low` / `medium` /

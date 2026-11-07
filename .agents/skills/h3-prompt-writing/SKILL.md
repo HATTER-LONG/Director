@@ -1,7 +1,8 @@
 ---
 name: h3-prompt-writing
 description: Write MiniMax H3 video generation prompts for T2VA, I2VA, FL2VA, L2VA, and Ref2VA. Use when rewriting multimodal requests into H3 prompt structures, composing integrated_multimodal_description, overall_soundscape, and non_diegetic_music, aligning keyframes, or defining reference labels for images, videos, and audio.
-compatibility: Portable to any agent that can read local files — no external API calls, MiniMax Hub tools, or proprietary runtime required. The agents/openai.yaml file only adds optional ChatGPT/Codex UI metadata; it does not restrict the skill to OpenAI agents.
+metadata:
+  compatibility: Portable to any agent that can read local files — no external API calls, MiniMax Hub tools, or proprietary runtime required. The agents/openai.yaml file only adds optional ChatGPT/Codex UI metadata; it does not restrict the skill to OpenAI agents.
 ---
 
 # H3 Prompt Writing
@@ -11,7 +12,7 @@ compatibility: Portable to any agent that can read local files — no external A
 1. Identify the input mode: T2VA, I2VA, FL2VA, L2VA, or full-reference Ref2VA.
 2. For base text/keyframe modes, read `references/base-en.txt` and follow its final prompt structure.
 3. For full-reference mode, read `references/ref-en.txt` and follow its six-section rewrite format.
-4. Preserve the exact field names, section order, labels, and timing notation from the selected guide.
+4. Preserve exact field names, section order, labels and keyframe alignment sentences. In Director, apply [director-profile.md](references/director-profile.md) to cut timing and dialogue endings; use the same profile and timing in the linter. The upstream guides remain unchanged snapshots.
 
 ## Base Modes
 
@@ -34,7 +35,7 @@ Read `references/ref-en.txt` for label rules, retention analysis, and complete e
 - Describe each shot by composition, subjects, environment, actions, camera, sound, and the exact point where referenced content appears.
 - Avoid plot summaries, unresolved reference labels, and timing that does not match the requested duration.
 ## Tips for Better Results
-- Always match the total duration of the description to the requested video length (4–15 seconds).
+- Match the description and alignment sentences to the effective duration supported by the actual node or API; do not transfer hosted API limits to a local workflow.
 - Keep reference labels consistent (e.g. `<Picture 1>`, `<Video 1>`, `<Audio 1>`) across every section.
 - Prefer concrete visual and audio details over abstract words like "cinematic" or "beautiful".
 - When using keyframes (I2VA / FL2VA / L2VA), clearly state how the first and/or last frame connects to the timeline.

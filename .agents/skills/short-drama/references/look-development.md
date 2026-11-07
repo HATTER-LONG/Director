@@ -2,7 +2,7 @@
 
 Look Development 把创作者已接受的 `visual_direction` / `production_profile` 转成少量**代表帧的文本设计**，让人物、地点与
 高压力场景在正式分镜前共用一套可观察视觉语言。本阶段只产出规格和提示词；创作者要求
-实际出图时交给 `$short-drama-produce`，并对它展示的精确任务预览明确确认。
+实际出图按[生产路由与授权](../../../../docs/workflow/references/production-routing.md)使用 Toonflow，已有授权范围内直接执行。
 
 ## 什么时候值得做
 

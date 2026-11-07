@@ -15,7 +15,7 @@ Each new shot must either preserve that contract or visibly renegotiate it. A re
 
 If disorientation is intentional, name which orientation fact is being withheld and what replacement cue—identity, sound, motion, landmark, or graphic match—still lets the viewer read the intended effect.
 
-`shot-information-progression` owns the dramatic question and viewer-knowledge delta. This reference owns how that approved information is realized as screen position, direction, gaze, and cut geometry.
+The current storyboard records the dramatic question and the new information in each shot. This reference translates those decisions into screen position, direction, gaze and cut geometry.
 
 ## Axis Of Action
 

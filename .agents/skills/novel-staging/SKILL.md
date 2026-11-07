@@ -1,31 +1,14 @@
 ---
 name: novel-staging
-version: 1.0.1
-description: |
-  给 AI 短剧的每一场排开场站位：先从场景图里认出能站能坐的东西（推算到俯视平面上），
-  再按剧本给每一场排谁在哪件东西的哪一侧、坐还是站、面朝哪、有没有群演，
-  程序写出每一场的开场走位句，分镜这一场第一段照抄它。
-  默认交付能拖动调整站位的 HTML 工具报告，页面内可导出 staging.json；JSON 同时作为工作数据保存，Markdown 按需导出。
-  8 道质量门全部由脚本确定性检查（认图件数、东西在图上、出场人物不多不少、在场的人落在认出来的东西上、
-  同一侧不叠人、群演写明在哪……）。吃 novel-script 的 script.json 和 novel-art 的 art.json 预填骨架。
-  零依赖、零 API key。
-  Use when asked to 站位、开场站位、群戏站位、谁坐在哪、排座位、走位、blocking、staging for AI short drama。
+description: 为复杂双人或群戏设计开场站位，按需交付可拖动的 HTML 平面报告。输入可来自当前 Markdown 剧本和场景图；工具 JSON 是派生工作数据，采用的走位句回填原分镜。
 allowed-tools:
   - Read
   - Write
   - Bash
   - Task
   - Glob
-triggers:
-  - novel-staging
-  - 站位
-  - 开场站位
-  - 群戏站位
-  - 排座位
-  - 走位
-  - blocking
-  - staging
 metadata:
+  version: 1.0.1
   license: Apache-2.0
   requires:
     bins:
@@ -37,9 +20,9 @@ metadata:
 
 ## novel-staging
 
-给 AI 短剧的每一场排**开场站位**：这一场一开始，每个出场的人在哪件东西旁、坐还是站、面朝哪。
+为需要明确调度的场次安排开场站位：每个人在哪件东西旁、坐还是站、面朝哪里。
 
-**为什么要单独排**：短剧的每一段视频是一次独立生成，各段自己决定谁坐哪。群戏里六个人围一张长桌，第一段桌边多出五个没名字的宾客，第三段端酒坐着的人穿着主角的衣服。分镜的走位句一段接一段地交接，可每一场**第一段**的那一句是分镜自己编的，人看不到、改不动。所以在分镜之前，每场先定一份站位，分镜照抄。
+复杂站位只靠文字不易核对时，用俯视平面检查人物、家具和通路，或让用户拖动调整。简单场次直接在分镜中写清即可。报告帮助设计与核对空间，生成结果是否遵守站位仍需检查样片。
 
 | 交付 | 解决什么 |
 | --- | --- |
@@ -57,10 +40,9 @@ metadata:
 
 ### Step 0 — 定输入
 
-- **script.json**（novel-script 的产出）——硬前提：有哪几场、每场在哪个地点、谁出场、剧本怎么写的
-- **art.json**（novel-art 的产出）——地点的名字；还没有图时，按它的锚点和主视角提示词推算
-- **outline.json**（novel-outline 的产出）——人物编号对应的名字（C01 → 沈知微）
-- **场景图**——每个地点一张，放在 `images/<地点名>-sheet.png`（novel-art 的设定图版面，主视角在左上）。**最好有**：站位要落在图上真有的东西旁。没有图也能先排，但只是草稿（见 Step 2）
+先读当前剧本、视觉设定和已有场景图。Director 的 Markdown 项目按 [Markdown 输入适配](references/markdown-input.md) 提取临时 `script.json`，以及可选的地点/姓名映射；已有兼容 JSON 则复用。无需安装 novel-script、novel-art 或 novel-outline。
+
+JSON 记录来源文件和场号映射，只是本次工具输入，不反向覆盖剧本。采用的开场走位句回填原分镜；HTML 与 staging.json 记录生成依据，源文档变化时重新提取受影响部分。场景图沿用实际文件及构图，不假定设定板一定四宫格或主图一定在左上。
 
 ### Step 1 — seed 骨架
 
@@ -76,7 +58,7 @@ node {baseDir}/scripts/novel-staging.mjs seed <script.json> --art <art.json> --o
 
 最重的两条：**图里看不到的不写**（提示词里有、图上没有的一律不写）；**`plan` 按透视推算**，不是照抄 `box`。
 
-**还没有图**：按 art.json 的锚点和主视角提示词推算，`readFrom` 写 `prompt`、不写 `box`。报告会标出来；图出来以后重新认一遍、核对站位。
+**还没有图**：按当前视觉设定中的空间锚点和主视角说明推算，`readFrom` 写 `prompt`、不写 `box`。报告会标出来；图出来以后重新认一遍、核对站位。
 
 ### Step 3 — 排站位（每场一次）
 
@@ -121,7 +103,7 @@ node {baseDir}/scripts/novel-staging.mjs blocking staging.json            # 每�
 node {baseDir}/scripts/novel-staging.mjs blocking staging.json --lang en  # 英文
 ```
 
-分镜写每一场**第一段**的开场走位（novel-storyboard 的 `blocking`）时，照抄这一句；之后各段照旧由上一段的段末走位接下去。
+将采用的开场走位句回填现有分镜；后续镜头按剧情继承或改变站位。使用原生 novel-storyboard 的项目可写入 `blocking`，Director 的 Markdown 项目沿用原有镜头卡，不另建 storyboard.json。
 
 先提供 HTML 工具报告链接或路径，再用一句话说清：几个地点（几个按图认的、几个按提示词推算的）、几场、几场有人开场不在、群演多少；没过的门明说。JSON 是配套工作数据，Markdown 不是默认交付项。
 
@@ -137,7 +119,9 @@ node {baseDir}/scripts/novel-staging.mjs blocking staging.json --lang en  # 英�
 
 ---
 
-## 在管线里的位置
+## 原生 JSON 管线
+
+下图用于已有对应 JSON 文件的项目。Director 的 Markdown 输入与回填按 Step 0 和 Step 6 处理。
 
 ```
 novel-outline    → outline.json （人物名字）
@@ -152,7 +136,7 @@ seed 吃 script.json，`--art` 给地点名字，`--outline` 给人物名字。n
 ## 边界
 
 - 只排开场那一刻；中途换位置归分镜
-- 本 skill 不出图；场景图是 novel-art 的设定图出完以后放进 `images/`
+- 本 skill 不出图；复用当前项目的场景图，工具输入记录真实路径
 - 方位一律按场景说（东南西北、在哪件东西旁），不按画面说（左右）——画面左右由机位推出，机位一换就翻
 
 ## 自测

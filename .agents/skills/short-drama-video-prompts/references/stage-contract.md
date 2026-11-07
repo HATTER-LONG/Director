@@ -1,5 +1,7 @@
 # 视频提示词阶段契约
 
+本表的结构规则用于已采用五文档格式的项目，字段语法以 [交接格式](../../short-drama/references/creator-documents.md) 为准；其他项目保留同样的来源和状态要求，沿用原格式。授权与项目优先级见 [AGENTS](../../../../AGENTS.md#文档职责与规则来源)。
+
 本阶段只拥有 `剧集/<EP>/视频提示词.md` 中的 `MOTION-...` 项与按需的时间线音乐章节。它继承镜头
 起点、终点、时长、对白和冻结帧，不回写分镜或视觉设定：镜头边界、职责、起终状态和关键帧正文都不在
 本阶段手里。
@@ -19,7 +21,7 @@
 |---|---|---|
 | VID-01 | structural_invariant | Motion reads but cannot rewrite shot start/end/duration/dialogue and next-shot state. The duration a MOTION declares is compared against its SHOT: they must be the same number, because 时长 is what reaches the execution end and what VID-04/VID-13 arithmetic is built on. A downstream copy left behind by an upstream revision is a defect even though every string still parses. |
 | VID-02 | craft_default | Write start anchor, ordered subject motion, camera behavior, timing, and end report; add performance change and environment/audio only when this shot actually carries them. |
-| VID-03 | structural_invariant | Choose image-to-video only when the matching storyboard's reference set is complete—readable REF inputs, creator-attached PLAN slots, or both—and is copied unchanged. No REF is not by itself consent to text-to-video: first discover and bind matching real project images, preserving any verified partial bindings. Required images that remain missing default to PLAN slots written by the storyboard owner, and the motion document is delivered with a per-shot attach list; only when the creator asked to wait for real files are the gaps reported and the final motion document withheld. Choose text-to-video only after the creator explicitly selects it, and carry a non-empty static visual anchor in the copyable text. Only image-to-video may omit appearance/composition already carried by its real reference frame. |
+| VID-03 | structural_invariant | Preserve the storyboard reference set and distinguish real REF files from PLAN preparation records. Missing images allow a marked draft, not a claim that inputs are attached. Use the current authorization to prepare missing assets; do not infer text-only generation from absent files or silently change the creator's selected mode. Text-only prompts require a self-contained static visual anchor. |
 | VID-04 | structural_invariant | Explicit segment timing sums exactly to its shot's accepted duration—neither exceeding it nor leaving an unallocated remainder. |
 | VID-05 | reviewed_invariant | Untimed action load must be feasible enough to preserve the intended performance and story change. |
 | VID-06 | structural_invariant | Locked and moving camera instructions cannot govern the same interval without an explicit transition. |
@@ -48,15 +50,7 @@
 
 ### `CON`
 
-| ID | Class | Knowledge |
-|---|---|---|
-| CON-01 | structural_invariant | Linked end and next start states match or have an explicit owner revision. |
-| CON-02 | reviewed_invariant | Knowledge, injury, ownership, weather, light, or physical state does not teleport/regress without story cause. |
-| CON-03 | craft_default | Track downstream-relevant deltas, not the whole 设定集 in every shot. |
-| CON-04 | structural_invariant | A continuity change states before, after, cause/source scene, effective range, and affected visible IDs. |
-| CON-05 | taste_option | Declared montage, ellipsis, dream, or subjective imagery may intentionally break ordinary continuity. |
-| CON-06 | structural_invariant | A continuity change names every existing downstream document it affects; future work is described, not pre-created. |
-| CON-07 | structural_invariant | A continuity lock declared in `视觉设定.md` fixes one verbatim surface plus its shot and image scope; every in-scope frozen keyframe, motion prompt, and named image prompt carries that surface unchanged. |
+共同遵守 [跨阶段连续性 CON-01 至 CON-07](../../short-drama/references/contract-and-ownership.md#跨阶段连续性)。本阶段检查与其输出有关的状态和下游引用，规则正文只在该处维护。
 
 规则分级由高到低：`structural_invariant`（结构缺陷，阻断）、
 `reviewed_invariant`（需证据判断）、`craft_default`（常用做法，可覆盖）、

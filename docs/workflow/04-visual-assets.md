@@ -4,7 +4,7 @@
 
 ## 使用 Skill
 
-使用 [short-drama-assets](../../.agents/skills/short-drama-assets/SKILL.md)。需要补同一空间的主图和反打方案时，用 [scene-asset](../../.agents/skills/scene-asset/SKILL.md)。
+使用 [short-drama-assets](../../.agents/skills/short-drama-assets/SKILL.md)。需要空间、美术或多机位设计时，用 [scene-asset](../../.agents/skills/scene-asset/SKILL.md)。
 
 ## 操作
 
@@ -12,6 +12,12 @@
 2. 逐项检查已有素材。标明可复用的文件、版本和用途。只有剧情引起可见变化时，才为同一资产建立状态变体。
 3. 记录变化从哪一场开始。例如门锁在破坏前后分别是什么状态，哪几镜需要看到变化。
 4. 标明当前缺口。双人反打先查有没有能说明相同门窗位置、轴线和主光方向的图。
+
+## 素材需要承接的事实
+
+环境同时记录空间关系和美术要求：年代与技术水平、场所用途与正规程度、画风、材质、光色、主要设备及细节密度。已有用户认可图时，区分其必须保留的设计与本轮允许修改的部分。多机位环境的生成次序与验收交给 [05](05-image-references.md#场景素材生成)。
+
+人物声音按 [声音方向](../../.agents/skills/short-drama-assets/references/voice-direction.md) 记录稳定特征、与易混角色的区别、反例、实际参考和听审状态；临时情绪留给表演。非实体人物、屏幕和远程声源还要承接剧本中的可见、可听及设备显示边界，资产图不能自行增加剧情权限。
 
 ## 交付
 

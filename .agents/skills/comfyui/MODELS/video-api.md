@@ -82,10 +82,7 @@ Part of the kit's per-model prompting reference. The routing table and the auto-
     with one; the per-frame unit is 400 at 480p and 900 at 720p for 16:9, with small deltas for 1:1, 4:3, 3:4
     and 21:9. Evaluating that expression: 720p 5 s 16:9 = **$1.67**, 480p 5 s 16:9 = **$0.74**, 720p 10 s 16:9 =
     **$3.32**. These come from running the badge's own formula, not from a quoted price list.
-  - Full prompting mechanics for the family (the three task types, the `@Image 1` label syntax, the
-    `（）<>{}【】` symbols, shot sequencing, the asset-count rule and the failure table) live in the dedicated
-    sibling **`seedance` skill** (invoke by name; beside the comfyui skill on disk), distilled from the official
-    BytePlus prompt guide.
+  - For prompting mechanics consult the official BytePlus guide for the selected version; Director does not install a Seedance skill.
 - **Source:** docs.byteplus.com (Seedance 1.0 / 1.5 / 2.0 prompt guide) ; Comfy-Org/workflow_templates `api_seedance2_0_*` and `api_seedance2_5_{t2v,flf2v,r2v,video_editing}.json` ; ComfyUI "Seedance 2.0 4K is live" announce (2026-06) ; seed.bytedance.com Seedance 2.5 announce (2026-07-31) ; blog.comfy.org "Seedance 2.5 is now available via Partner Nodes" (2026-08-08) ; core release v0.31.0 PR 15395 ; `comfy_api_nodes/nodes_bytedance.py` on master, read 2026-08-09.
 
 ### LTX-2.5 (Lightricks, API partner nodes, new in core v0.32.0)

@@ -27,7 +27,7 @@ If the "so that" clause is weak, the shot is probably filler.
 
 ## Useful Progressions
 
-These arrows are backstage shot functions, not final Liu prompt syntax. Compile the default camera grammar into `镜头语言总控` once. Paste-ready event beats inherit it; only a genuine special-camera beat adds its trigger, path, proof job, and concrete visible result.
+These are optional progressions of shot functions. Keep only the steps the current scene needs, then express the adopted design in the target model format; there is no required six-part wrapper.
 
 Character entrance:
 

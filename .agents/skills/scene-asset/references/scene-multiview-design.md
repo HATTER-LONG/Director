@@ -1,6 +1,6 @@
 # 同一空间的多视角与多机位参考图
 
-本专项只在用户提出常规主图＋反打以外的多角度、多机位、九宫格或复杂空间覆盖时展开。普通场景设计沿用主入口的一张主图＋一张反打，共两张独立图片，不因空间复杂自动扩表。用户明确只要单图/局部时不补齐两张；仅改光色时沿用已有机位。点名九宫格时交3×3九格，其他数量、独立图片或组合板按用户要求；九格不是数量上限，也不是日常默认。
+本专项用于同空间多角度、反打和复杂空间覆盖。Director 的实际生成按 [素材流程](../../../../docs/workflow/05-image-references.md#场景素材生成)，本页只补机位设计与一致性检查。视图数量和版式服从本轮用途与授权；局部修改复用既有布局和机位。
 
 ## 先有一个空间，再决定从哪里看
 
@@ -64,13 +64,13 @@
 
 提示词不打印后台资产编号、空字段、内部自检或无关禁令；用户已锁定的构图只约束其对应视图，不把其他机位强行拉回原图。多张独立提示词各自含足够的共享事实和明确参考，不能只写“同上一张”。
 
-## 内部合同与验收
+## 派生工具数据与验收
 
-按需记录 `spatial_contract`：`basis`、`world_orientation`、`boundaries_and_connections`、`fixed_anchors`、`lighting_state`、`unseen_or_inferred_regions`。
+只有现有工具需要时，从视觉设定派生 `spatial_contract`，保留来源与版本；字段包括`basis`、`world_orientation`、`boundaries_and_connections`、`fixed_anchors`、`lighting_state`、`unseen_or_inferred_regions`。
 
 每个 `view_plan` 项记录 `view_name`、`camera_position`、`look_at`、`height_and_pitch`、`framing`、`visible_anchors`、`occlusion`、`purpose`、`reference_role`；已有合同缺少这些字段仍可读取。图片生成前 `reference_images` 为空，机位计划不算图片成果。
 
-文字阶段核对几何自洽、覆盖意义、数量/版式和保持项。实际图片逐格核对，再对相邻/共享锚点视图交叉检查；格数正确不能替代同空间一致性。只有真实图片经用户接受，才提升资产状态；文字、像素、用户接受分开记录。
+文字阶段核对几何自洽、覆盖意义、数量/版式和保持项。实际图片逐格核对，再对相邻/共享锚点视图交叉检查；格数正确不能替代同空间一致性。按 [证据与状态](../../../../docs/workflow/references/production-principles.md#证据支持多大结论就记录多大结论) 分开记录文字核对、图片可用与创作者采用，不将用户采用设为所有检查状态的前提。
 
 ## 方法来源与适用边界
 

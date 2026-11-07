@@ -6,7 +6,7 @@ license: MIT
 
 # 长篇原著分析
 
-从长材料中提取可追溯的戏剧功能，说明各段如何改变角色选择、信息、权力或关系，以及这些功能怎样用于竖屏短剧改编。
+从长材料中提取可追溯的戏剧功能，说明各段如何改变角色选择、信息、权力或关系，以及这些功能怎样用于目标短剧或漫剧的改编；画幅与制作形态按当前项目要求判断。
 
 分析结果供创作者取舍：保留哪条线、合并哪些人、从哪里开篇，由创作者决定，再交给
 `$short-drama-develop` 写成改编契约。本技能不批准自己的产物。
@@ -56,7 +56,7 @@ python3 {技能目录}/scripts/novel_index.py index <原著.txt> --out <chapter-
 | 阶段 | 做什么 | 产出 | 停靠 |
 |---|---|---|---|
 | S0 | 建章节索引（脚本） | `_index.json`、`_progress.md` | 索引有问题就停 |
-| S1 | 改编价值快评（抽样） | `triage.md` | **停靠问创作者** |
+| S1 | 改编价值快评（抽样） | `triage.md` | 按已授权分析范围继续 |
 | S2 | 逐章功能提取 | `chapters/ch-<N>-extract.md` | 覆盖率不足就停 |
 | S3 | 剧情单元与节奏聚合 | `story-units.md`、`rhythm-and-emotion.md` | 阈值不达标就复核 |
 | S4 | 人物归并与设定 | `characters.md`、`world.md` | — |
@@ -120,11 +120,7 @@ python3 {技能目录}/scripts/novel_index.py sample \
 故事框架、三类判定比例、开篇替换点、制作负担量级、最大的三处改编风险、分集候选量级。
 第一行写覆盖率（脚本返回的 `coverage_ratio`），所有结论限于抽样范围。
 
-**这里停靠问创作者**：给出快评与全量拆解的预计耗时（按章数粗估），问是否继续。
-创作者一开始就明确说「一次跑完」时仍写 `triage.md`，但不停下等待——它是 S5 要回填
-对照的第一版假设。
-
-停靠时把 `_progress.md` 的状态写成 `paused_after_triage`，断点写「下一步：S2 逐章提取」。
+快评只覆盖抽样，不能替代全书结论。用户已要求完整分析、拆书或分集候选时自动继续 S2–S5，无需再问“是否继续”。只要求价值快评时交付到此；范围确有歧义且会显著扩大工作时，说明快评结果与后续范围再询问。只有实际暂停时才记 `paused_after_triage`；继续时更新真实进度。
 
 S1–S5 的 Agent 创作产物同样先写到 `source-analysis/_work/`，完成本阶段机械检查后再发布到
 上表中的正式路径。项目工具可用时用 `project_tool.py publish` 和稳定 artifact-id；独立运行时
@@ -134,8 +130,8 @@ S1–S5 的 Agent 创作产物同样先写到 `source-analysis/_work/`，完成�
 **并发子代理写 `_work/`，主线程发布到正式路径**。子代理只落
 `_work/chapters/ch-<N>-extract.md`，主线程机械自检后发布到 `chapters/`，再检查正式目录的覆盖率。
 
-`_progress.md` 每个阶段都会重写，而发布要求一个路径只有一个 owner，所以它用一个固定
-artifact-id：`source-analysis:progress`，owner 是 `short-drama-novel-analyze`，
+`_progress.md` 每个阶段都会重写，而发布要求一个路径只有一个负责技能，所以它用一个固定
+artifact-id：`source-analysis:progress`，负责技能是 `short-drama-novel-analyze`，
 S0–S5 每次停靠都用同一个 id 重新发布。
 
 ### S2 逐章功能提取
@@ -184,7 +180,7 @@ python3 {技能目录}/scripts/novel_index.py coverage \
 
 这是本技能与通用拆书的分水岭。按 [改编价值](references/adaptation-value.md) 产出：
 
-- `adaptation-value.md`：哪些单元在竖屏短剧里能直接成立、哪些要换载体、哪些是纯文字快感
+- `adaptation-value.md`：哪些单元在目标制作形态中能直接成立、哪些要换载体、哪些是纯文字快感
   （内心戏、叙述性诡计、长铺垫）在画面上无法兑现；制作负担落在哪里。
 - `episode-candidates.jsonl`：按**爽点分布、当集戏剧结果与精确交接**切出的候选集，不按章号
   或字数平均切。每条带来源 span、承担的功能、承接的爽点以及未决项。

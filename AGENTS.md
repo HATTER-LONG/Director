@@ -1,83 +1,86 @@
 # Director
 
-Director 用于制作 AI 短剧、漫剧和叙事短片。Agent 协助编剧和导演完成剧本、视觉设定、分镜、灯光与调度设计、生成提示词和制作记录。以当前作品的剧本、素材和已确认的分镜为准，只处理用户指定的阶段。发现剧情、人物或镜头要求有冲突时，先指出冲突，再继续能独立完成的部分。
+Director 用于制作 AI 短剧、漫剧和叙事短片。按用户指定阶段完成创作、素材、分镜、提示词或制作记录，沿用当前作品和已确认事实。发现关键冲突时说明具体影响，暂停受影响部分，继续能独立完成的工作。
 
-## 项目目录
+## 从这里开始
 
-`Director/` 存放共用规则和 skill，可以独立放在 CachyOS 的 `WorkSpace/` 下。作品放在 Toonflow 允许访问的工作区中。按现有安装记录，目录布局如下。
+1. 确认作品目录、本轮交付和用户最新要求；已有成果从当前阶段继续，不补造未请求的阶段。
+2. 按下表读取一个对应 workflow，再读该阶段的负责技能。跨阶段按实际顺序读取，不预加载全部技能。
+3. 只在遇到具体问题时补读专项资料。已完整读过且未变的材料可复用；局部修订只补读受影响上下文。
+4. 完成后检查来源、引用和实际交付是否一致。生成、检查可用、创作者采用分别记录。
 
-```text
-/home/layton/WorkSpace/
-├── Director/
-│   ├── AGENTS.md
-│   ├── docs/workflow/
-│   └── .agents/skills/
-└── toonflow/data/workspaces/
-    └── <项目名>/
-```
-
-1. 在 Toonflow 的「选择服务器工作目录」中，新建 `<项目名>/` 文件夹并选中它。打开项目后，以 Toonflow 返回的实际路径为准。
-2. 在 CachyOS 上用 Codex 打开同一个作品目录并新建会话。Codex 从 `workspaces/` 自动加载 `Director/AGENTS.md`，发现 `Director/.agents/skills/` 下的共用 skill，再读取作品自己的 `AGENTS.md`（如有）。
-3. 剧本、设定和制作记录保存在当前作品目录，沿用已有结构。用户只要文稿或提示词时，直接交付。切换作品时，重新确认 Agent 打开的目录与 Toonflow 当前项目一致。
-
-共用规则和 skill 在 `Director/` 中维护。CachyOS 上的 Toonflow `workspaces/` 通过符号链接引用这两处内容。
+没有自动加载 AGENTS 或技能功能的模型，也按上述路径手动读文件。技能名只是文件入口，不依赖某个模型的专有调用语法。通过符号链接加载时，先用 `realpath` 找到本文件源目录，再解析下列相对链接。缺少生成工具时先完成已授权的文稿和输入准备，明确未执行的操作，不声称已生成。
 
 ## 制作文档入口
 
-按用户要求选择阶段。已有可用交付物时，直接从当前阶段开始。跨阶段任务依次读取命中的文档，沿用同一作品目录和编号。共用文档和 Skill 的链接以 Director 仓库为准。若通过 Toonflow 工作区的符号链接加载本文件，先用 `realpath` 找到 `AGENTS.md` 的源文件，再从源目录打开 `docs/workflow/`。
+编号文件表示制作阶段；`references/` 中的资料由各阶段按条件引用，不是后续步骤，也不要求开始时全部读取。
 
 | 当前要做什么 | 先读 |
 | --- | --- |
 | 从点子、梗概或原著确定故事方向 | [01 故事构建](docs/workflow/01-story.md) |
 | 把故事拆成连续的几集 | [02 分集规划](docs/workflow/02-episodes.md) |
 | 写或改单集剧本 | [03 单集剧本](docs/workflow/03-screenplay.md) |
-| 定人物、造型、场景和道具 | [04 视觉设定](docs/workflow/04-visual-assets.md) |
-| 写出图提示词、准备参考图或补关键帧 | [05 图片与参考素材](docs/workflow/05-image-references.md) |
-| 拆镜、排镜序、写冻结关键帧 | [06 分镜与镜序](docs/workflow/06-storyboard.md) |
-| 为已确认的镜头写 H3 提示词 | [07 H3 视频提示词](docs/workflow/07-h3-prompts.md) |
+| 定人物、造型、场景、道具与声音方向 | [04 视觉设定](docs/workflow/04-visual-assets.md) |
+| 写图片提示词、生成或修订参考素材 | [05 图片与参考素材](docs/workflow/05-image-references.md) |
+| 拆镜、排镜序、按需补关键帧 | [06 分镜与镜序](docs/workflow/06-storyboard.md) |
+| 为已定镜头写 H3 提示词 | [07 H3 视频提示词](docs/workflow/07-h3-prompts.md) |
 | 在 Toonflow 提交 H3 并收回视频 | [08 Toonflow 视频生成](docs/workflow/08-toonflow-generation.md) |
 | 检查视频、选 take 或定位返工 | [09 视频验收与返工](docs/workflow/09-video-review.md) |
+| 剪辑、字幕、声音处理与导出 | [short-drama-edit](.agents/skills/short-drama-edit/SKILL.md) |
+| 初始化项目、恢复进度或打开 Dashboard | [short-drama](.agents/skills/short-drama/SKILL.md) |
 
-## 工作环境
+## 文档职责与规则来源
+
+| 位置 | 维护内容 |
+| --- | --- |
+| `README.md` | 项目介绍、安装、使用示例；不另立制作规则 |
+| 本文件 | 全局边界、规则优先级与任务入口 |
+| `docs/workflow/01–09` | 按制作阶段说明输入、步骤、检查与交接 |
+| `docs/workflow/references/` | 多阶段共用的生产原则、授权、部署能力与排查资料；按阶段链接读取 |
+| 阶段 `short-drama-*` 技能 | 创作方法与当前阶段文档 |
+| 摄影、场景、调度等专项技能 | 针对问题补设计或检查结论，回填负责阶段 |
+| 模型格式与部署资料 | 提示词语法、项目差异、当前运行能力，分别维护 |
+| 作品目录 | 剧情事实、采用素材、版本、任务与验收记录 |
+
+用户当前要求和既有授权优先于文档默认值。Director 项目规则优先于技能的通用建议；模型格式应用项目差异，执行能力以已核实的实际入口为准。文档与运行证据冲突时记录差异，不用提示词假装存在缺失端口，也不静默改变创作目标。
+
+每项事实只在负责文档修改，再同步下游引用，具体见 [变更传播](docs/workflow/references/production-principles.md#来源改变后更新哪些地方)。专项技能和派生 JSON 不建立另一套创作事实。已有作品沿用目录、编号和格式；只有使用五文档检查器时，才按 [交接格式](.agents/skills/short-drama/references/creator-documents.md) 填写其精确字段。
+
+## 生产与素材交接
+
+入口、授权范围、批次与恢复统一按 [生产路由与授权](docs/workflow/references/production-routing.md)。已明确授权的范围持续有效；必要输入缺失或超出范围时才暂停相关提交。
+
+跨阶段制作读 [通用生产原则](docs/workflow/references/production-principles.md)。环境和声音素材的生产次序、证据与检查按 [05 图片与参考素材](docs/workflow/05-image-references.md)；素材画布与镜头画布的分工按 [08 素材交接](docs/workflow/08-toonflow-generation.md#素材交接与镜头画布)。这些流程优先于专项技能的通用出图建议，用户指定复用原画布或限制生成范围时按其要求执行。
+
+## H3 提示词项目规则
+
+默认完整参考加动作描述，不要求每镜生成首尾帧；跨段先设计可剪接的镜头。具体职责如下，不在各技能重复维护参数与语法：
+
+- [h3-prompt-writing](.agents/skills/h3-prompt-writing/SKILL.md) 维护格式入口，按实际模式选官方指南。
+- [Director profile](.agents/skills/h3-prompt-writing/references/director-profile.md) 维护切镜时序、语言、对白结束符和校验约定，优先于上游默认值；官方指南保留为快照。
+- [本地模型能力](docs/workflow/references/local-model-capabilities.md) 维护当前模式、参考限制、接续片段和运行参数，不能套用其他入口的能力。
+
+只改提示词的局部文字时，读取当前版本、受影响上下文和格式规则即可，不重开导演方案或模型选型。按问题选技能和完成交接见 [07](docs/workflow/07-h3-prompts.md)。
+
+## 项目目录与工作环境
+
+共用规则在 `/home/layton/WorkSpace/Director/`，作品通常在 `/home/layton/WorkSpace/toonflow/data/workspaces/<项目名>/`。Toonflow 返回的实际路径为准。共用 AGENTS 和技能通过符号链接接入工作区，安装方法见 [README](README.md#在-linux-上接入-toonflow)。切换作品时重新确认 Agent 与 Toonflow 指向同一目录，并读取作品自己的 AGENTS（如有）。
 
 | 组件 | 入口 |
 | --- | --- |
 | CachyOS 工作机 | `ssh layton@cachyos.home.arpa`，RTX 5070 Ti，16 GB 显存 |
-| Toonflow 网页 | 在工作机上打开 `http://127.0.0.1:3000/`。从其他机器访问时，先建立下方的 SSH 转发，再打开 `http://127.0.0.1:13000/` |
-| Toonflow MCP | `http://cachyos.home.arpa:3000/mcp`，使用已授权的凭据 |
-| ComfyUI | `http://cachyos.home.arpa:8189`，操作前先读工作机上的 `/home/layton/WorkSpace/ComfyUI-clean/AGENTS.md` |
+| Toonflow 网页 | 工作机上 `http://127.0.0.1:3000/`；其他机器按下方转发后访问 `http://127.0.0.1:13000/` |
+| Toonflow MCP | `http://cachyos.home.arpa:3000/mcp`，使用已授权凭据 |
+| ComfyUI | `http://cachyos.home.arpa:8189`；操作前读工作机 `/home/layton/WorkSpace/ComfyUI-clean/AGENTS.md` |
 
 ```sh
 ssh -o ExitOnForwardFailure=yes -N -L 127.0.0.1:13000:127.0.0.1:3000 layton@cachyos.home.arpa
 ```
 
-- 操作 Toonflow 前，用工作机 MCP 的 `getAppState` 核对连接、项目实际路径和当前画布。写入画布时使用返回的 `connectionId`、`directory` 和 `canvasId`。切换项目或画布后重新获取状态。
-- 画布、节点和 Toonflow 中打开的文档通过 MCP 修改。先查节点支持的函数和参数，再调用对应工具。配置供应商、模型或插件前，用 `listAppOperations` 查询操作和参数。凭据保存在 `Director/` 目录外。用户明确要求委托 Toonflow 内置 Agent 时，才调用 `runAgent`。
-- 生成前检查服务状态、所选预设和实际参考输入。H3 的可用模式、参数和有效时长以当前工作流为准。按用户授权提交任务，跟进实际输出。遇到超时，先查原任务再决定是否重试。
+操作 Toonflow 前按 [toonflow](.agents/skills/toonflow/SKILL.md) 读取 `getAppState`，核对连接、目录、画布和节点能力；切换或重连后重新定位。画布、节点和其中已打开的文档通过 MCP 修改。配置供应商、模型或插件前查询 `listAppOperations`；凭据放在 Director 之外。仅当用户明确要求委托 Toonflow 内置 Agent 时调用 `runAgent`。
 
-## H3 提示词项目规则
+## 共用经验与中文表达
 
-本节适用于 H3 分镜、首帧和视频提示词。**与任何 Skill 的规则、建议或默认值冲突时，以本节为准。** 其余提示词格式按 MiniMax 官方指南。生成模式和参数以当前 Toonflow 节点及其 ComfyUI 工作流为准。
+workflow 只收跨作品可复用的条件、证据、处理方法与验收要求。具体剧名、人物、镜号、提示词、样片时间点和采用结论留在作品记录。未经验证的判断标为待验证，不能写成模型保证。更新共用文档前检查换一个作品是否仍适用。
 
-### 查阅与编译
-
-编写、改写、审核或修复 H3 提示词前，查阅以下四项。已在本会话完整读过且内容未变时，可复用。把结论合成一版提示词。
-
-1. [h3-cinematic-director](.agents/skills/h3-cinematic-director/SKILL.md) 设计景别、站位、表演和运镜。
-2. [h3-prompt-writing](.agents/skills/h3-prompt-writing/SKILL.md) 负责最终格式和参考标签。基础模式读 [base-en.txt](.agents/skills/h3-prompt-writing/references/base-en.txt)，Ref2VA 读 [ref-en.txt](.agents/skills/h3-prompt-writing/references/ref-en.txt)。
-3. [minimax-h3-prompt-writer](.agents/skills/minimax-h3-prompt-writer/SKILL.md) 检查参考、对白、声音和续镜，排查不同入口的差异。
-4. [minimax-h3](.agents/skills/minimax-h3/SKILL.md) 查本地 ComfyUI 的 H3 节点、参考接线、模型配置和运行故障。
-
-### 提示词怎么写
-
-- **切镜默认不写时间戳。** 用 `[Shot N]` 按顺序标镜头。写清画面、动作和声音如何承接。具体切点由 H3 决定。总时长在节点设置。首帧或首尾帧模式保留必要的帧对齐声明。
-- **写清镜头运动。** 说明固定机位，或写明运镜类型、方向、速度和最后的构图。跟拍时说明跟谁。连续运镜和动作阶段写在同一镜内。
-- **保留对白结束符。** 中文对白逐字写入 `<d>`，保留语言标签。说话人、表演和声线写在标签外。完整发声的 `</d>` 后加 `[END_OF_DIALOGUE]`，跨切镜的未完句等说完再加。结束符是项目试验项，被念出时再做单变量对照。给对白和反应留足时间。用动作或事件交代音效、环境声和配乐的起落。
-- **让表演和动作看得清。** 关键表情、持物或接触优先用近景。反应镜写触发、情绪、可见反应和落点。接触动作写清谁用哪只手碰到哪里，以及最后的状态。
-- **按实际参考写。** 核对挂载顺序及每份参考的用途。用英文描述画面和动作，保留对白、歌词和画内文字原文。出片后检查动作终点、对白和前后镜连续性。返工时保留上一版，每次先改一个变量。
-
-## 中文写作
-
-默认用简体中文。起草、重写或润色剧本、创作阐述、项目说明、制作记录和对外文案时，按需读 [natural-zh-writing](.agents/skills/natural-zh-writing/SKILL.md)。保留事实、条件、判断强度和作者语气。只改影响理解或节奏的地方，已经通顺的句子可以保留。
-
-写对白、分镜和提示词时，先按对应阶段的制作 skill 处理，再用 `natural-zh-writing` 检查中文表达。保留角色口吻、已确认的对白原文和镜头意图。提示词的字段、标签、参考顺序和时间约束以所用模型及工作流的要求为准。
+默认简体中文。按阶段技能完成创作，再用 [natural-zh-writing](.agents/skills/natural-zh-writing/SKILL.md) 检查表达。保留事实、条件、判断强度、角色口吻和已确认对白；提示词字段、标签、参考顺序与时间约束遵守实际模型格式。

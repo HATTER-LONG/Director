@@ -117,7 +117,7 @@ license: MIT
 
 ## 边界
 
-- **不生成新素材。** 需要补拍、重出、换参考图，回 `$short-drama-produce`；需要改提示词，
+- **不生成新素材。** 需要补拍、重出、换参考图，按 [生产路由与授权](../../../docs/workflow/references/production-routing.md) 回作品选定入口；需要改提示词，
   回 `$short-drama-video-prompts` 或 `$short-drama-image-prompts`。
 - **不改上游语义。** 剪辑单可以让某句台词不出现在成片里（整镜未采用），不能改这句台词是什么。
   发现剧本层面的问题就点名报告，交回 `$short-drama-write`。

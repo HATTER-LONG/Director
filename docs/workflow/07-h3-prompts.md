@@ -1,22 +1,31 @@
 # 07 H3 视频提示词
 
-有分镜、目标镜号和参考计划，要写、改或审核 H3 视频提示词时，读本页。先读 [AGENTS.md 的 H3 项目规则](../../AGENTS.md#h3-提示词项目规则)。规则与 Skill 冲突时，以项目规则为准。
+输入为当前分镜、目标镜号、对白与参考计划。本阶段交付可复制提示词及提交所需的模式、参考顺序和参数说明，不因完成文稿自动生成。
 
 ## 使用 Skill
 
-- [h3-cinematic-director](../../.agents/skills/h3-cinematic-director/SKILL.md) 细化表演、运镜与可见终点。
-- [h3-prompt-writing](../../.agents/skills/h3-prompt-writing/SKILL.md) 按实际模式编译官方字段。基础模式读 `base-en.txt`，Ref2VA 读 `ref-en.txt`。涉及对白时也查基础指南。
-- [minimax-h3-prompt-writer](../../.agents/skills/minimax-h3-prompt-writer/SKILL.md) 检查参考、对白、声音和续镜。[minimax-h3](../../.agents/skills/minimax-h3/SKILL.md) 检查本地节点与参考接线。
-- 整集的逐镜文档用 [short-drama-video-prompts](../../.agents/skills/short-drama-video-prompts/SKILL.md) 组织。
+- [short-drama-video-prompts](../../.agents/skills/short-drama-video-prompts/SKILL.md) 维护镜头提示词文档；只改一个节点时沿用其现有位置。
+- [h3-prompt-writing](../../.agents/skills/h3-prompt-writing/SKILL.md) 是格式入口，按实际模式读取官方指南并应用 [Director profile](../../.agents/skills/h3-prompt-writing/references/director-profile.md)。
+- 只有需要调整表演、摄影或动作边界时才读 [h3-cinematic-director](../../.agents/skills/h3-cinematic-director/SKILL.md)。已出片的参考、对白或声音问题读 [minimax-h3-prompt-writer](../../.agents/skills/minimax-h3-prompt-writer/SKILL.md)；节点故障读 [minimax-h3](../../.agents/skills/minimax-h3/SKILL.md)。
 
 ## 操作
 
-1. 核对本镜的剧本对白、分镜和真实参考。根据节点能力选文生、首帧、首尾帧或参考生视频。已有挂图计划时可先写提示词和挂图清单。缺少参考时保留原有生成方式，等用户明确选择后再改为文生视频。
-2. 按实际输入顺序绑定参考。说明人物、场景、动作或声音各取自哪个文件。把提示词中的图片、视频和音频标签逐项对回输入。多媒体编号按所选模式处理。
-3. 先写起始画面、触发动作、可见终点和镜头运动。用 `[Shot N]` 写镜序，具体切点交给 H3。默认省略镜头时间戳。首帧或首尾帧模式所需的帧对齐声明按官方格式保留。
-4. 画面和动作写英文，中文对白保留原文。说话人、表演和声线放在 `<d>` 外。完整发声的 `</d>` 后加 `[END_OF_DIALOGUE]`。跨镜未完句等说完再加。用画面事件交代声音起落。
-5. 合并成一版可复制提示词。复核起止状态、参考标签、对白原文及声画关系。总时长作为节点参数交接。
+1. 核对当前剧本、分镜、采用素材与用户反馈。模式和有效时长按 [实际部署](references/local-model-capabilities.md)，不把参考用途当成首尾帧端口。缺图可先完成草稿和挂图计划，不自动改成文生视频。
+2. 按实际挂载顺序对应图片、视频与音频。逐项说明保留的身份、空间、动作或声线；只引用当前适用版本。
+3. 将已定镜头编译成模型字段，写清取景、开镜状态、触发、行动、终点与声音。语言、镜序、对白标签和结束符按 Director profile，不在此另立语法。
+4. 按 [跨段剪辑接口](06-storyboard.md#跨生成段的剪辑接口) 写后段开场。连续动作所需参考、截取和音轨接法按 [本地流程](references/local-model-capabilities.md#两段视频怎么衔接)；未取得实际片段时标记尚不可提交。
+5. 合并一版完整提示词，按相同的 profile、timing、模式和有效时长校验，再回读正文与参考清单。校验报错修复后才可提交，结构通过不替代成片验收。
+
+## 来源与引用更新
+
+引用以 [素材交接清单](08-toonflow-generation.md#素材交接与镜头画布) 中的当前文件为准。上游剧情、声音或显示状态改变时，先按 [变更传播](references/production-principles.md#来源改变后更新哪些地方) 更新来源，再核对全部受影响字段、参考清单、节点输入和编号；不能只在末尾追加一条否定旧设定的句子。
+
+确认每个反应都有剧本允许的触发依据：谁能看见、听见什么，设备能显示什么。不得通过挂图或接线自行改变这些事实。
+
+## 按问题补充设计
+
+空间、接触、取景、环境与动作编排、特效和竖屏遮挡见 [镜头描述](../../.agents/skills/h3-cinematic-director/references/shot-description.md) 的相关章节。反复跑偏时按 [共性问题排查](references/h3-prompt-diagnosis.md) 整理当前版本，区分输入冲突与尚未验证的模型倾向。
 
 ## 交付
 
-输出当前镜头的最终提示词、生成模式、真实参考或挂图计划，以及画幅、总时长和声音要求。整集可用 `剧集/<EP>/视频提示词.md`，镜头条目关联原 `SHOT-...`。准备提交时转[视频生成](08-toonflow-generation.md)。
+交付最终提示词、模式、真实参考或挂图计划，以及画幅、时长和声音要求。整集沿用现有视频提示词文档，条目关联原镜号。生成范围已授权且必要输入齐备后，进入 [08 视频生成](08-toonflow-generation.md)。
