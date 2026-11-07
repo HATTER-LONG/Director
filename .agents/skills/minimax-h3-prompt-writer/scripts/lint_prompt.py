@@ -2,6 +2,7 @@
 """Validate structured H3 prompt text; never claim to predict render quality."""
 import argparse
 import json
+import math
 import re
 from pathlib import Path
 
@@ -9,14 +10,19 @@ BASE = ['integrated_multimodal_description', 'overall_soundscape', 'non_diegetic
 REF = ['subject_definitions', 'summary', 'retention_analysis', 'detailed_description', 'overall_soundscape', 'non_diegetic_music']
 
 
-def lint(text, mode, duration, max_chars=None):
+def lint(text, mode, duration, max_chars=None, profile='director', timing=None):
     errors, warnings = [], []
+    if profile not in ('director', 'official'):
+        raise ValueError(f'Unknown profile: {profile}')
+    timing = timing or ('ordered' if profile == 'director' else 'exact')
+    if timing not in ('ordered', 'exact'):
+        raise ValueError(f'Unknown timing: {timing}')
     expected = REF if mode == 'ref2va' else BASE
     fields = re.findall(r'^([a-z_]+):', text, re.M)
     if fields != expected:
         errors.append(f'Expected fields in order {expected}; found {fields}')
-    if duration <= 0:
-        errors.append('Duration must be positive')
+    if not math.isfinite(duration) or duration <= 0:
+        errors.append('Duration must be finite and positive')
     if max_chars and len(text) > max_chars:
         errors.append(f'{len(text)} characters exceeds destination limit {max_chars}')
     body_field = 'detailed_description' if mode == 'ref2va' else BASE[0]
@@ -29,12 +35,16 @@ def lint(text, mode, duration, max_chars=None):
     for idx, s in enumerate(shots):
         if idx == 0 and s.group(2):
             errors.append('Shot 1 must not have a cut timestamp')
-        if idx > 0 and not s.group(2):
+        timestamped = s.group(2) is not None
+        if timing == 'ordered' and timestamped:
+            errors.append(f'Shot {idx+1}: ordered timing omits cut timestamps; use exact timing for scheduled cuts')
+        if timing == 'exact' and idx > 0 and not timestamped:
             errors.append(f'Shot {idx+1} needs At MM:SS.mmm')
-        t = 0.0 if not s.group(2) else int(s.group(2))*60+int(s.group(3))+int(s.group(4))/1000
+        t = (int(s.group(2))*60+int(s.group(3))+int(s.group(4))/1000
+             if timestamped else (0.0 if idx == 0 else None))
         if s.group(3) and int(s.group(3)) >= 60:
             errors.append('Timestamp seconds component must be below 60')
-        if (idx > 0 and times and t <= times[-1]) or t >= duration:
+        if t is not None and ((idx > 0 and times[-1] is not None and t <= times[-1]) or t >= duration):
             errors.append(f'Invalid/inconsistent shot time {t}')
         times.append(t)
     if text.count('<d>') != text.count('</d>'):
@@ -44,11 +54,21 @@ def lint(text, mode, duration, max_chars=None):
         if not re.match(r'^\[[^\]\n]+\]\s*\S', d):
             errors.append('Dialogue needs a language tag and content')
         clean = re.sub(r'^\[[^\]]+\]\s*|<scenetrans>|<cutoff>', '', d).strip()
-        if clean and clean[-1] not in '.?!':
+        if clean and clean[-1] not in '.?!。？！…':
             warnings.append('Dialogue lacks terminal punctuation; preserve locked user text')
+    if profile == 'director':
+        for match in re.finditer(r'<d>(.*?)</d>', body, re.S):
+            if '<scenetrans>' in match.group(1) or '<cutoff>' in match.group(1):
+                continue
+            if not body[match.end():].lstrip().startswith('[END_OF_DIALOGUE]'):
+                warnings.append('Check completed dialogue for Director [END_OF_DIALOGUE]; add it only after the utterance finishes')
     for idx, s in enumerate(shots):
         end = shots[idx+1].start() if idx+1 < len(shots) else len(body)
-        window = (times[idx+1] if idx+1 < len(times) else duration)-times[idx]
+        start_time = times[idx]
+        end_time = times[idx+1] if idx+1 < len(times) else duration
+        if start_time is None or end_time is None or (timing == 'ordered' and len(shots) > 1):
+            continue  # Untimed shots have no measurable individual speaking window.
+        window = end_time-start_time
         ds = re.findall(r'<d>(.*?)</d>', body[s.end():end], re.S)
         words = sum(len(re.findall(r'\b\w+\b', re.sub(r'\[[^\]]+\]|<[^>]+>', '', d))) for d in ds)
         if window > 0 and words/window > 3:
@@ -77,7 +97,8 @@ def lint(text, mode, duration, max_chars=None):
         retention = text.split('retention_analysis:', 1)[-1].split('detailed_description:', 1)[0]
         if re.search(r'\(S\d+', retention):
             errors.append('Speaker IDs do not belong in retention_analysis')
-    return {'errors': errors, 'warnings': list(dict.fromkeys(warnings)), 'characters': len(text)}
+    return {'errors': errors, 'warnings': list(dict.fromkeys(warnings)), 'characters': len(text),
+            'profile': profile, 'timing': timing}
 
 
 def main():
@@ -86,8 +107,13 @@ def main():
     p.add_argument('--mode', required=True, choices=['t2va', 'i2va', 'fl2va', 'l2va', 'ref2va'])
     p.add_argument('--duration', required=True, type=float, help='Effective duration; resolve local frame grid first')
     p.add_argument('--max-chars', type=int, help='Optional actual destination limit')
+    p.add_argument('--profile', choices=['director', 'official'], default='director',
+                   help='Project overlay (default) or unmodified official cut grammar')
+    p.add_argument('--timing', choices=['ordered', 'exact'],
+                   help='Defaults to ordered for director, exact for official')
     a = p.parse_args()
-    result = lint(a.file.read_text(encoding='utf-8').strip(), a.mode, a.duration, a.max_chars)
+    result = lint(a.file.read_text(encoding='utf-8').strip(), a.mode, a.duration, a.max_chars,
+                  a.profile, a.timing)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     raise SystemExit(bool(result['errors']))
 

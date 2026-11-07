@@ -472,8 +472,8 @@ def _references(
     for role in ("起始帧", "结束帧"):
         if purposes.count(role) > 1:
             errors.append(f"{owner}: 同一条目只能有一张{role}参考图")
-    if "结束帧" in purposes and "起始帧" not in purposes:
-        errors.append(f"{owner}: 绑定结束帧参考图时必须同时绑定起始帧")
+    # Reference purposes do not imply a first/last-frame execution mode.
+    # Check actual endpoint requirements at submission, not in this generic list.
     for index, (kind, group) in enumerate(zip(slot_kinds, groups)):
         slot, raw_locator, label = group[0], group[2], group[3]
         may_control, must_not_control = group[5], group[6]
@@ -1355,9 +1355,7 @@ def _check_continuity_locks(
                     errors.append(f"{lock_id}: 连续性锁指向不存在的镜头: {shot_id}")
                     continue
                 keyframe = _copyable_prompt(shots[shot_id], heading=r"冻结关键帧提示词")
-                if keyframe is None:
-                    errors.append(f"{lock_id}: {shot_id} 缺少可读的冻结关键帧提示词")
-                elif not _carries_surface(keyframe, surface):
+                if keyframe is not None and not _carries_surface(keyframe, surface):
                     errors.append(f"{lock_id}: {shot_id} 冻结关键帧提示词缺少锁面")
             motion = motion_by_shot.get(shot_id)
             if motion is None:
@@ -1917,18 +1915,31 @@ def validate_documents(
             )
         if basis.parsed:
             in_frame[shot_id] = basis.declared
-        # The keyframe is the only place the frame's contents exist as text, so a
-        # shot without one would make the coverage check below vacuous.
+        # Reference-led shots describe the opening in 起点; a separate image
+        # prompt is optional. A present but malformed prompt remains an error.
         keyframe = _copyable_prompt(shot_body, heading=r"冻结关键帧提示词")
-        if keyframe is None:
-            errors.append(
-                f"{shot_id}: 缺少唯一且非空的冻结关键帧提示词"
-                + _copyable_prompt_cause(shot_body, heading=r"冻结关键帧提示词")
-            )
-        elif basis.parsed:
-            _check_named_coverage(
-                keyframe, shot_id, "冻结关键帧提示词", basis, visual_entries, errors
-            )
+        has_keyframe_heading = re.search(
+            r"^### 冻结关键帧提示词\s*$", shot_body, re.MULTILINE
+        )
+        if has_keyframe_heading:
+            if keyframe is None:
+                errors.append(
+                    f"{shot_id}: 冻结关键帧提示词不是唯一且非空的可复制正文"
+                    + _copyable_prompt_cause(shot_body, heading=r"冻结关键帧提示词")
+                )
+            elif basis.parsed:
+                _check_named_coverage(
+                    keyframe, shot_id, "冻结关键帧提示词", basis, visual_entries, errors
+                )
+        else:
+            opening = _plain(fields.get("起点", ""))
+            if not opening or _is_none(opening):
+                errors.append(f"{shot_id}: 无冻结关键帧时须写明起点画面与状态")
+            elif basis.parsed:
+                _check_named_coverage(
+                    opening, shot_id, "起点", basis, visual_entries, errors,
+                    by_entry_name=True,
+                )
         # The closing keyframe is optional — many shots end where they began —
         # but a heading that is present and malformed is a defect, not a shot
         # that quietly has no closing frame.
