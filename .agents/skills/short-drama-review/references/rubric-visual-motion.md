@@ -108,7 +108,7 @@ A summary must not introduce a layer absent from the shot. H3's
 
 Report a concrete contradiction, omission or ambiguity. A negative clause is
 not a defect by itself; do not impose a clause count or assume that negation
-causes the model to generate the excluded content. Keep model-specific
+causes the model to generate the excluded content. For H3, also review the [content/control balance](../../h3-prompt-writing/references/prompt-composition.md#内容与异常控制的篇幅): cite repeated or disproportionate controls and the content they obscure. This is an editorial convention, not a model-performance threshold or an automatic linter result. Keep model-specific
 observations scoped to their tested model and execution path.
 
 For a pickup or alternate, ask these separately:

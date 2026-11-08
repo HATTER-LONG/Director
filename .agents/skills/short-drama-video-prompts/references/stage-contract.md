@@ -6,11 +6,13 @@
 起点、终点、时长、对白和冻结帧，不回写分镜或视觉设定：镜头边界、职责、起终状态和关键帧正文都不在
 本阶段手里。
 
-唯一的例外是参考准备。SKILL 工作流第 2、3 步要求在同一请求内刷新受影响镜头的「输入参考图」
+参考准备涉及来源字段时，在同一请求内由分镜阶段刷新受影响镜头的「输入参考图」
 （必要时一并回填「视觉依据」），那是**分镜 owner 在本请求内的动作**，按分镜阶段的字段规则执行，
 不是本阶段改写分镜的授权。它只更新这两条依据字段，不动镜头边界、职责、起终状态或关键帧正文。
 
-每项正文只描述从当前冻结起点到终点的变化；多镜打包、补拍或替代关系确有需要时，也写在同一文档
+当前起点是已定分镜状态，不要求必有首帧图片。H3 的 ordered 镜序不补逐镜秒点；显式时间段的算术规则只在该交付实际声明了时间区间时适用。剪辑预算、节点目标秒数与实测片长分别记录，不把节点取整后的秒数强行回写为故事镜长。内容与控制篇幅按 [H3 写作参考](../../h3-prompt-writing/references/prompt-composition.md) 人工检查，不能冒充语法校验结果。
+
+每项正文只描述从当前起点到终点的变化；多镜打包、补拍或替代关系确有需要时，也写在同一文档
 的可读章节中，不建立 motion spec、container、readiness、QA 或接受记录。
 
 ## 本阶段规则
@@ -19,7 +21,7 @@
 
 | ID | Class | Knowledge |
 |---|---|---|
-| VID-01 | structural_invariant | Motion reads but cannot rewrite shot start/end/duration/dialogue and next-shot state. The duration a MOTION declares is compared against its SHOT: they must be the same number, because 时长 is what reaches the execution end and what VID-04/VID-13 arithmetic is built on. A downstream copy left behind by an upstream revision is a defect even though every string still parses. |
+| VID-01 | structural_invariant | Motion reads but cannot rewrite shot start/end/duration/dialogue and next-shot state. The duration a MOTION declares is compared against its SHOT: they must be the same number, because this field carries the accepted edit budget used by VID-04/VID-13. Node target seconds and measured media duration are separate production values, not replacements for that budget. A downstream copy left behind by an upstream revision is a defect even though every string still parses. |
 | VID-02 | craft_default | Write start anchor, ordered subject motion, camera behavior, timing, and end report; add performance change and environment/audio only when this shot actually carries them. |
 | VID-03 | structural_invariant | Preserve the storyboard reference set and distinguish real REF files from PLAN preparation records. Missing images allow a marked draft, not a claim that inputs are attached. Use the current authorization to prepare missing assets; do not infer text-only generation from absent files or silently change the creator's selected mode. Text-only prompts require a self-contained static visual anchor. |
 | VID-04 | structural_invariant | Explicit segment timing sums exactly to its shot's accepted duration—neither exceeding it nor leaving an unallocated remainder. |

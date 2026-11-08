@@ -137,7 +137,7 @@ Continuous action may use multiple storyboard frames under one shot number. Labe
 
 ### 7. Compile through the format owner
 
-Use [h3-prompt-writing](../h3-prompt-writing/SKILL.md) for the selected mode and Director profile. Put the approved camera, performance and sound decisions into its fields; do not define a second schema here. Match the actual reference order and effective duration, and preserve the source dialogue and visible text.
+Use [h3-prompt-writing](../h3-prompt-writing/SKILL.md) for the selected mode and Director profile. Apply its [content and revision guide](../h3-prompt-writing/references/prompt-composition.md) to prioritize the intended event and bound failure-control prose. Put only the needed camera, performance and sound decisions into its fields; do not define a second schema here. Match the actual reference order and effective duration, and preserve the source dialogue and visible text.
 
 ### 8. Audit before delivery
 
@@ -177,7 +177,7 @@ Do not redesign passing elements.
 
 ### single-variable-repair
 
-State the failed variable and preserve approved story and shot decisions. For a local defect, replace the affected clause and read the whole prompt for contradictions. If accumulated patches conflict, consolidate the current prompt against the storyboard. Identify an incorrect source reference when that is the cause.
+State the failed variable and preserve approved story and shot decisions. For a local defect, replace the affected clause and read the whole prompt for contradictions. If patches accumulate, repeat constraints or overwhelm the intended event, consolidate the current prompt against the storyboard even without a literal contradiction. A whole-text consolidation is not a single-variable experiment; record it as a combined revision. Identify an incorrect source reference when that is the cause.
 
 ## Repair Discipline
 

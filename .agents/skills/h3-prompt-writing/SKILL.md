@@ -1,6 +1,6 @@
 ---
 name: h3-prompt-writing
-description: Write MiniMax H3 video generation prompts for T2VA, I2VA, FL2VA, L2VA, and Ref2VA. Use when rewriting multimodal requests into H3 prompt structures, composing integrated_multimodal_description, overall_soundscape, and non_diegetic_music, aligning keyframes, or defining reference labels for images, videos, and audio.
+description: Write and revise MiniMax H3 video prompts, including consolidating overgrown prompts around the intended action and dialogue. Use for T2VA, I2VA, FL2VA, L2VA and Ref2VA structure, reference binding, shot descriptions and sound fields; runtime faults belong to the deployed workflow.
 metadata:
   compatibility: Portable to any agent that can read local files — no external API calls, MiniMax Hub tools, or proprietary runtime required. The agents/openai.yaml file only adds optional ChatGPT/Codex UI metadata; it does not restrict the skill to OpenAI agents.
 ---
@@ -9,10 +9,11 @@ metadata:
 
 ## Workflow
 
-1. Identify the input mode: T2VA, I2VA, FL2VA, L2VA, or full-reference Ref2VA.
-2. For base text/keyframe modes, read `references/base-en.txt` and follow its final prompt structure.
-3. For full-reference mode, read `references/ref-en.txt` and follow its six-section rewrite format.
-4. Preserve exact field names, section order, labels and keyframe alignment sentences. In Director, apply [director-profile.md](references/director-profile.md) to cut timing and dialogue endings; use the same profile and timing in the linter. The upstream guides remain unchanged snapshots.
+1. Identify the actual input mode and preserve the approved shot purpose, actions and dialogue. Do not infer supported ports from a reference image's intended use.
+2. Read [content selection and revision](references/prompt-composition.md) for both new drafts and edits. Write the intended scene content first, then necessary facts and scoped failure controls. Reuse an unchanged guide already read in this session.
+3. For base text/keyframe modes, read `references/base-en.txt`; for Ref2VA, read `references/ref-en.txt`. Preserve the required fields, label meanings and applicable alignment sentences.
+4. In Director, apply [director-profile.md](references/director-profile.md) over upstream defaults for detail, length, language, cut timing and dialogue endings. The upstream guides remain snapshots, not competing project rules.
+5. Consolidate the complete current prompt, check content/control balance and actual reference order, then lint using the same profile, timing, mode and effective duration. Mechanical validation does not evaluate semantic balance or rendered quality.
 
 ## Base Modes
 
@@ -32,8 +33,8 @@ Read `references/ref-en.txt` for label rules, retention analysis, and complete e
 ## Output Rules
 
 - Write rewrite sections in English; preserve dialogue, lyrics, and visible scene text in their original language.
-- Describe each shot by composition, subjects, environment, actions, camera, sound, and the exact point where referenced content appears.
-- Avoid plot summaries, unresolved reference labels, and timing that does not match the requested duration.
+- Describe the framing, action, performance, sound and reference use needed to make each shot readable. These are considerations, not a checklist that must expand every shot. Keep shared facts in their owning sections and localized controls beside the affected event.
+- Do not substitute a plot synopsis for executable shot descriptions. Keep the required Ref2VA summary concise; avoid unresolved labels and timing that does not match the effective duration.
 ## Tips for Better Results
 - Match the description and alignment sentences to the effective duration supported by the actual node or API; do not transfer hosted API limits to a local workflow.
 - Keep reference labels consistent (e.g. `<Picture 1>`, `<Video 1>`, `<Audio 1>`) across every section.

@@ -56,7 +56,7 @@ Director 用于制作 AI 短剧、漫剧和叙事短片。按用户指定阶段�
 
 默认完整参考加动作描述，不要求每镜生成首尾帧；跨段先设计可剪接的镜头。具体职责如下，不在各技能重复维护参数与语法：
 
-- [h3-prompt-writing](.agents/skills/h3-prompt-writing/SKILL.md) 维护格式入口，按实际模式选官方指南。
+- [h3-prompt-writing](.agents/skills/h3-prompt-writing/SKILL.md) 维护格式入口，按实际模式选官方指南；其 [内容取舍与多轮修订](.agents/skills/h3-prompt-writing/references/prompt-composition.md) 统一维护内容主次、异常控制篇幅和整段重写方法，新写与返工都应用。
 - [Director profile](.agents/skills/h3-prompt-writing/references/director-profile.md) 维护切镜时序、语言、对白结束符和校验约定，优先于上游默认值；官方指南保留为快照。
 - [本地模型能力](docs/workflow/references/local-model-capabilities.md) 维护当前模式、参考限制、接续片段和运行参数，不能套用其他入口的能力。
 
@@ -81,6 +81,6 @@ ssh -o ExitOnForwardFailure=yes -N -L 127.0.0.1:13000:127.0.0.1:3000 layton@cach
 
 ## 共用经验与中文表达
 
-workflow 只收跨作品可复用的条件、证据、处理方法与验收要求。具体剧名、人物、镜号、提示词、样片时间点和采用结论留在作品记录。未经验证的判断标为待验证，不能写成模型保证。更新共用文档前检查换一个作品是否仍适用。
+workflow 与技能只收跨作品可复用的条件、证据、处理方法与验收要求。具体剧名、人物、镜号、提示词、样片时间点和采用结论留在作品记录。未经验证的判断标为待验证，不能写成模型保证。更新共用文档前检查换一个作品是否仍适用；按 [经验迭代](docs/workflow/references/production-principles.md#经验如何进入共用规则) 修订已有条目和调用入口，不逐轮叠加永久限制。
 
 默认简体中文。按阶段技能完成创作，再用 [natural-zh-writing](.agents/skills/natural-zh-writing/SKILL.md) 检查表达。保留事实、条件、判断强度、角色口吻和已确认对白；提示词字段、标签、参考顺序与时间约束遵守实际模型格式。

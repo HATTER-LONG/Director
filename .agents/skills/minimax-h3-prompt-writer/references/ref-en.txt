@@ -1,3 +1,12 @@
+# Historical comparison copy — not the active format guide
+
+This file preserves the diagnostic package's earlier text for comparison only.
+For new or revised prompts, read ../../h3-prompt-writing/SKILL.md and its selected
+mode guide, content/revision guide and applicable project profile. Do not compile
+from this archived copy or let it override the active format owner.
+
+---
+
 Full-Reference Mode (Ref2VA) Rewrite Output Format Guide — six sections, exact order
 
 Write ALL sections in English. Preserve the original language only for dialogue/lyrics inside <d> and for text visibly present in the scene.

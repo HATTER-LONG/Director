@@ -1,3 +1,12 @@
+# Historical comparison copy — not the active format guide
+
+This file preserves the diagnostic package's earlier text for comparison only.
+For new or revised prompts, read ../../h3-prompt-writing/SKILL.md and its selected
+mode guide, content/revision guide and applicable project profile. Do not compile
+from this archived copy or let it override the active format owner.
+
+---
+
 Video Prompt Writing Guide (T2VA / I2VA / FL2VA / L2VA) — structured rewrite format
 
 1. Task overview
