@@ -7,6 +7,8 @@ metadata:
 
 # H3 Prompt Writing
 
+In Director, pair with [short-drama-video-prompts](../short-drama-video-prompts/SKILL.md): it owns the prompt document and approved shot content; this skill owns model syntax. Use the current production mode only for actual H3 segments. Loading the pair does not restart shot design or authorize generation.
+
 ## Workflow
 
 1. Identify the actual input mode and preserve the approved shot purpose, actions and dialogue. Do not infer supported ports from a reference image's intended use.
@@ -32,7 +34,7 @@ Read `references/ref-en.txt` for label rules, retention analysis, and complete e
 
 ## Output Rules
 
-- Write rewrite sections in English; preserve dialogue, lyrics, and visible scene text in their original language.
+- Follow the user's chosen prompt language and, in Director, [director-profile.md](references/director-profile.md); English is the fallback only when neither overrides it. Preserve required field names, reference tags, and the original language of dialogue, lyrics and visible scene text.
 - Describe the framing, action, performance, sound and reference use needed to make each shot readable. These are considerations, not a checklist that must expand every shot. Keep shared facts in their owning sections and localized controls beside the affected event.
 - Do not substitute a plot synopsis for executable shot descriptions. Keep the required Ref2VA summary concise; avoid unresolved labels and timing that does not match the effective duration.
 ## Tips for Better Results

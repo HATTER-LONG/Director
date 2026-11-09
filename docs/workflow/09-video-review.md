@@ -4,8 +4,8 @@
 
 ## 使用 Skill
 
-- [continuity-checking](../../.agents/skills/continuity-checking/SKILL.md) 检查人物、道具和前后镜连续性。[shot-sequencing](../../.agents/skills/shot-sequencing/SKILL.md) 帮助判断切点和镜序。
-- [h3-cinematic-director](../../.agents/skills/h3-cinematic-director/SKILL.md) 修订表演与摄影。按需用 [minimax-h3-prompt-writer](../../.agents/skills/minimax-h3-prompt-writer/SKILL.md) 查参考、对白和声音，用 [minimax-h3](../../.agents/skills/minimax-h3/SKILL.md) 查本地工作流。需要专项审查时用 [short-drama-review](../../.agents/skills/short-drama-review/SKILL.md)。
+- [continuity-checking](../../.agents/skills/continuity-checking/SKILL.md) 检查人物、道具与状态；检查多镜接镜时再加 [shot-sequencing](../../.agents/skills/shot-sequencing/SKILL.md)。两种模式均可调用，但只审实际视频和相邻采用素材，不把静图段当成漏生成。
+- 需要修订表演与摄影时，用 short-drama-storyboard ＋ [h3-cinematic-director](../../.agents/skills/h3-cinematic-director/SKILL.md) 更新设计，再按 [07](07-h3-prompts.md) 的组合改提示词。只审查不因此改稿。按需用 [minimax-h3-prompt-writer](../../.agents/skills/minimax-h3-prompt-writer/SKILL.md) 查参考、对白和声音，用 [minimax-h3](../../.agents/skills/minimax-h3/SKILL.md) 查本地工作流。需要专项审查时用 [short-drama-review](../../.agents/skills/short-drama-review/SKILL.md)。
 
 需要判断观众是否看懂时，先只看本版成片复述事件、人物关系和转折，不提前读取创作者解释或上一轮评价；再对照剧本找误读原因。技术连续性检查仍读取实际参考、镜头要求和相邻 take。独立审阅与自检如实区分，不固定设置四个常驻代理。
 
@@ -78,4 +78,4 @@ ffmpeg -v error -i "$clip" -vf "select=eq(n\\,$frame)" \
 
 ## 交付
 
-在作品验收记录中列出采用 take、文件位置、可用入出点、预览或交付规格，以及需要修复的镜头，保留对照版本及改动项。预览通过说明当前试片完成了哪些检查；切换规格重新生成后，按 [生成流程](08-toonflow-generation.md#用-04mp-快速调试) 复核新文件。只交生成视频时，到可播放视频和验收记录为止。用户另要成片时，将选片交给 [short-drama-edit](../../.agents/skills/short-drama-edit/SKILL.md)。
+在作品验收记录中列出采用 take、文件位置、可用入出点、预览或交付规格，以及需要修复的镜头，保留对照版本及改动项。预览通过说明当前试片完成了哪些检查；切换规格重新生成后，按 [生成流程](08-toonflow-generation.md#生成规格与可选试片) 复核新文件。只交生成视频时，到可播放视频和验收记录为止。用户另要成片时，将选片交给 [short-drama-edit](../../.agents/skills/short-drama-edit/SKILL.md)。

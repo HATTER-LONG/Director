@@ -1,13 +1,14 @@
 # 05 图片与参考素材
 
+本页是 [标准 AI 视频](modes/standard-ai-video.md) 的详细阶段；[叙事动画](modes/illustrated-narration.md) 按自己的步骤推进，只在需要本页专项方法时读取对应部分。
+
 要补角色图、场景多机位图、道具图或本镜关键帧时，读本页。资产图从视觉设定出发。本镜起始帧或收尾帧从已定分镜出发。
 
 ## 使用 Skill
 
-- [short-drama-image-prompts](../../.agents/skills/short-drama-image-prompts/SKILL.md) 写资产图提示词。
-- [short-drama-storyboard](../../.agents/skills/short-drama-storyboard/SKILL.md) 写本镜的冻结关键帧。
-- [scene-asset](../../.agents/skills/scene-asset/SKILL.md) 设计场景俯视图、固定空间布局和多机位参考。
-- 用 [toonflow](../../.agents/skills/toonflow/SKILL.md) 操作已配置的画布图像节点，授权统一按 [生产路由](references/production-routing.md)。
+- 资产图提示词由 [short-drama-image-prompts](../../.agents/skills/short-drama-image-prompts/SKILL.md) 负责；本镜冻结关键帧由 [short-drama-storyboard](../../.agents/skills/short-drama-storyboard/SKILL.md) 负责，按用途选择，不同时重写同一张图。
+- 尚需设计空间、美术或多机位时，先用 short-drama-assets ＋ [scene-asset](../../.agents/skills/scene-asset/SKILL.md) 更新视觉设定；只编译已有设定不用重新设计。
+- 实际生成在当前提示词负责技能之外再加 [toonflow](../../.agents/skills/toonflow/SKILL.md)，授权统一按 [生产路由](references/production-routing.md)。
 
 默认准备完整人物、造型、场景和道具参考；人物无需预摆成首尾帧姿态。GPT Image 2.6 的实际尺寸、编辑方式及 9:16 构图帧处理见 [本地模型能力](references/local-model-capabilities.md#参考优先)。完整参考保留原画幅，只有确需构图帧才裁切，不能为了匹配视频比例裁掉参考里的身体、服装或空间信息。
 
@@ -15,7 +16,7 @@
 
 ### 人物多视图里的面部遮挡
 
-用户的 H3 制作经验：同一人物板中，保留清楚的面部特写，在全身正面、侧面等视图的小脸上加黑框，可减少多个面部版本干扰身份参考。全身视图继续提供体态、服装、背面和装备信息。遇到这种素材，先检查是否有独立清楚的面部特写；若黑框是有意处理，保留原图，不当成损坏或缺脸自动补画。提示词说明面部身份取自特写，其他视图只取体态与造型，参考板的黑框和版式不进入成片。该经验来自用户生产观察，具体改善幅度留待同条件对照验证。
+写人物图提示词、首次提交与验收前必须读 [人物参考规格与提交检查](references/character-references.md)。默认规格、黑框用途和例外在该页维护；不能只按通用身份板建议提交后再补读。
 
 ## 操作
 
@@ -26,9 +27,7 @@
 
 ## 素材画布与验收状态
 
-实际生成先在作品目录中的素材画布进行：人物、环境、道具、屏幕内容和声音试说各有生成节点，保留提示词、候选、原始视频、选帧和修订来路。已确认的文件单列为当前可用素材。默认将素材研发与镜头生产分成两张画布；用户指定沿用一张时，在原画布分区并断开废弃输入，不为满足默认流程另建画布。操作与交接见 [08](08-toonflow-generation.md#素材交接与镜头画布)。
-
-每项素材至少记录实际文件、版本、用途、来源和检查结论。状态区分：候选、在限定用途下可用、创作者采用、已替代。缺少听审或动态验证时具体写明，不能用“已生成”代替“可用”。一项素材可在静态构图上可用，同时仍有动作或声音待检项。
+生成节点、候选、已采用文件和返工来路按 [素材交接](references/media-handoff.md) 维护。该资料也用于叙事动画和音频素材，不要求为共享画布规则读取完整视频生产流程。
 
 ## 场景素材生成
 

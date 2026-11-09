@@ -9,10 +9,10 @@ Director 当前本地模式、参数与跨段接法统一见 [部署能力](../.
 
 ## Purpose
 
-Operate as one explicit, self-contained application for four jobs:
+Provide specialist direction for four jobs within the current production mode:
 
 1. `shot-design` — turn an approved dramatic beat into necessary, motivated shots.
-2. `h3-prompt` — translate an approved shot into the exact MiniMax H3 prompt schema.
+2. `h3-prompt` — supply adopted direction to the short-drama-video-prompts + h3-prompt-writing compilation pair.
 3. `continuity-audit` — compare neighboring shots, keyframes, and assets for continuity failures.
 4. `single-variable-repair` — repair one failed variable without redesigning the approved shot.
 
@@ -120,7 +120,7 @@ Load [references/director-keywords.md](references/director-keywords.md) when the
 
 ### 6. Design the shot or shot group
 
-Record the relevant decisions in the existing storyboard; do not expand every shot to include every item below:
+Work with [short-drama-storyboard](../short-drama-storyboard/SKILL.md) to record adopted decisions in the existing storyboard; do not expand every shot to include every item below:
 
 - shot number and duration;
 - dramatic purpose;
@@ -137,7 +137,7 @@ Continuous action may use multiple storyboard frames under one shot number. Labe
 
 ### 7. Compile through the format owner
 
-Use [h3-prompt-writing](../h3-prompt-writing/SKILL.md) for the selected mode and Director profile. Apply its [content and revision guide](../h3-prompt-writing/references/prompt-composition.md) to prioritize the intended event and bound failure-control prose. Put only the needed camera, performance and sound decisions into its fields; do not define a second schema here. Match the actual reference order and effective duration, and preserve the source dialogue and visible text.
+Use [short-drama-video-prompts](../short-drama-video-prompts/SKILL.md) to maintain the prompt document and [h3-prompt-writing](../h3-prompt-writing/SKILL.md) for the selected mode and Director profile. Apply its [content and revision guide](../h3-prompt-writing/references/prompt-composition.md) to prioritize the intended event and bound failure-control prose. Put only the needed camera, performance and sound decisions into its fields; do not define a second schema here. Match the actual reference order and effective duration, and preserve the source dialogue and visible text.
 
 ### 8. Audit before delivery
 

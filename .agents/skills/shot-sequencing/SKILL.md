@@ -44,7 +44,7 @@ Read the current 剧本.md, 分镜.md, 视觉设定.md and the relevant actual r
 
 ## Outputs
 
-Return adopted camera or sequencing decisions to the same 分镜.md or existing shot cards. Preserve stable IDs, source scene, start/end state and reference duties; do not create a parallel shot index.
+During shot design, pair with [short-drama-storyboard](../short-drama-storyboard/SKILL.md) and return adopted decisions to the existing storyboard. During editing, pair with [short-drama-edit](../short-drama-edit/SKILL.md) and record cut choices in the edit record; changes to shot purpose or action boundaries go back to the storyboard owner. Review-only work returns evidence without modifying either source. Preserve stable IDs and do not create a parallel shot index. For illustrated narration, apply spatial checks only where the sequence depicts continuous space; unrelated narrative illustrations need information and sound continuity, not an invented room axis.
 
 ## Quality Bar
 - No axis crossing without a legal transition shot.

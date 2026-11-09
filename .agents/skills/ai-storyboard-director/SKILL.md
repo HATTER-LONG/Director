@@ -7,7 +7,7 @@ description: 比较或深化已定剧本的导演方案、观看顺序、摄影�
 
 ## Director 中的职责
 
-本技能为当前分镜提供专项方案，采用后回填原文档。模型已确定时，最终提示词按对应模型技能编译：H3 用 h3-prompt-writing 与 Director profile；下面的六模块只用于未指定模型、用户需要通用拍摄简报时。模型已有字段时不额外输出六模块或负面提示词，也不为满足内部模板重复风格段。
+本技能与 [short-drama-storyboard](../short-drama-storyboard/SKILL.md) 组合提供专项方案，采用后由分镜负责人回填原文档；只诊断时不修改。模型已确定时，最终提示词按对应模型技能编译：H3 用 short-drama-video-prompts ＋ h3-prompt-writing 及 Director profile；下面的六模块只用于未指定模型、用户需要通用拍摄简报时。模型已有字段时不额外输出六模块或负面提示词，也不为满足内部模板重复风格段。
 
 ## 项目风格与图片返工入口
 

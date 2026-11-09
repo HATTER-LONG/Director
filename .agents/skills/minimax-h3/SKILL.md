@@ -5,7 +5,7 @@ description: 排查本地 ComfyUI 的 H3 节点、参考接线、权重、量化
 
 # H3 本地运行排障
 
-本技能负责实际节点与运行问题。普通提示词写作使用 [h3-prompt-writing](../h3-prompt-writing/SKILL.md)，对白、参考绑定和续镜文本问题使用 [minimax-h3-prompt-writer](../minimax-h3-prompt-writer/SKILL.md)。
+本技能负责实际节点与运行问题。普通提示词写作使用 [07 的编写组合](../../../docs/workflow/07-h3-prompts.md#读取路线与职责)（short-drama-video-prompts ＋ h3-prompt-writing），对白、参考绑定和续镜文本问题使用 [minimax-h3-prompt-writer](../minimax-h3-prompt-writer/SKILL.md)。
 
 ## 先定位入口
 

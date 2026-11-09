@@ -13,7 +13,7 @@ license: MIT
 
 ## Quick Start
 
-离线验证章节索引、采样和源文件变更检测：
+离线验证章节索引、采样和行范围覆盖：
 
 ```bash
 python3 {技能目录}/scripts/selftest.py

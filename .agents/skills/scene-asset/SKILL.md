@@ -5,7 +5,7 @@ description: 为场景资产设计空间、美术、光色和多机位参考，�
 
 # 场景设计与空间检查
 
-本技能提供场景设计方法。Director 的环境生产次序按 [05 图片与参考素材](../../../docs/workflow/05-image-references.md#场景素材生成)，生成范围按 [生产路由与授权](../../../docs/workflow/references/production-routing.md)。稳定空间和美术结论回填视觉设定，具体镜头机位回填分镜；不另建资产事实或审批流程。
+本技能与 [short-drama-assets](../short-drama-assets/SKILL.md) 组合提供场景设计方法，后者维护稳定设定。只需纯色背景、桌面或简单互动位置的叙事动画不默认加载本技能；确需完整空间的段落才进入以下方法。Director 的环境生产次序按 [05 图片与参考素材](../../../docs/workflow/05-image-references.md#场景素材生成)，生成范围按 [生产路由与授权](../../../docs/workflow/references/production-routing.md)。稳定空间和美术结论回填视觉设定，具体镜头机位回填分镜；不另建资产事实或审批流程。
 
 ## 0. 加载规则与映射表
 

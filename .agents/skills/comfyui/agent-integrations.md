@@ -1,4 +1,6 @@
-# Agents: how each one connects
+# Agent integrations: upstream installation reference
+
+This is a historical upstream installation guide, not Director agent instructions. The upstream repository layout and integrations below are not the current production-machine configuration. For Director installation, use [the repository README](../../../README.md#在-linux-上接入-toonflow); for runtime access, use [machine.md](machine.md).
 
 The hard part (driving ComfyUI) is the **same MCP server** for every agent: `comfyui-mcp`. What differs per agent
 is (a) where the knowledge file lives and its format, and (b) how the MCP is registered. This kit ships one shared
@@ -12,8 +14,7 @@ core (`shared/comfyui/`) and a thin adapter per agent (`agents/<name>/`).
 | **Qwen Code** | `QWEN.md` | `~/.qwen/extensions/comfyui/` | `qwen-extension.json` → `mcpServers.comfyui` | no, always-on context |
 
 Verified against each tool's official docs (June 2026). Two notable facts:
-- **Codex uses the same skill format as Claude** (`SKILL.md` with `name` + `description` frontmatter, loaded on
-  demand). Only the directory differs: Codex scans `~/.agents/skills`, not `~/.codex/skills`.
+- **Codex skills** use `SKILL.md` with `name` and `description` frontmatter. Skill discovery paths depend on the installed Codex version; the historical installer path in the table is not an exclusive list of supported paths.
 - **Gemini and Qwen have no skill auto-loader.** Their "extension" bundles the MCP server plus a context file
   (`GEMINI.md` / `QWEN.md`) that is always loaded. The adapter generates that context from the shared `SKILL.md`
   body (frontmatter stripped). Qwen Code is a Gemini-CLI fork; the only real differences are the config dir
@@ -38,7 +39,7 @@ Because that is unmodified Claude Code, it reads the **same `~/.claude/skills/`*
 `claude` adapter already covers GLM**: install it for `claude` and run GLM through Claude Code; nothing GLM-specific
 to build. (If instead you run GLM via Cline / OpenCode / Roo with z.ai's OpenAI-compatible endpoint
 `https://api.z.ai/api/coding/paas/v4`, register `comfyui-mcp` in that tool's own MCP settings; the knowledge in
-`shared/comfyui/SKILL.md` still applies as that tool's instructions file.)
+the installed [SKILL.md](SKILL.md) still applies as that tool's instructions file.)
 
 ## Install
 

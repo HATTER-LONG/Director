@@ -18,9 +18,9 @@ license: MIT
 
 有当前视觉设定即可直接开始；剧本只在提示词需要确认剧情状态时读取。Look Development 是可选分支。
 先确认用途：身份板、造型/状态变体、地点板、道具板、组合 production sheet 或比较风格帧。
-Director 当前默认图片入口为 GPT Image 2.6；用户已选入口优先。尺寸、编辑能力和完整参考准备见 [本地能力](../../../docs/workflow/references/local-model-capabilities.md)。默认提供清晰完整的人物、造型、空间与道具参考；不把人物强行摆成每镜首尾姿态。仅在需要专门构图或终态图时从已定分镜补图，不强制另建 IMG 条目；沿用当前镜号与提示词位置。
+Director 当前默认图片入口为 GPT Image 2.6；用户已选入口优先。尺寸、编辑能力和完整参考准备见 [本地能力](../../../docs/workflow/references/local-model-capabilities.md)。只为所选模式需要的资产提供清晰参考；纯色背景不扩展为完整场景。写人物板提示词前必须读取 [人物参考规格与提交检查](../../../docs/workflow/references/character-references.md)，落实项目默认的单角色面部特写、站直正侧背三视图及小脸遮挡；作品已确认的专用规格优先。不把人物强行摆成每镜首尾姿态。本镜构图、起态或终态图由 [short-drama-storyboard](../short-drama-storyboard/SKILL.md) 维护，沿用当前镜号与提示词位置，不重复建立 IMG 条目。实际生成再加 [toonflow](../toonflow/SKILL.md)，两种模式共用 [素材交接](../../../docs/workflow/references/media-handoff.md)。
 
-创作者可读说明跟随项目语言；可复制正文跟随 `short-drama.json#/format/prompt_language`。没有
+用户明确指定的提示词语言优先。创作者可读说明跟随项目语言；未指定时可复制正文跟随 `short-drama.json#/format/prompt_language`。没有
 `short-drama.json` 时正文默认
 使用 `en`，并在同一任务中保持一致；不能从创作者说明语言推断提示词语言。
 
@@ -30,7 +30,7 @@ Director 当前默认图片入口为 GPT Image 2.6；用户已选入口优先。
 2. 只读所需资产事实、视觉方向、负面约束和已提供参考图。
 3. 按“主体与身份锚点 → 当前变体 → 构图/视角 → 光色/材质 → 背景边界 → 禁止项”写正文。
 4. 每张参考只控制已声明的范围，明确用途；使用五文档格式时按交接格式填写 REF，内容写法见 [通用配方](references/common-recipe.md)。
-5. 检查身份与变体、文字政策、视角和光线是否冲突。
+5. 检查身份与变体、文字政策、视角和光线是否冲突。人物板逐项核对项目人物参考规格，要求须进入可复制正文；实际生成时再回读节点内正文与参考，不只检查文档草稿。
 6. 用户要全部资产就完成全部，资产组只是内部批次。
 
 ## 提示词要求
@@ -45,7 +45,7 @@ Director 当前默认图片入口为 GPT Image 2.6；用户已选入口优先。
 
 ## 按需知识
 
-默认只读本 SKILL 和当前视觉设定。遇到对应问题时只打开一份：
+读取本 SKILL、当前视觉设定和本任务所需组合；方法资料只读相关项：
 
 - 阶段边界与规则分级：[阶段契约](references/stage-contract.md)
 - 普通单图的最小配方：[通用配方](references/common-recipe.md)

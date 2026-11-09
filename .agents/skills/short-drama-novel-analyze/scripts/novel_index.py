@@ -4,8 +4,9 @@
 Every stage of source analysis slices the same file. If each stage ran its own
 regular expression the slices would disagree, and a chapter analysed under one
 boundary would be aggregated under another. This script owns the only slicing
-truth: it detects chapter boundaries once, binds each span to a content hash,
-and refuses to stay quiet about numbering it cannot explain.
+truth: it detects chapter boundaries once, records line spans, and reports
+numbering it cannot explain. Verification does not compare content hashes;
+same-line-count text edits require rebuilding the index.
 
 It performs no editorial judgement. Which chapters matter, what they mean and
 how they adapt are decisions for the skill workflow, not for this file.

@@ -107,7 +107,7 @@ txt2img pipeline: load, encode prompts, make an empty canvas, denoise, decode, s
 - **outputs:** `IMAGE` - feeds SaveImage / PreviewImage / any IMAGE consumer.
 - **how it works:** runs the latent through the VAE decoder to RGB.
 - **strengths:** simple, fast for normal sizes.
-- **bugs / lags + fixes:** big images on low VRAM OOM here -> use `VAEDecodeTiled` (tile_size 512, overlap 64). Video loop seams -> `VAEDecodeLoopKJ` (KJNodes). The VAE round-trip adds a slight color shift; see `docs/ADVANCED.md`.
+- **bugs / lags + fixes:** big images on low VRAM OOM here -> use `VAEDecodeTiled` (tile_size 512, overlap 64). Video loop seams -> `VAEDecodeLoopKJ` (KJNodes). The VAE round-trip adds a slight color shift; see [ADVANCED.md](../ADVANCED.md).
 - **anti-patterns:** mismatched VAE (e.g. an SDXL VAE on an SD1.5 latent) gives washed / shifted color.
 - **placement:** between KSampler and the output node.
 

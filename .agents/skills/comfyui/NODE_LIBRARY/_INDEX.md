@@ -89,9 +89,9 @@ API / cloud-partner nodes (194 across 44 providers) are catalogued in `_INVENTOR
 - **Base + refiner staged sampling** -> KSamplerAdvanced (noted under KSampler, `core.md`).
 
 ## Where other node knowledge lives (no orphan corners)
-- **kijai ecosystem** (Wan / Hunyuan / Florence2 / KJNodes / SUPIR / SAM2 / DepthAnythingV2 ...) -> `docs/KIJAI.md` (per-tool node I/O + supersede map).
-- **In-graph LLM nodes** (Anthropic Claude / OpenRouter prompt enrichment) -> `docs/NODES.md`.
-- **Live bugs / broken paths** -> `docs/KNOWN_ISSUES.md` (read before building).
+- **kijai ecosystem** (Wan / Hunyuan / Florence2 / KJNodes / SUPIR / SAM2 / DepthAnythingV2 ...) -> [KIJAI.md](../KIJAI.md) (per-tool node I/O + supersede map).
+- **In-graph LLM nodes** (Anthropic Claude / OpenRouter prompt enrichment) -> [NODES.md](../NODES.md).
+- **Live bugs / broken paths** -> [KNOWN_ISSUES.md](../KNOWN_ISSUES.md) (read before building).
 - **Core-node cheat-sheet + the /object_info discipline** -> `SKILL.md`.
 - **Building your OWN node** (V3 API: basics / inputs / outputs / datatypes / lifecycle / packaging) -> the `comfyui-node-*` skills.
 

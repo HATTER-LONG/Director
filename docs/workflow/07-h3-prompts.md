@@ -2,14 +2,16 @@
 
 输入为当前分镜、目标镜号、对白与参考计划。本阶段交付可复制提示词及提交所需的模式、参考顺序和参数说明，不因完成文稿自动生成。
 
+两种制作模式只对实际采用 H3 的段落读取本页；不为静图、TTS 或后期动画编译视频提示词。
+
 ## 读取路线与职责
 
 | 本轮任务 | 负责入口 | 补读条件 |
 | --- | --- | --- |
 | 新写或修改镜头提示词 | [short-drama-video-prompts](../../.agents/skills/short-drama-video-prompts/SKILL.md) 维护现有文档；[h3-prompt-writing](../../.agents/skills/h3-prompt-writing/SKILL.md) 编译最终正文 | 读取所选模式指南、[Director profile](../../.agents/skills/h3-prompt-writing/references/director-profile.md) 和 [内容取舍与多轮修订](../../.agents/skills/h3-prompt-writing/references/prompt-composition.md)；本会话已读且未变可复用 |
-| 空间、表演、摄影或动作边界需要改变 | [h3-cinematic-director](../../.agents/skills/h3-cinematic-director/SKILL.md) | 只读对应设计资料，采用方案回填分镜 |
+| 空间、表演、摄影或动作边界需要改变 | short-drama-storyboard ＋ [h3-cinematic-director](../../.agents/skills/h3-cinematic-director/SKILL.md) | 先更新同一份分镜，再回编写组合；只审查时交结论，不改来源 |
 | 已出片的参考、对白、声音或接续异常 | [minimax-h3-prompt-writer](../../.agents/skills/minimax-h3-prompt-writer/SKILL.md) | 按 [共性问题排查](references/h3-prompt-diagnosis.md) 取证，再回同一格式入口修订 |
-| 节点、参数或模型运行故障 | [minimax-h3](../../.agents/skills/minimax-h3/SKILL.md) | 核对实际入口；不靠扩写提示词修节点 |
+| 节点、参数或模型运行故障 | [minimax-h3](../../.agents/skills/minimax-h3/SKILL.md) | 核对实际入口；操作 Toonflow 加 toonflow，操作或排障 ComfyUI 加 comfyui；不靠扩写提示词修节点 |
 
 内容取舍只在 H3 技能参考中维护；本页规定执行顺序和交接。上游指南的详细程度、建议字数及切镜默认值按 Director profile 解释，不成为另一套规则。
 
@@ -24,7 +26,7 @@
 
 ## 来源与引用更新
 
-引用以 [素材交接清单](08-toonflow-generation.md#素材交接与镜头画布) 中的当前文件为准。剧情、感知权限、持续外观、对白、镜序或动作边界需要变化时，按 [变更传播](references/production-principles.md#来源改变后更新哪些地方) 回负责阶段修订，再更新受影响提示词全文、参考清单和节点；不能只在末尾追加一条否定旧设定的句子。
+引用以 [素材交接清单](references/media-handoff.md) 中的当前文件为准。剧情、感知权限、持续外观、对白、镜序或动作边界需要变化时，按 [变更传播](references/production-principles.md#来源改变后更新哪些地方) 回负责阶段修订，再更新受影响提示词全文、参考清单和节点；不能只在末尾追加一条否定旧设定的句子。
 
 人物在场与画外状态按 [分镜](06-storyboard.md#人物在场与对白覆盖)，固定机位的左右关系按 [镜位依据](06-storyboard.md#重复机位与画面左右)，持续外观按 [视觉设定](04-visual-assets.md#素材需要承接的事实)。必要的感知权限、关键接触和跨段接口不能因精简而丢失。
 

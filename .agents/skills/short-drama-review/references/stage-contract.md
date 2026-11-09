@@ -3,8 +3,7 @@
 本阶段只拥有审查结论与修订要求，来源修改交回负责技能。需要落盘时使用创作者可读 Markdown，引用当前
 文件名、标题 ID、行号或短引文；不建立 JSON/JSONL、来源快照、哈希或接受状态。
 
-审查可以由独立 reviewer 或明确标注的自检完成。媒体不可见时保持未知；外部生产须展示本次任务预览，
-再由创作者明确确认。
+审查可以由独立 reviewer 或明确标注的自检完成。媒体不可见时保持未知；实际生产沿用 [已有授权](../../../../docs/workflow/references/production-routing.md)，不因进入审查另设预览审批。技术检查、质量结论与创作者采用分别记录。
 
 ## 本阶段规则
 
@@ -18,7 +17,7 @@
 | REV-04 | craft_default | Prefer a reviewer who did not author the current targets; disclose self-review, and keep reviewer findings separate from owner edits. |
 | REV-05 | craft_default | Diagnose repeated structure or generic language with location and impact; do not label output merely "AI-ish". |
 | REV-06 | taste_option | Alternatives remain notes unless they violate an accepted creator constraint. |
-| REV-07 | structural_invariant | An end-to-end drafting request cannot impersonate creator acceptance; preview chains remain provisional and undeliverable. |
+| REV-07 | structural_invariant | Do not label an agent-produced draft as creator-accepted. Deliver the requested draft, preview or final artifact with its actual review and adoption status; existing production authorization remains valid. |
 | REV-08 | craft_default | When authorized text notes report production defects that call for a prompt change (in a generated-media review, only must-regenerate clips under REV-15), trace text/subtitle residue, music-boundary violations, wardrobe drift, axis breaks, or lip-sync mismatch to the exact prompt/spec text and keep unobserved outcomes unknown. |
 | REV-09 | reviewed_invariant | After prompt revision or repackaging, recheck source coverage and every applicable accepted directive; correct asset bindings alone do not prove compliance. |
 | REV-10 | reviewed_invariant | A project-calibration finding distinguishes input-reference from generated-result observation, binds the exact project, the prompt/spec records it observed, stable reference slots, production configuration, method and limits, and—when its disposition calls for a change (see REV-11)—proposes the smallest owner-routed one with a preserve set; it does not generalize across projects or infer quality from task state. |

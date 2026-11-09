@@ -1,5 +1,7 @@
 # 02 分集规划
 
+本页是 [标准 AI 视频](modes/standard-ai-video.md) 的详细阶段；[叙事动画](modes/illustrated-narration.md) 按自己的步骤推进，只在需要本页专项方法时读取对应部分。
+
 已有故事方向，要规划各集或整理已有多集剧本时，读本页。用户只要求改写一集且已有本集任务时，直接进入[单集剧本](03-screenplay.md)。
 
 ## 使用 Skill

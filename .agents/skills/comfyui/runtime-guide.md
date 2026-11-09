@@ -5,33 +5,30 @@ building/running a ComfyUI workflow. Read it first, then act.
 
 ## Files in this kit (pull the right one on demand)
 
-Only this SKILL.md auto-loads; everything else is read when relevant, so route to it instead of leaving it unread.
-**Two layouts, same files:** in the INSTALLED skill everything sits flat next to this file, so `docs/TASKS.md`
-below means `TASKS.md` here and `docs/NODE_LIBRARY/ocio.md` means `NODE_LIBRARY/ocio.md`; likewise a script the docs
-name under `shared/tools/` in the repo sits in `tools/` next to this file once installed. In the repo those prefixes are
-literal. If a path does not resolve, drop the `docs/` and look next to this file before concluding the
-file is missing.
+This is the upstream runtime reference adapted for Director. Start with [SKILL.md](SKILL.md) and [machine.md](machine.md); read only the relevant sections here. Model tables and installation recipes are snapshots, not evidence of what is installed or currently supported on the production machine.
+
+Documentation links below resolve inside this installed skill. Upstream `shared/tools/` examples refer to upstream scripts; use a local counterpart only when it exists. Do not bootstrap, install, update or change services merely because this manual describes those operations.
 
 - **`MODELS.md`** (next to this file) - the INDEX of per-model prompt recipes. Look the model up in its table, then read that family file under `MODELS/` BEFORE writing the prompt. Two reads, not one: the index does not carry the recipes.
-- **the sibling `minimax-h3` skill** (invoke it by name; on disk it sits beside this skill, `../minimax-h3/` on Claude Code and Codex, `minimax-h3/` on Gemini and Qwen) - the dedicated MiniMax H3 (Hailuo 3) skill: prompt format (the three named fields, `<d>` dialogue, camera vocabulary), reference labelling, quants and acceleration, and a symptom-to-cause table. In Director, use h3-prompt-writing for text syntax and read minimax-h3 for local runtime or weights questions; `MODELS.md` keeps the node-level detail.
-- **`docs/TASKS.md`** - a named common job (generate image / video / audio / 3D, upscale, remove background): the local end-to-end flow for that task, a shortcut layer over this manual.
-- **`docs/NODE_LIBRARY/smart-upscaler.md`** - our Smart Upscaler pack (11 nodes): tiled upscaling that writes a separate verified prompt per tile. Read it when a tiled upscale of a BUSY or MIXED scene keeps producing confidently wrong tiles or disagreeing seams; the cheaper sampler-tilers in `ADVANCED.md` stay the right call for uniform subjects.
-- **`docs/MODEL_INDEX.md`** - the full classified list of all 160 models (recipe / utility / template-only); check whether a named model has a recipe, is a utility, or is template-only.
-- **`docs/NODE_LIBRARY/training.md`** - the nodes that let a graph MAKE a model, not just prompt one: core's
+- **H3 work**: use [minimax-h3](../minimax-h3/SKILL.md) for local runtime and weights. Prompt documents and syntax follow [Director workflow 07](../../../docs/workflow/07-h3-prompts.md); Ref2VA and base modes have different fields. `MODELS.md` supplies node-level background.
+- **[TASKS.md](TASKS.md)** - a named common job (generate image / video / audio / 3D, upscale, remove background): the local end-to-end flow for that task, a shortcut layer over this manual.
+- **[smart-upscaler.md](NODE_LIBRARY/smart-upscaler.md)** - our Smart Upscaler pack (11 nodes): tiled upscaling that writes a separate verified prompt per tile. Read it when a tiled upscale of a BUSY or MIXED scene keeps producing confidently wrong tiles or disagreeing seams; the cheaper sampler-tilers in `ADVANCED.md` stay the right call for uniform subjects.
+- **[MODEL_INDEX.md](MODEL_INDEX.md)** - the full classified list of all 160 models (recipe / utility / template-only); check whether a named model has a recipe, is a utility, or is template-only.
+- **[training.md](NODE_LIBRARY/training.md)** - the nodes that let a graph MAKE a model, not just prompt one: core's
   `TrainLoraNode` / `SaveLoRA` / `LossGraphNode` plus the 16 dataset nodes (`MakeTrainingDataset`,
   `ResolutionBucket`, the image-text loaders, video temporal crops) and the full chain wired end to end. Read it
-  whenever someone asks to train or fine-tune anything; `docs/TASKS.md` has the short route.
-- **`docs/ADVANCED.md`** - hard tasks: real strengths, gotchas + workarounds, temporal stability, high-detail matting, crop-and-stitch inpaint, PBR, and the verified tool table with licenses.
-- **`docs/KNOWN_ISSUES.md`** - read BEFORE building, so you do not wire around a currently-broken path.
-- **`docs/NODE_LIBRARY/_INDEX.md`** - the per-node reference (Nuke-style): for any node, what each input / output is for, how it behaves, bugs + fixes, anti-patterns, and where it slots in a graph. **Start here for ANY node question**, then query `get_node_info` for live I/O. When you use or meet a node not in it, add the entry before finishing (`docs/NODE_LIBRARY/_SCHEMA.md`).
-- **`workflow_layout.py`** - before saving ANY workflow you build, arrange and verify it IN CODE: `auto_layout(wf)` positions nodes left-to-right by dependency depth with parallel branches stacked and ZERO overlaps; `inspect(wf)` reports overlaps / crossings / bounds from the coordinates; `fit_group(wf, title)` wraps the laid-out nodes in a backdrop that FULLY covers the functional group (edge to edge, none sticking out). NEVER judge a graph's layout from a screenshot (it burns tokens, and clients hit the same wall) - read the positions.
-- **`docs/NODE_LIBRARY/ocio.md`** - our own **ComfyUI-OCIO** pack, **v1.3.0** (eleven Nuke-style OpenColorIO nodes: Read / Write / Player, six color operators, and the **OCIO VAE Decode / VAE Encode** pair that decodes without the stock 0..1 clamp; published, github.com/SlavaSexton/ComfyUI-OCIO). Read it for ANY color-management / VFX color task (load a sequence, grade in ACES, write ProRes / EXR, keep values above 1.0 and below 0 out of a generative model). **v1.3.0 renamed OCIO Write's `from_colorspace` to `input_colorspace`, and an API-format graph carrying the old key is refused**, so read the file before building one.
-- **`docs/BUILDING_NODES.md`** - the hard-won field guide to WRITING a custom node pack (widget order, the combo-validation trap, the JS front-end, server routes, ComfyUI facts, verify-on-real-files). Read it first when you write or modify a custom node, alongside the `comfyui-node-*` skills.
-- **`docs/KIJAI.md`** - the kijai ecosystem (his ComfyUI wrappers and nodes: Wan / Hunyuan / CogVideoX / Florence2 / KJNodes / SUPIR / FramePack / SAM2 / FluxTrainer / IC-Light / DepthAnythingV2 and ~50 more) - what each does + node I/O, what is active vs legacy by date, and the supersede map (old -> better). Read it for ANY kijai tool, and to pick the current option over a sunset wrapper.
-- **`docs/NODE_LIBRARY/radiance.md`** - reverse-engineered reference for **`fxtdstudios/radiance`** (a pro 32-bit color-science / HDR / VFX suite, 78 nodes + a v3 rewrite; the strongest public pack in our OCIO / color domain). Read it for a color-science / HDR / VFX-viewer reference implementation, when improving OUR ComfyUI-OCIO pack (it carries the ranked "what to steal" list: processor caching, WebGL 32-bit viewer, OpenEXR writer, LogC3-EI / LogC4), or when a task touches radiance nodes. Its node-building lessons are folded into `BUILDING_NODES.md`.
-- **`docs/LTX2_TRAINING.md`** - when the user works with LTX-2 and wants behavior a LoRA captures, offer to train one (official Lightricks trainer).
-- **`docs/EXAMPLE_WORKFLOWS.md`** - worked end-to-end examples + the multi-model image-edit shootout.
-- **`docs/NODES.md`** the in-graph Claude nodes (billing / purpose); **`docs/LAYERS.md`** the four install layers; **`docs/BOOTSTRAP.md`** first-run machine setup; **`docs/AGENTS.md`** per-agent matrix (Claude / Codex / Gemini / Qwen); **`docs/UPDATING.md`** the weekly model + bug update loop.
+  whenever someone asks to train or fine-tune anything; [TASKS.md](TASKS.md) has the short route.
+- **[ADVANCED.md](ADVANCED.md)** - hard tasks: real strengths, gotchas + workarounds, temporal stability, high-detail matting, crop-and-stitch inpaint, PBR, and the verified tool table with licenses.
+- **[KNOWN_ISSUES.md](KNOWN_ISSUES.md)** - read BEFORE building, so you do not wire around a currently-broken path.
+- **[_INDEX.md](NODE_LIBRARY/_INDEX.md)** - the per-node reference (Nuke-style): for any node, what each input / output is for, how it behaves, bugs + fixes, anti-patterns, and where it slots in a graph. **Start here for ANY node question**, then query `get_node_info` for live I/O. When maintaining this knowledge base, document newly verified nodes using [_SCHEMA.md](NODE_LIBRARY/_SCHEMA.md); ordinary generation does not require editing the shared skill.
+- **`workflow_layout.py`** - before saving ANY workflow you build, arrange and verify it IN CODE: `auto_layout(wf)` positions nodes left-to-right by dependency depth with parallel branches stacked and ZERO overlaps; `inspect(wf)` reports overlaps / crossings / bounds from the coordinates; `fit_group(wf, title)` wraps the laid-out nodes in a backdrop that FULLY covers the functional group (edge to edge, none sticking out). Use coordinates to measure overlap and spacing; use the actual UI when you also need to inspect labels, sockets or visual readability.
+- **[ocio.md](NODE_LIBRARY/ocio.md)** - our own **ComfyUI-OCIO** pack, **v1.3.0** (eleven Nuke-style OpenColorIO nodes: Read / Write / Player, six color operators, and the **OCIO VAE Decode / VAE Encode** pair that decodes without the stock 0..1 clamp; published, github.com/SlavaSexton/ComfyUI-OCIO). Read it for ANY color-management / VFX color task (load a sequence, grade in ACES, write ProRes / EXR, keep values above 1.0 and below 0 out of a generative model). **v1.3.0 renamed OCIO Write's `from_colorspace` to `input_colorspace`, and an API-format graph carrying the old key is refused**, so read the file before building one.
+- **[BUILDING_NODES.md](BUILDING_NODES.md)** - the hard-won field guide to WRITING a custom node pack (widget order, the combo-validation trap, the JS front-end, server routes, ComfyUI facts, verify-on-real-files). Read it first when you write or modify a custom node, alongside the `comfyui-node-*` skills.
+- **[KIJAI.md](KIJAI.md)** - the kijai ecosystem (his ComfyUI wrappers and nodes: Wan / Hunyuan / CogVideoX / Florence2 / KJNodes / SUPIR / FramePack / SAM2 / FluxTrainer / IC-Light / DepthAnythingV2 and ~50 more) - what each does + node I/O, what is active vs legacy by date, and the supersede map (old -> better). Read it for ANY kijai tool, and to pick the current option over a sunset wrapper.
+- **[radiance.md](NODE_LIBRARY/radiance.md)** - reverse-engineered reference for **`fxtdstudios/radiance`** (a pro 32-bit color-science / HDR / VFX suite, 78 nodes + a v3 rewrite; the strongest public pack in our OCIO / color domain). Read it for a color-science / HDR / VFX-viewer reference implementation, when improving OUR ComfyUI-OCIO pack (it carries the ranked "what to steal" list: processor caching, WebGL 32-bit viewer, OpenEXR writer, LogC3-EI / LogC4), or when a task touches radiance nodes. Its node-building lessons are folded into `BUILDING_NODES.md`.
+- **[LTX2_TRAINING.md](LTX2_TRAINING.md)** - when the user works with LTX-2 and wants behavior a LoRA captures, offer to train one (official Lightricks trainer).
+- **[EXAMPLE_WORKFLOWS.md](EXAMPLE_WORKFLOWS.md)** - worked end-to-end examples + the multi-model image-edit shootout.
+- **[NODES.md](NODES.md)** the in-graph Claude nodes (billing / purpose); **[LAYERS.md](LAYERS.md)** the four install layers; **[BOOTSTRAP.md](BOOTSTRAP.md)** first-run machine setup; **[agent-integrations.md](agent-integrations.md)** per-agent matrix (Claude / Codex / Gemini / Qwen); **[UPDATING.md](UPDATING.md)** the weekly model + bug update loop.
 
 ## Your machine
 
@@ -44,12 +41,12 @@ Read [machine.md](machine.md) for the Director installation authority before the
    (generate, build/edit/validate graphs, model download, queue, VRAM, diagnostics, restart). Prefer its tools
    over hand-POSTing `/prompt` when present. It rides the MCP SDK's 1.x line, i.e. the revision BEFORE the
    stateless 2026-07-28 spec; that stays supported through a twelve-month deprecation window, so there is
-   nothing to change. If you write your OWN MCP server, read the protocol section in `docs/LAYERS.md` first:
+   nothing to change. If you write your OWN MCP server, read the protocol section in [LAYERS.md](LAYERS.md) first:
    an unbounded `mcp>=x` pin now pulls SDK 2.x, which removed `mcp.server.fastmcp` and breaks fresh installs.
 3. **In-graph Claude nodes**: Claude as a step INSIDE a workflow (prompt enrichment, vision QA on the output).
 4. **Node-building skills**: `comfyui-node-*` (V3 API) for when we write or modify a custom node.
 
-`docs/LAYERS.md` explains each; `install.ps1` / `install.sh` wires them up.
+[LAYERS.md](LAYERS.md) explains each; `install.ps1` / `install.sh` wires them up.
 
 ## The client (no extra deps, stdlib only)
 
@@ -132,7 +129,7 @@ differ, insert a converter: `VAEEncode` (IMAGE -> LATENT), `VAEDecode` (LATENT -
 - `VAEDecode`: in LATENT + VAE -> out IMAGE. `VAEEncode`: in IMAGE + VAE -> out LATENT.
 - `ControlNetLoader` -> CONTROL_NET ; `ControlNetApplyAdvanced`: in CONDITIONING + CONTROL_NET + IMAGE -> out CONDITIONING.
 - `LoadImage` -> IMAGE, MASK ; `SaveImage` / `PreviewImage`: in IMAGE.
-Basic txt2img stream: loader -> (LoraLoader) -> CLIPTextEncode x2 (pos/neg) -> KSampler (+ EmptyLatentImage) -> VAEDecode -> SaveImage. Before building, also check `KNOWN_ISSUES.md` (next to this file or `docs/KNOWN_ISSUES.md`) and ADVANCED.md for current bugs and workarounds, so you do not wire around a known-broken path.
+Basic txt2img stream: loader -> (LoraLoader) -> CLIPTextEncode x2 (pos/neg) -> KSampler (+ EmptyLatentImage) -> VAEDecode -> SaveImage. Before building, also check [KNOWN_ISSUES.md](KNOWN_ISSUES.md) and ADVANCED.md for current bugs and workarounds, so you do not wire around a known-broken path.
 
 **4. Merge graphs cleanly.** Splicing two templates: renumber one graph's node ids so they do not collide; SHARE
 the loaders (one `CheckpointLoader` / `UNETLoader` / `VAELoader` / `CLIPLoader` feeding both stages, do not
@@ -180,7 +177,7 @@ ships `shared/tools/check_updates.py`, which does all of this in one command (pu
 new generative model appears without a recipe, research its OFFICIAL prompting (maker docs / model card /
 docs.comfy.org) and add it to `MODELS.md` in the same format; a new utility/upscaler goes to the Enhancement
 section. Do NOT scrape LinkedIn (auth-gated, anti-scraping, ToS); the blog RSS and the templates repo carry the
-same news, machine-readable. Full loop: the kit's `docs/UPDATING.md`.
+same news, machine-readable. Full loop: the kit's [UPDATING.md](UPDATING.md).
 
 ## Per-model prompting (the mega-brain): READ before prompting a named model
 
@@ -229,7 +226,7 @@ matching official doc link is the source.
 
 ## In-graph Claude nodes (Layer 3): pick the right one
 
-Three Claude nodes can exist after install; they differ by billing and purpose (see `docs/NODES.md`):
+Three Claude nodes can exist after install; they differ by billing and purpose (see [NODES.md](NODES.md)):
 - **`AnthropicClaudeNode`** (category `LLM/Anthropic`, community, your own key), 40+ templates that rewrite a
   prompt for a specific model (`Ideogram 3`, `LTX 2.5`, `LTX 2.3 / LTX 2 Pro`, `Wan 2.1 & 2.2`, `FLUX`, `Nano Banana`,
   `Veo 3`, `Sora 2`, ...). Vision + extended thinking. Needs `CLAUDE_API_KEY` env. The workhorse for autonomous
@@ -284,7 +281,7 @@ When BUILDING the JSON yourself (not clicking): the inner graph lives in `defini
 
 ## Creator-level depth: strengths, real limits, and advanced sequence work
 
-The full creator-level reference (strengths, the real gotchas with workarounds, advanced sequence techniques, and a verified tool table with licenses) is `ADVANCED.md` (next to this file in the installed skill, or `docs/ADVANCED.md` in the repo). Read it for hard tasks. The load-bearing gotchas to remember even without opening it:
+The full creator-level reference (strengths, the real gotchas with workarounds, advanced sequence techniques, and a verified tool table with licenses) is [ADVANCED.md](ADVANCED.md). Read it for hard tasks. The load-bearing gotchas to remember even without opening it:
 - **Black/NaN images or a color/contrast shift after decode = the VAE.** Use `--fp32-vae` (or `--bf16-vae`), decode once at the end, and a histogram/LAB match to restore the source plate. Never fp16 VAE for VFX.
 - **A custom node that never re-runs** is the `IS_CHANGED` footgun: force a rerun with `return float("NaN")`. A seed change that does nothing = stale cache; bust an input.
 - **Per-generation model reload thrash or a 4090/5090 slowdown (early 2026+)** is Dynamic VRAM: `--disable-dynamic-vram` if it hurts.
@@ -364,7 +361,7 @@ blindly. Detect three numbers and compare them to the model's footprint.
 - **At the half-size tier, prefer `int8-convrot` over fp8 unless a model ships only fp8.** It is native since
   core v0.27.0, runs faster than fp16, and matches or beats fp8 on quality, with Turing and Ampere explicitly
   supported (RTX 20xx / 30xx). Full method, the ConvRot paper, the conversion tool and the known int8 bugs are
-  in `docs/ADVANCED.md`; read it before choosing a variant, because this one line is the summary, not the rule.
+  in [ADVANCED.md](ADVANCED.md); read it before choosing a variant, because this one line is the summary, not the rule.
 - **"Pruned" is a fourth axis, not a rung on this ladder.** A pruned checkpoint drops weights rather than
   narrowing their precision, so it stacks with any of the above and its quality cost is model-specific.
   **nvfp4** is a Blackwell-generation format (RTX 50xx); on Ampere it is not an option.

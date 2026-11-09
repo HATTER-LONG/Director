@@ -3,7 +3,7 @@
 The non-core, non-API author packs whose nodes actually appear in our workflow library (the 444 official
 template bundles + our saved workflows). Derived from the live inventory (`_INVENTORY.md`); I/O **confirmed via
 get_node_info on 2026-06-30** (ComfyUI 0.25.1). kijai's packs (KJNodes etc.) are documented separately in
-`docs/KIJAI.md` and are not duplicated here.
+[KIJAI.md](../KIJAI.md) and are not duplicated here.
 
 The get_node_info-confirmed pack here is **ComfyUI-LTXVideo** (Lightricks). Also documented, from their READMEs
 (not installed locally, I/O unconfirmed): **ComfyUI-Panorama-Stickers** (nomadoor), the model-agnostic 360 tool
@@ -15,7 +15,7 @@ the Flux.2 Klein and LTX-2.3 panorama recipes share, and **ComfyUI_Gear** (oumad
 
 ## ComfyUI-LTXVideo  (Lightricks; category `Lightricks/*`)
 LTX-2 video helpers used by the LTX templates and our HDR / IC-LoRA workflows. See also `MODELS.md` (LTX-2
-recipes) and `docs/LTX2_TRAINING.md`.
+recipes) and [LTX2_TRAINING.md](../LTX2_TRAINING.md).
 
 ### LTXVHDRDecodePostprocess  (display: "LTXVHDR Decode Postprocess")
 - **category:** `Lightricks/HDR` | **output node** | **purpose:** decompress LogC3 HDR IC-LoRA VAE output + Reinhard tonemap. Place AFTER VAE Decode.
@@ -41,7 +41,7 @@ recipes) and `docs/LTX2_TRAINING.md`.
 - **category:** `api node/text/Lightricks` | **purpose:** enhance a prompt with Gemma 3 (Lightricks API) then encode it to CONDITIONING for LTX.
 - **inputs:** `api_key` (STRING), `prompt` (STRING), `enhance_prompt` (BOOL, default true), `ckpt_name` (combo of installed checkpoints).
 - **outputs:** `conditioning` (CONDITIONING).
-- **gotchas:** needs a Lightricks API key (cloud call); set `enhance_prompt` false to encode verbatim. For offline prompt enrichment prefer the in-graph LLM nodes in `docs/NODES.md`.
+- **gotchas:** needs a Lightricks API key (cloud call); set `enhance_prompt` false to encode verbatim. For offline prompt enrichment prefer the in-graph LLM nodes in [NODES.md](../NODES.md).
 - **placement:** replaces CLIPTextEncode on an LTX graph when you want Gemma enhancement.
 
 ---

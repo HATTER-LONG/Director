@@ -80,4 +80,4 @@ python3 {技能目录}/scripts/breakdown_tool.py profile <REF-ID>=输入/对标/
 - 差距表、交给谁、出片验证与学习记录：[差距对照与出片验证](references/gap-and-learning-loop.md)
 - 所有权与规则分级：[阶段契约](references/stage-contract.md)
 
-一次只读当前步骤需要的一份。
+只读当前问题需要的资料；同一步涉及测量与解释时可组合读取，不预加载无关章节。

@@ -1,11 +1,15 @@
 # 06 分镜与镜序
 
+本页是 [标准 AI 视频](modes/standard-ai-video.md) 的详细阶段；[叙事动画](modes/illustrated-narration.md) 按自己的步骤推进，只在需要本页专项方法时读取对应部分。
+
 有剧本和必要视觉设定，需要拆场、拆镜或确定关键帧时，读本页。已有正式分镜且只需写视频提示词时，直接进入 [H3 提示词](07-h3-prompts.md)。
 
 ## 使用 Skill
 
 - [short-drama-storyboard](../../.agents/skills/short-drama-storyboard/SKILL.md) 负责镜头卡和冻结关键帧。
 - 多镜场次用 [shot-sequencing](../../.agents/skills/shot-sequencing/SKILL.md) 查镜序、轴线和动作承接。专项结论回填同一份分镜，不创建平行镜头清单。站位难定时可用 [novel-staging](../../.agents/skills/novel-staging/SKILL.md) 画俯视图；工具输入从当前 Markdown 提取，采用的走位句回填分镜。
+
+比较或深化拍法时加 [ai-storyboard-director](../../.agents/skills/ai-storyboard-director/SKILL.md)；具体景别、角度与运镜问题用 [cinematography](../../.agents/skills/cinematography/SKILL.md)，视听职责与声画关系问题用 [cinematic-audiovisual-language](../../.agents/skills/cinematic-audiovisual-language/SKILL.md)。这些技能按问题选择，结论仍由分镜负责人维护，不全部预加载。
 
 ## 操作
 
@@ -17,7 +21,7 @@
 
 ## 从计划到生产输入
 
-素材未齐时可以继续设计镜头，用 `PLAN-...` 标明缺口；它不是可以直接提交的参考。镜头生成画布的搭建以当前所需素材已通过相应用途的检查为前提，按 [素材交接](08-toonflow-generation.md#素材交接与镜头画布) 只载入当前文件。资产仍在选型时，先完成分镜文档，不把所有候选接到镜头上。
+素材未齐时可以继续设计镜头，用 `PLAN-...` 标明缺口；它不是可以直接提交的参考。镜头生成画布的搭建以当前所需素材已通过相应用途的检查为前提，按 [素材交接](references/media-handoff.md) 只载入当前文件。资产仍在选型时，先完成分镜文档，不把所有候选接到镜头上。
 
 反应镜核对触发者是否真的能被该角色看见或听见。主观画面、内心声与设备画面各按剧本边界设计；改变机位不会改变信息权限。上游事实变化后，先修镜头职责、动作和声源，再编译提示词。
 

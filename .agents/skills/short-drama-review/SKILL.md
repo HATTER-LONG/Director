@@ -33,6 +33,8 @@ license: MIT
 
 引用只使用文件名、标题 ID、行号或短引文；不建立 sources 声明、哈希、record ID 或第二套状态。
 
+先按 [已选制作模式](../../../AGENTS.md#先确定制作模式) 判断交付要求，不把叙事动画有意采用的静图、简洁背景或省略的视频阶段判为缺项。实际视频连续性检查加 continuity-checking，涉及相邻接镜再加 shot-sequencing；按 [09](../../../docs/workflow/09-video-review.md) 取证。审查结论不自动触发创作或生成。
+
 ## 选择审查范围
 
 - `source_analysis`
@@ -56,7 +58,7 @@ license: MIT
 - 生成素材与剪好的成片（`production_outputs`，或审到成片的 `full_episode`），逐段判镜头职责、给瑕疵归类并给出交付结论：[生成素材审查](references/generated-media.md)
 - 制作端常见缺陷：[生产质量门](references/production-quality-gates.md)
 - 授权生产观察的项目内校准：[项目校准](references/project-calibration.md)
-- 模板感、重复手法或 AI 味：[反模板修订](references/anti-template-repair.md)
+- 模板感、重复手法或 AI 味：[反模板修订](references/anti-template-repair.md)；需检查叙事用笔与因果时按 [story-deslop](../story-deslop/SKILL.md) 读取相关方法，仅诊断、不改来源，沿用本次审查范围。
 - 阶段边界、参考媒体与规则表：[阶段契约](references/stage-contract.md)
 
 ## 观众理解与技术检查分开取证
@@ -92,7 +94,7 @@ license: MIT
 ### 4. 跨文档综合
 
 ```text
-剧本事实 -> 视觉设定 -> 镜头职责与边界 -> 冻结关键帧 -> 视频运动 -> 下一状态
+剧本与声音事实 -> 必要视觉设定 -> 镜头职责与边界 -> 按需图片／视频／后期动画 -> 剪辑后的声画结果
 ```
 
 优先守住原意、知情时机与连续性，不奖励脱离来源的华丽提示词。

@@ -1,11 +1,16 @@
 # 03 单集剧本
 
+本页是 [标准 AI 视频](modes/standard-ai-video.md) 的详细阶段；[叙事动画](modes/illustrated-narration.md) 按自己的步骤推进，只在需要本页专项方法时读取对应部分。
+
 用户要求写、改或续写一集时，读本页。输入为单集任务、已有剧本或已确认的故事事实。
 
 ## 使用 Skill
 
+本阶段创作或改写按 [AGENTS 的任务组合](../../AGENTS.md#制作文档入口) 加载以下三个技能，交稿前完成对应检查；不等用户另提去 AI 味。只规范化原文时保留其语言，不借检查扩大改写范围。
+
 - [short-drama-write](../../.agents/skills/short-drama-write/SKILL.md) 负责场次、动作和对白。
-- [natural-zh-writing](../../.agents/skills/natural-zh-writing/SKILL.md) 用于检查中文表达和角色口吻。
+- [story-deslop](../../.agents/skills/story-deslop/SKILL.md) 检查表达、场景详略与因果，修改仍落回原剧本。
+- [natural-zh-writing](../../.agents/skills/natural-zh-writing/SKILL.md) 按需检查具体中文句法、用词和冗余，不重复叙事诊断，不改变已确认的台词与角色口吻。
 
 ## 操作
 

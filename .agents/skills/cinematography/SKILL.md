@@ -57,7 +57,7 @@ Read the current 剧本.md, 分镜.md, 视觉设定.md and the relevant actual r
 
 ## Outputs
 
-Return adopted camera or sequencing decisions to the same 分镜.md or existing shot cards. Preserve stable IDs, source scene, start/end state and reference duties; do not create a parallel shot index.
+For design changes, pair with [short-drama-storyboard](../short-drama-storyboard/SKILL.md) and return adopted decisions to the same 分镜.md or existing shot cards. For review-only requests, report findings without changing the source. Preserve stable IDs, source scene, start/end state and reference duties; do not create a parallel shot index.
 
 ## Quality Bar
 - Every camera choice is justified by beat function, not habit.

@@ -1,11 +1,14 @@
 # 01 故事构建
 
+本页是 [标准 AI 视频](modes/standard-ai-video.md) 的详细阶段；[叙事动画](modes/illustrated-narration.md) 按自己的步骤推进，只在需要本页专项方法时读取对应部分。
+
 用户提供一句话点子、梗概、题材或原著，想确定短剧讲什么时，读本页。已有方向的项目直接进入[分集规划](02-episodes.md)。
 
 ## 使用 Skill
 
 - [short-drama-develop](../../.agents/skills/short-drama-develop/SKILL.md) 负责创作简报和故事引擎。先读它的故事开发参考。
 - 长篇改编先用 [short-drama-novel-analyze](../../.agents/skills/short-drama-novel-analyze/SKILL.md) 找关键章节、人物和剧情单元。需要创建项目时用 [short-drama](../../.agents/skills/short-drama/SKILL.md) 核对配置与目录。
+- 需要先写完整短故事时用 [story-short-write](../../.agents/skills/story-short-write/SKILL.md) ＋ story-deslop ＋ natural-zh-writing；已有短篇只需分析时用 [story-short-analyze](../../.agents/skills/story-short-analyze/SKILL.md)。分析不自动进入开发；进入制作时按已选模式交接。已有材料足够时无需补做故事稿或分析。
 
 ## 操作
 

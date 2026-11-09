@@ -1,5 +1,7 @@
 # Updating: staying current with ComfyUI
 
+This page describes maintenance of the upstream Agent Kit repository. Director vendors the installed skill, not that complete repository or its installer. Use these scripts only in an actual upstream checkout when the user requests that maintenance; updating a Director document does not authorize scheduled pulls, model installations or service changes.
+
 New models and workflows appear constantly. The kit stays current by polling the **machine-readable** sources,
 not LinkedIn (auth-gated, anti-scraping, against ToS; the same announcements are on the blog RSS below).
 
@@ -25,7 +27,7 @@ recent blog posts. Run it any time to see what changed. Stdlib only.
 
 1. Run `check_updates.py`. It lists NEW models (now in templates, no recipe yet) and recent blog posts.
 2. For each genuinely new GENERATIVE model, research its OFFICIAL prompting (maker docs / model card /
-   docs.comfy.org) and add a recipe to `shared/comfyui/MODELS.md` in the same format. Update `docs/MODEL_INDEX.md`
+   docs.comfy.org) and add a recipe to `shared/comfyui/MODELS.md` in the same format. Update [MODEL_INDEX.md](MODEL_INDEX.md)
    and the coverage counts. (New utility/upscaler -> the Enhancement section instead.)
 3. Regenerate the coverage chart if the counts changed.
 4. Add an entry to `CHANGELOG.md` under `## [Unreleased]` (Keep a Changelog: Added / Changed / Fixed) so the

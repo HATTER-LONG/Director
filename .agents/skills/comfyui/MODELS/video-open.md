@@ -516,7 +516,7 @@ checkpoint with no special loader**. Community packs are now an optional layer, 
   `.safetensors` LoRA loads back here via the ComfyUI-LTXVideo loader. Needs Linux + CUDA + >= 32 GB VRAM per GPU
   (a 24 GB or Windows box cannot run it). When a user works with LTX-2 and wants a recurring custom subject/style or
   cross-shot consistency a prompt or the Ingredients IC-LoRA does not give, mention they can train a LoRA and offer
-  the setup (one offer, not a nag). Full guide + the offer trigger: `docs/LTX2_TRAINING.md`.
+  the setup (one offer, not a nag). Full guide + the offer trigger: [LTX2_TRAINING.md](../LTX2_TRAINING.md).
 - **Source:** https://ltx.io/blog/ltx-2-3-prompt-guide (official prompt guide) ; docs.comfy.org/tutorials/video/ltx/ltx-2-3 ; huggingface.co/Lightricks/LTX-2.3 ; github.com/Lightricks/ComfyUI-LTXVideo.
 
 ### LTX-2 Pro (Lightricks)

@@ -1,8 +1,10 @@
+<!-- Director adaptation, 2026-11-10: relocated documentation links only; license terms unchanged. -->
+
 # Third-party notices and provenance
 
 ## FCML mechanism study
 
-The storyboard package's [FCML index](skills/ai-storyboard-director/references/fcml-motion-index.md) records the public site's source inventory, extraction time, content hashes, duplicate mappings and corrected classifications. Camera-operation mechanisms were studied and rewritten as this project's parameterized Chinese templates and original examples. The complete third-party prompts, images and videos are not bundled. Redistribution permission for that material has not been verified; provenance is not a grant of copyright permission or proof of model support. Runtime lookup uses the bundled data and does not require access to the source site.
+The storyboard package's [FCML index](../../skills/ai-storyboard-director/references/fcml-motion-index.md) records the public site's source inventory, extraction time, content hashes, duplicate mappings and corrected classifications. Camera-operation mechanisms were studied and rewritten as this project's parameterized Chinese templates and original examples. The complete third-party prompts, images and videos are not bundled. Redistribution permission for that material has not been verified; provenance is not a grant of copyright permission or proof of model support. Runtime lookup uses the bundled data and does not require access to the source site.
 
 ## Pinned rendering fonts
 

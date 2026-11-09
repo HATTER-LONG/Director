@@ -38,11 +38,13 @@ metadata:
 
 ---
 
+以下步骤用于已选择 HTML／JSON 调度工具的任务；简单场次直接回填分镜，不为满足工具的 4–20 件物品等字段补造场景事实。能并发不等于自动委派，子代理仍须符合当前会话授权。
+
 ### Step 0 — 定输入
 
 先读当前剧本、视觉设定和已有场景图。Director 的 Markdown 项目按 [Markdown 输入适配](references/markdown-input.md) 提取临时 `script.json`，以及可选的地点/姓名映射；已有兼容 JSON 则复用。无需安装 novel-script、novel-art 或 novel-outline。
 
-JSON 记录来源文件和场号映射，只是本次工具输入，不反向覆盖剧本。采用的开场走位句回填原分镜；HTML 与 staging.json 记录生成依据，源文档变化时重新提取受影响部分。场景图沿用实际文件及构图，不假定设定板一定四宫格或主图一定在左上。
+JSON 记录来源文件和场号映射，只是本次工具输入，不反向覆盖剧本。需要采用设计时与 [short-drama-storyboard](../short-drama-storyboard/SKILL.md) 组合，由分镜负责人将开场走位句回填原分镜；HTML 与 staging.json 记录生成依据，源文档变化时重新提取受影响部分。场景图沿用实际文件及构图，不假定设定板一定四宫格或主图一定在左上。
 
 ### Step 1 — seed 骨架
 

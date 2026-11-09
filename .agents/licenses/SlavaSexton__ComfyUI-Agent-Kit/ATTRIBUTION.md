@@ -1,3 +1,5 @@
+<!-- Director adaptation, 2026-11-10: relocated documentation links only; license terms unchanged. -->
+
 # Attribution
 
 This kit's original files (the `comfyui` skill, `comfy_client.py`, the installers, `gen_quick_index.py`, the
@@ -60,7 +62,7 @@ non-commercial**: do not use it in a commercial pipeline. The **ComfyUI-Flux2Kle
 **PolyForm Noncommercial 1.0.0**: free for personal, research, and nonprofit use; commercial use needs a separate
 license from the author.
 
-The advanced-technique tools documented in [docs/ADVANCED.md](docs/ADVANCED.md) (temporal stability, PBR / material
+The advanced-technique tools documented in [docs/ADVANCED.md](../../skills/comfyui/ADVANCED.md) (temporal stability, PBR / material
 passes, max-detail and EXR I/O) are each credited inline there with author, repo, and license. Several are
 NONCOMMERCIAL (rgb2x / RGB-X by Adobe Research, Ubisoft CHORD, NVIDIA UniRelight, and the MultiDiffusion part of
 ComfyUI-TiledDiffusion under CC-BY-NC-SA, RMBG-2.0 by BRIA under CC-BY-NC, and MatAnyone / MatAnyone2 under the NTU
@@ -68,7 +70,7 @@ S-Lab research license); the rest are Apache-2.0 / MIT / openrail / GPL. The kit
 points to them; it redistributes none.
 
 LTX-2 LoRA training (separate from ComfyUI) uses the official Lightricks trainer + their `train-model` Claude skill
-(github.com/Lightricks/LTX-2, repo license "Other"); the kit documents it in [docs/LTX2_TRAINING.md](docs/LTX2_TRAINING.md)
+(github.com/Lightricks/LTX-2, repo license "Other"); the kit documents it in [docs/LTX2_TRAINING.md](../../skills/comfyui/LTX2_TRAINING.md)
 and points to it, vendoring nothing.
 
 ## MODELS.md provenance
