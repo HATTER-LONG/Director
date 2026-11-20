@@ -2,7 +2,7 @@
 """Minimal ComfyUI client (stdlib only, no extra deps).
 
 Loads an API-format workflow JSON, applies overrides, queues it via the local ComfyUI HTTP API,
-waits for completion by polling /history, and downloads the output images / videos.
+waits for completion by polling /history, and downloads the output images / videos / audio.
 
 ComfyUI Desktop serves the API at http://127.0.0.1:8188 by default.
 
@@ -14,6 +14,8 @@ build the graph, then "Save (API Format)". That file is what this client runs.
 """
 import json
 import os
+import shutil
+import tempfile
 import time
 import uuid
 import urllib.request
@@ -70,29 +72,41 @@ def wait(prompt_id, timeout=600, poll=2.0):
     while time.time() < deadline:
         hist = _get(f"/history/{prompt_id}")
         rec = hist.get(prompt_id)
-        if rec and rec.get("outputs"):
-            return rec
+        if rec:
+            status = rec["status"]
+            errors = [
+                data.get("exception_message") or event
+                for event, data in status.get("messages", [])
+                if event in {"execution_error", "execution_interrupted"}
+            ]
+            if errors or status.get("status_str") == "error":
+                detail = "; ".join(errors) or status["status_str"]
+                raise RuntimeError(f"comfy prompt {prompt_id} failed: {detail}")
+            if status.get("completed"):
+                return rec
         time.sleep(poll)
     raise TimeoutError(f"comfy prompt {prompt_id} did not finish in {timeout}s")
 
 
 def download_outputs(history_rec, outdir):
-    """Save all output images/gifs/videos from a history record into outdir. Returns saved paths."""
+    """Save output images/gifs/videos/audio into outdir. Returns saved paths."""
     os.makedirs(outdir, exist_ok=True)
     saved = []
     for _node, out in (history_rec.get("outputs") or {}).items():
-        for key in ("images", "gifs", "videos"):
+        for key in ("images", "gifs", "videos", "audio"):
             for item in out.get(key, []):
                 q = urllib.parse.urlencode({
                     "filename": item["filename"],
                     "subfolder": item.get("subfolder", ""),
                     "type": item.get("type", "output"),
                 })
-                with urllib.request.urlopen(f"http://{HOST}/view?{q}", timeout=120) as r:
-                    data = r.read()
                 dst = os.path.join(outdir, item["filename"])
-                with open(dst, "wb") as f:
-                    f.write(data)
+                with tempfile.TemporaryDirectory(prefix=".download-", dir=outdir) as scratch:
+                    pending = os.path.join(scratch, "media")
+                    with urllib.request.urlopen(f"http://{HOST}/view?{q}", timeout=120) as r:
+                        with open(pending, "wb") as f:
+                            shutil.copyfileobj(r, f)
+                    os.replace(pending, dst)
                 saved.append(dst)
     return saved
 

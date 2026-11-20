@@ -13,7 +13,7 @@ Director 提供 AI 短剧、漫剧和叙事短片的共用制作流程与技能�
 ## 两种制作模式
 
 - [标准 AI 视频](docs/workflow/modes/standard-ai-video.md)：完整人物、场景与表演镜头，按剧本、设定、参考素材、分镜、视频生成与剪辑推进。
-- [叙事动画](docs/workflow/modes/illustrated-narration.md)：以讲述推进故事，先定声音分工和配音时长，再组合插画、后期动画、无对白动作视频与人物说话镜头；纯静图作品跳过 H3。
+- [叙事动画](docs/workflow/modes/illustrated-narration.md)：以讲述推进故事，先定声音分工和配音时长，旁白默认配静图与轻量后期动画；生成动态镜头作为备选，没有选用视频的段落跳过 H3。
 
 画风与制作模式分开判断；两种模式共用写作、素材、提示词、节点操作和剪辑技能。读取边界与组合规则由 [AGENTS](AGENTS.md#先确定制作模式) 维护。
 
@@ -29,9 +29,11 @@ Director 提供 AI 短剧、漫剧和叙事短片的共用制作流程与技能�
 | H3 提示词 | 为 SHOT-EP001-004 编译 H3 提示词，保留对白，列出实际参考顺序，本轮只交文稿。 |
 | 生成预览 | 用现有 Toonflow 节点生成 SHOT-EP001-004 的一个预览 take，跟进输出并检查关键动作和对白。 |
 | 剪辑导出 | 将 EP001 已选镜头剪成样片，核对声音、字幕、切点与实际片长。 |
-| 叙事动画 | 采用 [叙事动画路线](docs/workflow/modes/illustrated-narration.md)：旁白可配整理物品、行走或反应等无对白动画，按叙事需要穿插静图和人物问答，依实际声音时长剪辑。 |
+| 叙事动画 | 采用 [叙事动画路线](docs/workflow/modes/illustrated-narration.md)：旁白以插画、轻推近和构图切换为主，按实际声音时长剪辑；确有必要再选用少量无对白动态镜头。 |
 
 请求中说明作品、范围、交付物与生成限制即可；模型应沿用已有设定和授权，必要的制作选择由对应阶段处理。完整阶段路由见 [AGENTS](AGENTS.md#制作文档入口)。
+
+本地配音的具体用法见 [IndexTTS 2.5](docs/workflow/references/indextts25-guide.md) 与 [Breeze TTS 2](docs/workflow/references/breezetts2-guide.md)，包括情绪、停顿、多音字、音色设计与多人对话；Breeze 的可导入工作流在 [docs/examples/comfyui](docs/examples/comfyui/)。
 
 ## 文档怎么维护
 

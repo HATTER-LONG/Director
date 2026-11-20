@@ -1,0 +1,151 @@
+--- a/packages/nodes/audioGenerationNode/src/index.vue
++++ b/packages/nodes/audioGenerationNode/src/index.vue
+@@ -47,7 +47,7 @@
+               </el-option>
+             </el-option-group>
+           </el-select>
+-          <generationSettings v-model:language="data.language" v-model:sampleRate="data.sampleRate" v-model:format="data.format" v-model:other="data.other" :model="selectedModel" :disabled="busy || !selectedModel" />
++          <generationSettings :key="settingsRevision" v-model:language="data.language" v-model:sampleRate="data.sampleRate" v-model:format="data.format" v-model:other="data.other" :model="selectedModel" :disabled="busy || !selectedModel" />
+           <div class="generationActions">
+             <mediaPrice v-if="generationInput" :input="{ ...generationInput, mediaType: 'audio' }" :supported="selectedModel?.supportsPrice === true" />
+             <el-button v-if="pendingRecovery" class="sendButton" :icon="IconPlayerStop" :loading="cancelling" :disabled="deleting || uploading || transcribing || actions?.processing" title="放弃任务" aria-label="放弃任务" @click="generationState.cancel().catch(error => showNodeError(error, '停止生成失败'))" />
+@@ -92,7 +92,7 @@
+   inheritAttrs: false,
+   icon: IconMusicBolt,
+   handles: [
+-    { id: "in", type: "target", dataType: ["IMAGE", "AUDIO", "STRING"], label: "图片或音频限1个，文本不限" },
++    { id: "in", type: "target", dataType: ["IMAGE", "AUDIO", "STRING"], label: "参考数量按模型限制，文本不限" },
+     { id: "audio", type: "source", dataType: "AUDIO", label: "音频输出" },
+   ] satisfies NodeHandle[],
+ });
+@@ -110,6 +110,7 @@
+ const { refList, referenceMentions, materialMentions, selectMaterialReference, selectAssetReference, setReferencePreview, removeReference } = useNodeReferences();
+ const models = shallowRef<NodeMediaModel[]>([]);
+ const modelsLoading = ref(false);
++const settingsRevision = ref(0);
+ const uploading = ref(false);
+ const deleting = ref(false);
+ const fileInput = ref<HTMLInputElement>();
+@@ -131,6 +132,8 @@
+ watch(busy, value => { if (!value && modelsRefreshPending) void refreshProviderModels(); });
+ const selectedModel = computed(() => models.value.find(item => JSON.stringify([item.providerId, item.modelId]) === data.value.model));
+ useModelForm(data, selectedModel);
++const audioReferenceLimit = computed(() => Math.max(1, ...(selectedModel.value?.mode ?? []).flatMap(mode =>
++  Array.isArray(mode) ? mode.filter(item => item.startsWith("audioReference:")).map(item => Number(item.split(":")[1])) : [])));
+ const modelGroups = computed(() => groupNodeModels(models.value));
+ const generationPrompt = computed(() => [data.value.prompt.trim(), ...refList.value.flatMap((item, index) =>
+   item.dataType === "STRING" && item.value?.trim() ? [`参考 ${index + 1}：\n${item.value.trim()}`] : [])].filter(Boolean).join("\n\n"));
+@@ -153,7 +156,8 @@
+ const previewUrl = files.useFileUrl(outputFile, error => showNodeError(error, "音频读取失败"));
+ 
+ function referencesAllowed(values: NodeInputValue[]) {
+-  return values.filter(item => isTypeCompatible(item.dataType, ["IMAGE", "AUDIO"])).length <= 1;
++  const media = values.filter(item => isTypeCompatible(item.dataType, ["IMAGE", "AUDIO"]));
++  return media.length <= 1 || (media.length <= audioReferenceLimit.value && media.every(item => isTypeCompatible(item.dataType, ["AUDIO"])));
+ }
+ 
+ nodeEvent.on("canConnect", (connection, context) => {
+@@ -221,7 +225,7 @@
+   const input = generationInput.value;
+   if (!input) throw new Error("请先选择音频模型");
+   if (!generationPrompt.value) throw new Error("请输入生成提示词或待朗读文本");
+-  if (!referencesAllowed(refList.value)) throw new Error("图片和音频不能同时引用，且合计最多引用一个；文本数量不限");
++  if (!referencesAllowed(refList.value)) throw new Error(`当前模型最多引用 ${audioReferenceLimit.value} 条音频，或一张图片；图片和音频不能混用，文本不限`);
+   if (refList.value.some(item => item.value === undefined)) throw new Error("引用节点暂无内容，请先补充引用内容");
+   if (!languageOptions.some(item => item.value === data.value.language) || !sampleRateOptions.includes(data.value.sampleRate) || !formatOptions.includes(data.value.format)) throw new Error("请重新选择有效的语种、采样率和输出格式");
+   const workspace = files.getWorkspaceFiles();
+@@ -287,13 +291,16 @@
+     languages: languageOptions,
+     sampleRates: sampleRateOptions,
+     formats: formatOptions,
+-    inputLimits: { text: "unlimited", imageOrAudio: 1 },
++    inputLimits: { text: "unlimited", imageOrAudio: audioReferenceLimit.value, image: 1, audio: audioReferenceLimit.value, imageAudioExclusive: true },
++    audioReferences: refList.value.filter(item => item.dataType === "AUDIO").map((item, index) => ({
++      index: index + 1, source: item.source, sourceHandle: item.sourceHandle, path: typeof item.value === "object" ? item.value.url : undefined,
++    })),
+   };
+ }
+ 
+ nodeTools.register({
+   name: "getConfig",
+-  description: "读取此音频生成节点的配置、可选音频模型、语种、采样率、输出格式与输入数量限制，不含密钥；文本不限，图片与音频互斥且合计最多一个，具体模型能力由供应商校验",
++  description: "读取此音频生成节点的配置、可选音频模型、语种、采样率、输出格式与输入数量限制，不含密钥；返回当前音频参考顺序，文本不限，图片与音频互斥，音频数量按模型声明限制",
+   parameters: z.strictObject({}),
+   async execute(_args, { signal }) {
+     signal?.throwIfAborted();
+@@ -304,13 +311,14 @@
+ });
+ nodeTools.register({
+   name: "setConfig",
+-  description: "修改音频生成模型、语种、采样率或格式；先用 getConfig 查询选项，providerId 与 modelId 必须同时提供；不修改提示词、不启动生成",
++  description: "修改音频生成模型、语种、采样率、格式或 other 模型专属参数；先用 getConfig 查询选项，providerId 与 modelId 必须同时提供；不修改提示词、不启动生成",
+   parameters: z.strictObject({
+     providerId: z.string().min(1).optional(),
+     modelId: z.string().min(1).optional(),
+     language: z.string().optional(),
+     sampleRate: z.number().int().positive().optional(),
+     format: z.string().optional(),
++    other: z.record(z.string(), z.json()).optional(),
+   }).refine(args => (args.providerId === undefined) === (args.modelId === undefined), "providerId 与 modelId 必须同时提供"),
+   async execute(args, { signal }) {
+     signal?.throwIfAborted();
+@@ -327,6 +335,10 @@
+     if (args.language !== undefined) data.value.language = args.language;
+     if (args.sampleRate !== undefined) data.value.sampleRate = args.sampleRate;
+     if (args.format !== undefined) data.value.format = args.format;
++    if (args.other !== undefined) {
++      data.value.other = { ...data.value.other, ...args.other };
++      settingsRevision.value++;
++    }
+     return getConfig();
+   },
+ });
+@@ -343,7 +355,7 @@
+ });
+ nodeTools.register({
+   name: "generateAudio",
+-  description: "使用当前提示词、模型、语种、采样率、格式和可选参考图片或音频启动后台生成；图片与音频互斥且合计最多一个，文本不限；立即返回已开始，用 getGenerationStatus 查询结果、cancelGeneration 停止",
++  description: "使用当前提示词、模型、语种、采样率、格式和可选参考图片或音频启动后台生成；图片与音频互斥，音频数量按当前模型限制，文本不限；立即返回已开始，用 getGenerationStatus 查询结果、cancelGeneration 停止",
+   parameters: z.strictObject({}),
+   execute(_args, { signal }) {
+     signal?.throwIfAborted();
+--- a/packages/nodes/audioGenerationNode/src/components/generationSettings.vue
++++ b/packages/nodes/audioGenerationNode/src/components/generationSettings.vue
+@@ -60,6 +60,8 @@
+ 
+ .generationSettings {
+   text-align: left;
++  max-height: min(75vh, 720px);
++  overflow-y: auto;
+ 
+   .settingsHeader {
+     display: flex;
+--- a/packages/nodes/audioGenerationNode/readme.md
++++ b/packages/nodes/audioGenerationNode/readme.md
+@@ -5,9 +5,15 @@
+ ## 使用方法
+ 
+ 1. 选中节点，选择音频模型并输入文本或音频效果描述。
+-2. 按需连接参考节点。文本数量不限；图片和音频互斥，合计最多连接一个。
++2. 按需连接参考节点。文本数量不限；图片和音频互斥；图片最多一张，音频默认一条，模型声明 `audioReference:N` 时按该数量限制。
+ 3. 打开生成设置，选择中文或英文、采样率及输出格式；具体支持范围由供应商校验。
+ 4. 点击生成，需要中止时点击停止；失败或取消会保留已有输出。
+ 5. 生成后可播放、下载、截取、变速或替换音频，与普通音频节点使用相同操作。
+ 
+ 截取和变速会在右侧生成新的普通音频节点，需要启用音频节点插件。PCM 等浏览器不支持的格式仍可下载。
++
++## Breeze TTS 2 固定参考对话
++
++先用“角色音色设计与试听”生成候选，试听满意后下载并导入普通音频节点，固定该角色的参考文件。多轮对话选择“多角色固定参考对话”，按角色顺序连接最多八条参考音频；每个角色分别填写名字、参考的完整转写与情绪指令。情绪留空时沿用参考，填写后使用该角色的表演指令。角色参数作用于该角色全部轮次。
++
++提示框填写 `角色名: 台词`，也可粘贴 `speaker/text` JSON 数组。参考序号只计音频；调整参考顺序后同步角色参数。MCP 的 `getConfig` 返回音频顺序，`setConfig.other` 可修改模型参数。
+--- a/packages/nodes/audioGenerationNode/package.json
++++ b/packages/nodes/audioGenerationNode/package.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "@toonflow/node-audio-generation",
+-  "version": "2.0.0",
++  "version": "2.0.1",
+   "private": true,
+   "type": "module",
+   "scripts": {

@@ -1,6 +1,6 @@
 # 当前本地图像、视频与音频能力
 
-本页记录 2026-11-06 核对的部署能力，依据 Toonflow `listMediaProviders`、`data/providers/comfyH3.ts`、`data/providers/cpa.ts` 与 ComfyUI `object_info`。它是当前适配器的能力快照，不是模型全部能力或出片质量保证。供应商、工作流或版本变化时重查；同一会话未变的参数可复用，提交前仍核对当前节点和实际输入。
+本页记录 2026-11-06 起核对的部署能力，TTS 部分于 2026-11-10 复核，依据 Toonflow `listMediaProviders`、对应供应商源码与 ComfyUI `object_info`。它是当前适配器的能力快照，不是模型全部能力或出片质量保证。供应商、工作流或版本变化时重查；同一会话未变的参数可复用，提交前仍核对当前节点和实际输入。
 
 后续增量核对日期见各节。音频部分于 2026-11-09 对照本地适配器、节点源码、实时 `object_info` 与作品运行记录补入；本次文档核对未重新提交生成。
 
@@ -46,18 +46,31 @@
 
 ## IndexTTS 2.5：本地参考音频配音
 
-- Toonflow 供应商 `comfyIndexTts25`，模型 `index-tts-2.5-local`；实际配置见工作机 `toonflow/data/providers/comfyIndexTts25.ts`。输入恰好一段参考音频，不接图片；提示框填写要说的文本，情绪提示单独填写。当前适配器将 `en` 映射为 `EN`，其余映射为 `ZH`，不能据底层节点的语言列表宣称 Toonflow 已打通其他语言。
-- 已接入的 ComfyUI 链为 `LoadAudio → LocalIndexTTS25 → LocalSaveAudioWAV`。服务校验参考音频为 0.2–30 秒，适配器限制文件不超过 20 MiB；文本为 1–2000 字符。支持种子、时长系数、可选情绪文本与生成后卸载。实际节点参数提交前回读。
-- 情绪字段沿 `emotionText → emotion_text → use_emo_text/emo_text` 传入；引擎的文本情绪功能要求加载 QwenEmotion。引擎还提供 `emo_audio_prompt`、`emo_vector`、`emo_alpha` 和 `interval_silence`，但当前 `LocalIndexTTS25` 与 Toonflow 适配器未暴露这些控制，不能据引擎 README 宣称画布节点已支持。Toonflow UI、供应商与节点 MCP 的可配置字段也要分别核对；MCP 没有某字段时，不假称已设置，可在已有授权内通过已验证的同一底层链提交并把结果与参数回收到原画布。
+- Toonflow 供应商 `comfyIndexTts25`，模型 `index-tts-2.5-local`；实际配置见工作机 `toonflow/data/providers/comfyIndexTts25.ts`。输入恰好一段参考音频，不接图片；提示框填写台词与必要的发音标注。当前适配器将 `en` 映射为 `EN`，其余映射为 `ZH`，不能据底层节点的语言列表宣称 Toonflow 已打通其他语言。
+- 已接入的 ComfyUI 链为 `LoadAudio → LocalIndexTTS25 → LocalSaveAudioWAV`。服务校验参考音频为 0.2–30 秒，适配器限制文件不超过 20 MiB；文本为 1–2000 字符。本流程使用种子、时长系数与生成后卸载，实际节点参数提交前回读。
+- 独立情绪描述已经接通：Toonflow“情绪提示（选填）”`emotionText` → ComfyUI `emotion_text` → worker 按需加载 QwenEmotion → 引擎 `use_emo_text/emo_text`。描述会映射为官方八维情绪；当前入口未暴露八维向量、独立情绪参考音频或 `emo_alpha`，worker 使用强度默认值 `1.0`。完整情绪顺序、示例及边界见 [IndexTTS 2.5 使用指南](indextts25-guide.md)。作品已选择不用情绪时沿用该选择，不将其写成模型不支持或所有作品的限制。
 - 本地 2.5 引擎接受 `<字|拼音声调>`，例如 `银<行|HANG2>`、`<行|XING2>走`、`还<得|DEI3>去`。依据为安装版本的 README、`indextts/utils/front.py` 与 `infer_v2_5.py`；这些是格式示例，不是本次已听审的语音样本。先核对目标读音与词表，再作短句对照。旧版的裸拼音写法不与新格式混用，标注只留在合成输入中。
 - `durationFactor` 映射到节点 `duration_factor`，范围 0.5–2.0，界面步长 0.05；小于 1 倾向缩短时长，不能当成精确播放倍率或固定每秒字数。正常基准显式传 `1.0`。**当前默认值有差异**：Toonflow 新节点界面为 1.0，适配器缺参值与 ComfyUI 节点默认值仍为 0.8；旧节点和旧工作流也可能带旧值，必须核对实际请求，不能假定界面默认已同步到底层。
 - 引擎原生输出 22050 Hz；适配器支持 WAV/MP3，缺省导出 24000 Hz，采样率可选 8000、16000、22050、24000、44100、48000 Hz。记录回收文件的实际规格，采样率转换不等于语速调整。
 - 模型目录为工作机 `/home/layton/WorkSpace/ComfyUI-clean-data/models/IndexTTS-2.5`，官方引擎在 `/home/layton/WorkSpace/tools/opensource/indexTts25` 的独立 Python 环境。ComfyUI 节点通过 `indexTts25Local` 服务调用，首次执行可按需启动服务并惰性加载模型；不为复用工作流重复安装或改写 ComfyUI 的依赖环境。
 - 本地服务监听 `127.0.0.1:8190`，`GET /health` 返回 `model_loaded` 与 `busy`，`POST /synthesize` 生成，`POST /unload` 卸载；并发请求被拒绝，按条串行。H3 与 TTS 共用单卡时分时使用，确认任务结束再切换；ComfyUI 清理缓存不会自动卸载独立服务中的 TTS 模型。
 
-已有作品记录验证了从 Toonflow 提交、服务按需启动、WAV 回收及独立卸载；这不代表任意句子、情绪或语言已通过听审。发音控制按安装版本实际支持的格式填写；语速、读音和字幕的处理见 [配音与时间对齐](voice-and-timing.md#语速只从明确的基准调整)。
+已有作品记录验证了从 Toonflow 提交、服务按需启动、WAV 回收及独立卸载；这不代表任意句子、情绪或语言已通过听审。一次推理只有一个声线参考，多人需按角色分段合成再拼接，不能靠正文角色标签切换声线。发音控制按安装版本实际支持的格式填写；语速、读音和字幕的处理见 [配音与时间对齐](voice-and-timing.md#语速只从明确的基准调整)。
 
-### TTS 与 H3 切换时释放缓存
+## Breeze TTS 2：本地音色设计与多人配音
+
+- 2026-11-10 实时 `object_info` 已提供 `BreezeTTS2LoadModel`、`BreezeTTS2VoiceDesign`、`BreezeTTS2VoiceClone`、`BreezeTTS2VoiceDirection`、`BreezeTTS2Speaker`、`BreezeTTS2MultiSpeaker`。插件位于工作机 `ComfyUI-clean/runtime/custom_nodes/ComfyUI-Breeze-TTS-2`。
+- 已安装权重为 `ComfyUI-clean-data/models/breezetts2/drbaph_Breeze-TTS-2-comfyui/Breeze-TTS-2-bf16.safetensors` 及配套 codec。现有工作流使用 `bf16/cuda/sdpa/cuda_graphs`，关闭缺失自动下载；本轮沿用该配置，没有安装或升级模型。输出为 24000 Hz 单声道。
+- Voice Design 无需参考，按自然语言描述设计声线；Voice Clone 使用参考与精确转写；Voice Direction 在同一参考声线之上控制情绪、语速和表达。它没有固定八维情绪枚举；中文声音事件明确支持 `[笑]`、`[咳嗽]`、`[清嗓子]`、`[叹气]`，英文用对应圆括号形式。
+- 多人节点最多八个角色，按脚本逐轮生成后拼接。支持纯文本 `名字: 台词` 与 `speaker/text` JSON；`pause_between_speakers` 控制各轮之间增加的静音。同一角色的 instruction 是全局配置，没有逐轮 emotion 字段；重叠抢话需后期分轨混音。
+- 当前没有核实到拼音／音素强制接口或 SSML 精确停顿接口。不要套用 IndexTTS 的 `<字|拼音>` 或自行发明停顿标签。发音、停顿、音色复用及多角色细节见 [Breeze TTS 2 使用指南](breezetts2-guide.md)。
+- 工作流保存在 ComfyUI `user/default/workflows/音频处理/配音/`：原“标准参考配音”和“双人对话”已补说明；新增“音色设计与试听”“参考声线情绪控制”“四角色悬疑对话”。新增图的可导入副本在 [docs/examples/comfyui](../../examples/comfyui/)，实际输出与任务 ID 见 [核对记录](../../reviews/2026-11-10-tts-controls.md)。
+- 多轮复用声线另有“四角色参考音色库-生成与试听”和“四角色固定参考-多轮对话”两份图：前者设计并保存候选，后者为每位角色绑定一路固定 WAV，沿用十三轮脚本。日常多轮配音使用固定参考图；更换音频时同步准确转写。配套参考与实际验证见上方指南和核对记录。
+- 同日已新增 Toonflow 供应商 `comfyBreezeTts2`（适配器 `2.0.1`），包含 `breeze-tts-2-design`、`breeze-tts-2-clone`、`breeze-tts-2-direction`、`breeze-tts-2-dialogue` 四个音频模型。工作机配置为 `toonflow/data/providers/comfyBreezeTts2.ts`，源码副本在 [integrations/toonflow](../../../integrations/toonflow/comfyBreezeTts2.ts)。
+- Toonflow 音频生成节点已更新为 `2.0.1`，按模型的 `audioReference:N` 声明允许多路音频；未声明多参考的模型保留一路上限。Breeze 多人模式最多八路，每角色一路固定参考，角色名／完整转写／独立情绪／CFG 分别配置。情绪留空时 CFG 为 `1.0`，有情绪时使用角色指令与对应 CFG；不在对话中重新设计角色音色。
+- Toonflow 导出支持 WAV／MP3，采样率由已有转码工具处理；模型原始输出仍为 24000 Hz 单声道 WAV。适配器保存原任务 ID，并提供只查询、不重复提交的恢复方法。实际四角色十三轮、单人克隆、单人情绪及 MP3 导出验证见 [接入记录](../../reviews/2026-11-10-breeze-toonflow-integration.md)，日常操作见 [Breeze 使用指南](breezetts2-guide.md#toonflow先试听音色再固定参考对话)。
+
+## TTS 与 H3 切换时释放缓存
 
 2026-11-09 在本机核对：H3 结束后，ComfyUI 仍可能保留大量 CPU 内存与显存；IndexTTS 即使返回 `model_loaded=false`，独立 Python 进程也可能保留 CUDA 上下文或交换出去的运行内存。以进程、可用内存和显存的实测变化判断，不能把“任务完成”或“卸载请求成功”直接当作已释放。
 
@@ -74,7 +87,7 @@
 
 已有作品使用 Remotion 4.0.541 与配套 Chromium 生成竖屏成片，字体和工程依赖保留在作品目录。继续制作时先复用已有工程与已安装工具；独立工程和剪辑技能内置的 Remotion 叠层是不同入口，不能把其中一套参数直接套给另一套。具体安装版本、工作流副本和渲染命令留在作品接入记录，剪辑交付按 [short-drama-edit](../../../.agents/skills/short-drama-edit/SKILL.md)。
 
-开始批量剪辑前检查临时目录的挂载类型。若 `/tmp` 是 `tmpfs`，中间视频和渲染缓存会占用内存或交换空间；把这些大文件写到有权限的磁盘工作目录，保留原始素材与可追溯路径。模型卸载后内存仍高时，也应检查这部分占用。
+开始批量剪辑前检查临时目录的挂载类型。若 `/tmp` 是 `tmpfs`，中间视频和渲染缓存会占用内存或交换空间；把这些大文件写到有权限的磁盘工作目录，保留原始素材与可追溯路径。内置剪辑工具将媒体临时文件及 Remotion 子进程临时目录放在成片输出目录下；独立工程也应核对自身临时路径。模型卸载后内存仍高时，也应检查这部分占用。
 
 ## 两段视频怎么衔接
 

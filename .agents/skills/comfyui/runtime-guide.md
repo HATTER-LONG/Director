@@ -64,6 +64,11 @@ c.run("path/to/workflow_api.json",
 API surface: `alive()`, `run(workflow_path, overrides, outdir, timeout)`, and the pieces
 `queue(workflow)`, `wait(prompt_id)`, `download_outputs(rec, outdir)`, `apply_overrides(wf, overrides)`.
 Override keys are `"<nodeId>.<inputName>"` (node ids and input names come straight from the workflow JSON).
+For Director, set `COMFY_HOST` from [machine.md](machine.md) before importing or running the client
+(use `host:port`, without a URL scheme). The generic 8188 fallback is not a Director default.
+`wait` returns only completed history and raises on execution errors or interruption, even with partial outputs.
+Downloads include audio and stream to disk. To persist the task ID before waiting, use `queue`, record its result,
+then call `wait` and `download_outputs`; resume that ID after a timeout rather than calling `run` again.
 The MCP driver (Layer 2) does the same and more; use it when available, fall back to this client otherwise.
 
 ## Workflow JSON (API format)

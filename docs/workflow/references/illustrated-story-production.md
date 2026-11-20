@@ -12,7 +12,7 @@
 
 ## 制作顺序与串行生成
 
-见 [步骤与交付](../modes/illustrated-narration.md#步骤与交付) 和 [片段生产](../modes/illustrated-narration.md#5-必要的动态片段)。
+见 [步骤与交付](../modes/illustrated-narration.md#步骤与交付) 和 [片段生产](../modes/illustrated-narration.md#5-可选的动态片段)。
 
 ## 旁白语速只从明确的基准调整
 

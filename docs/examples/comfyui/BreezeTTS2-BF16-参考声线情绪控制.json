@@ -1,0 +1,325 @@
+{
+  "last_node_id": 6,
+  "last_link_id": 4,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "BreezeTTS2LoadModel",
+      "title": "1 加载已安装的 BF16 权重",
+      "pos": [
+        80,
+        120
+      ],
+      "size": [
+        430,
+        300
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "breeze_model",
+          "type": "BREEZE_TTS2_MODEL",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BreezeTTS2LoadModel"
+      },
+      "widgets_values": [
+        "bf16 (best quality)",
+        "bf16",
+        "cuda",
+        "sdpa",
+        "cuda_graphs",
+        false
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LoadAudio",
+      "title": "2 更换参考音频并核对右侧准确转写",
+      "pos": [
+        80,
+        500
+      ],
+      "size": [
+        430,
+        260
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            2
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "BreezeTTS2/标准参考男声.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 3,
+      "type": "BreezeTTS2VoiceDirection",
+      "title": "3 保留参考声线｜单独填写情绪与语速",
+      "pos": [
+        620,
+        120
+      ],
+      "size": [
+        540,
+        950
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "breeze_model",
+          "type": "BREEZE_TTS2_MODEL",
+          "link": 1
+        },
+        {
+          "name": "reference_audio",
+          "type": "AUDIO",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            3,
+            4
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BreezeTTS2VoiceDirection"
+      },
+      "widgets_values": [
+        "[叹气] 我等了很久。你能回来，我就放心了。",
+        "你好，欢迎使用本地语音合成。请确认台词和参考音频一致。",
+        "带着疲惫和释然，轻声说话，语速稍慢，句子之间自然停顿。",
+        4.0,
+        "none",
+        750,
+        0.9,
+        50,
+        1.0,
+        1.1,
+        0.9,
+        50,
+        1.0,
+        20261110,
+        "fixed"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "LocalSaveAudioWAV",
+      "title": "4 保存并试听情绪控制结果",
+      "pos": [
+        1270,
+        120
+      ],
+      "size": [
+        390,
+        240
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LocalSaveAudioWAV"
+      },
+      "widgets_values": [
+        "BreezeTTS2/情绪控制/speech"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "PreviewAudio",
+      "title": "5 试听",
+      "pos": [
+        1270,
+        440
+      ],
+      "size": [
+        390,
+        240
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAudio"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "MarkdownNote",
+      "title": "使用说明｜参考声线的情绪控制",
+      "pos": [
+        1770,
+        120
+      ],
+      "size": [
+        800,
+        1030
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# Voice Direction\n参考音频决定声线身份；reference_text 是参考片段的完整准确转写；instruction 指定本次情绪、语速和表达；text 是新台词。\n示例：instruction = “带着疲惫和释然，轻声说话，语速稍慢”。正文不要重复这些表演说明。\n同一参考、同一句 text、固定正 seed，只改 instruction，便于比较。\nCFG 从 4.0 起步，过强时可调低对照；不是越高越好。\nstitch_reference=none 只输出新台词；before/after 会把原参考音频也拼进去，做正式配音保持 none。\n## 情绪与标签\n情绪、音高、语速写在 instruction：例如“克制地生气，语速稍慢，咬字清楚”。这是自然语言指令，没有固定八类枚举。\n中文正文已确认事件：[笑]、[咳嗽]、[清嗓子]、[叹气]。\n英文正文：(laugh)、(cough)、(clears throat)、(sigh)。\n不要自行发明 [angry]、[pause=500ms] 或 SSML；无本入口的支持依据。\n多音字没有已确认的拼音/音素强制接口，不能套用 IndexTTS 的 <字|拼音>。\n自然停顿用标点；精确停顿用分段拼接/剪辑。固定正 seed 便于比较，不能替代参考音频锁定音色。\n右侧保存节点或 Preview Audio 均可播放。需逐句改变情绪时分开生成，再拼接；不要往 JSON 增加未支持的逐句 emotion 字段。\n输出：ComfyUI-clean-data/output/BreezeTTS2/情绪控制/\n指南：Director/docs/workflow/references/breezetts2-guide.md"
+      ],
+      "color": "#432",
+      "bgcolor": "#654"
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      3,
+      0,
+      "BREEZE_TTS2_MODEL"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      1,
+      "AUDIO"
+    ],
+    [
+      3,
+      3,
+      0,
+      4,
+      0,
+      "AUDIO"
+    ],
+    [
+      4,
+      3,
+      0,
+      5,
+      0,
+      "AUDIO"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "参考与模型",
+      "bounding": [
+        50,
+        70,
+        490,
+        720
+      ],
+      "color": "#555555",
+      "font_size": 22
+    },
+    {
+      "title": "情绪控制",
+      "bounding": [
+        590,
+        70,
+        600,
+        1030
+      ],
+      "color": "#345b70",
+      "font_size": 22
+    },
+    {
+      "title": "保存与试听",
+      "bounding": [
+        1240,
+        70,
+        450,
+        640
+      ],
+      "color": "#6b487e",
+      "font_size": 22
+    },
+    {
+      "title": "操作说明",
+      "bounding": [
+        1740,
+        70,
+        860,
+        1110
+      ],
+      "color": "#79603d",
+      "font_size": 22
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.65,
+      "offset": [
+        20,
+        20
+      ]
+    }
+  },
+  "version": 0.4
+}

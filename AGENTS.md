@@ -4,7 +4,7 @@ Director 用于制作 AI 短剧、漫剧和叙事短片。按用户指定阶段�
 
 ## 从这里开始
 
-1. 确认作品目录、本轮交付、已有制作模式和用户最新要求；已有成果从当前步骤继续，不补造未请求的阶段。
+1. 确认作品目录、本轮交付、已有制作模式和用户最新要求；已有成果从当前步骤继续，不补造未请求的阶段。长任务恢复先读已有制作记录中的 [续作摘要](docs/workflow/references/production-principles.md#让生产过程可恢复)，再核对当前来源。
 2. 先选下方制作模式，只读该模式的当前步骤，再按任务加载技能组合。一个任务可能需要多个技能，按职责共同完成；跨步骤按实际顺序加载，不预读另一模式的整套流程。
 3. 按当前对象读取适用的操作规范，再按具体问题补读专项资料。人物设定图的提示词、生成与验收必须读取 [人物参考](docs/workflow/references/character-references.md)，不能把已有项目规格当成出错后才查的排障资料。已完整读过且未变的材料可复用；局部修订只补读受影响上下文。
 4. 完成后检查来源、引用和实际交付是否一致。生成、检查可用、创作者采用分别记录。
@@ -16,7 +16,7 @@ Director 用于制作 AI 短剧、漫剧和叙事短片。按用户指定阶段�
 | 制作模式 | 如何判断与读取 | 制作逻辑 |
 | --- | --- | --- |
 | [标准 AI 视频](docs/workflow/modes/standard-ai-video.md) | 依靠场景内的人物表演、动作与镜头关系叙事；从该页定位当前阶段，再读需要的编号 workflow | 剧本 → 人物与空间设定 → 参考素材与分镜 → 视频生成与验收 → 剪辑 |
-| [叙事动画](docs/workflow/modes/illustrated-narration.md) | 以讲述推进故事，组合 TTS、插画、后期动画及动态片段；直接按该页步骤读技能与共用资料 | 声音脚本 → 声画分工与最小素材 → 配音定时 → 插画与所选动态片段 → 字幕、动画与剪辑 |
+| [叙事动画](docs/workflow/modes/illustrated-narration.md) | 以讲述推进故事，旁白默认配静图与轻量后期动画，生成动态镜头作为备选；直接按该页步骤读技能与共用资料 | 声音脚本 → 声画分工与最小素材 → 配音定时 → 插画（按需选用动态片段）→ 字幕、动画与剪辑 |
 
 制作模式与写实、漫画、二维、三维等画风分开记录。沿用作品已选模式；用户已明确“配音＋插画＋少量动画”即可进入叙事动画，不再询问。仅有画风标签而制作方式会影响当前决策时才澄清；只改一段文字或一个提示词时先完成该局部任务，不为选模式阻断工作。
 
@@ -90,8 +90,9 @@ Director 用于制作 AI 短剧、漫剧和叙事短片。按用户指定阶段�
 | --- | --- |
 | CachyOS 工作机 | `ssh layton@cachyos.home.arpa`，RTX 5070 Ti，16 GB 显存 |
 | Toonflow 网页 | 工作机上 `http://127.0.0.1:3000/`；其他机器按下方转发后访问 `http://127.0.0.1:13000/` |
-| Toonflow MCP | `http://cachyos.home.arpa:3000/mcp`，使用已授权凭据 |
+| Toonflow MCP | 工作机本地 `http://127.0.0.1:10588/mcp`；其他机器使用 `http://cachyos.home.arpa:3000/mcp`，均使用已授权凭据。端口以当前 MCP 设置为准 |
 | ComfyUI | `http://cachyos.home.arpa:8189`；操作前读工作机 `/home/layton/WorkSpace/ComfyUI-clean/AGENTS.md` |
+| Hugging Face 模型下载 | 调用 `/home/layton/WorkSpace/hfd.sh` 时显式设置 `HF_ENDPOINT=https://hf-mirror.com`。用 `--include` 筛选所需权重和配套文件，用 `--local-dir` 指定模型保存目录 |
 
 ```sh
 ssh -o ExitOnForwardFailure=yes -N -L 127.0.0.1:13000:127.0.0.1:3000 layton@cachyos.home.arpa

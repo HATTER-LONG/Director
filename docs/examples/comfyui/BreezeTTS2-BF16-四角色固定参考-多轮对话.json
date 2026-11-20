@@ -1,0 +1,765 @@
+{
+  "last_node_id": 13,
+  "last_link_id": 11,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "BreezeTTS2LoadModel",
+      "title": "1 共用已安装的 BF16 模型",
+      "pos": [
+        80,
+        120
+      ],
+      "size": [
+        430,
+        300
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "breeze_model",
+          "type": "BREEZE_TTS2_MODEL",
+          "links": [
+            5
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BreezeTTS2LoadModel"
+      },
+      "widgets_values": [
+        "bf16 (best quality)",
+        "bf16",
+        "cuda",
+        "sdpa",
+        "cuda_graphs",
+        false
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LoadAudio",
+      "title": "旁白｜固定参考 WAV，可更换",
+      "pos": [
+        80,
+        520
+      ],
+      "size": [
+        430,
+        280
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "BreezeTTS2/固定角色参考/20261110-48818988/旁白.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 3,
+      "type": "BreezeTTS2Speaker",
+      "title": "旁白｜参考克隆，CFG 1.0",
+      "pos": [
+        620,
+        520
+      ],
+      "size": [
+        470,
+        420
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "reference_audio",
+          "type": "AUDIO",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "speaker",
+          "type": "BREEZE_SPEAKER",
+          "links": [
+            6
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [],
+          "slot_index": 1
+        },
+        {
+          "name": "transcript",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BreezeTTS2Speaker"
+      },
+      "widgets_values": [
+        "旁白",
+        "none",
+        "你好，今天的录音已经准备好了。先把门关上，等外面安静下来，我们再从头说一遍。说到哪里不清楚，随时停下来就好。",
+        false,
+        "",
+        1.0
+      ]
+    },
+    {
+      "id": 4,
+      "type": "LoadAudio",
+      "title": "林岚｜固定参考 WAV，可更换",
+      "pos": [
+        80,
+        1020
+      ],
+      "size": [
+        430,
+        280
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            2
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "BreezeTTS2/固定角色参考/20261110-48818988/林岚.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 5,
+      "type": "BreezeTTS2Speaker",
+      "title": "林岚｜参考克隆，CFG 1.0",
+      "pos": [
+        620,
+        1020
+      ],
+      "size": [
+        470,
+        420
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "reference_audio",
+          "type": "AUDIO",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "speaker",
+          "type": "BREEZE_SPEAKER",
+          "links": [
+            7
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [],
+          "slot_index": 1
+        },
+        {
+          "name": "transcript",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BreezeTTS2Speaker"
+      },
+      "widgets_values": [
+        "林岚",
+        "none",
+        "你好，今天的录音已经准备好了。先把门关上，等外面安静下来，我们再从头说一遍。说到哪里不清楚，随时停下来就好。",
+        false,
+        "",
+        1.0
+      ]
+    },
+    {
+      "id": 6,
+      "type": "LoadAudio",
+      "title": "阿卓｜固定参考 WAV，可更换",
+      "pos": [
+        80,
+        1520
+      ],
+      "size": [
+        430,
+        280
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            3
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "BreezeTTS2/固定角色参考/20261110-48818988/阿卓.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 7,
+      "type": "BreezeTTS2Speaker",
+      "title": "阿卓｜参考克隆，CFG 1.0",
+      "pos": [
+        620,
+        1520
+      ],
+      "size": [
+        470,
+        420
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "reference_audio",
+          "type": "AUDIO",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "speaker",
+          "type": "BREEZE_SPEAKER",
+          "links": [
+            8
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [],
+          "slot_index": 1
+        },
+        {
+          "name": "transcript",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BreezeTTS2Speaker"
+      },
+      "widgets_values": [
+        "阿卓",
+        "none",
+        "你好，今天的录音已经准备好了。先把门关上，等外面安静下来，我们再从头说一遍。说到哪里不清楚，随时停下来就好。",
+        false,
+        "",
+        1.0
+      ]
+    },
+    {
+      "id": 8,
+      "type": "LoadAudio",
+      "title": "老周｜固定参考 WAV，可更换",
+      "pos": [
+        80,
+        2020
+      ],
+      "size": [
+        430,
+        280
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            4
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadAudio"
+      },
+      "widgets_values": [
+        "BreezeTTS2/固定角色参考/20261110-48818988/老周.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 9,
+      "type": "BreezeTTS2Speaker",
+      "title": "老周｜参考克隆，CFG 1.0",
+      "pos": [
+        620,
+        2020
+      ],
+      "size": [
+        470,
+        420
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "reference_audio",
+          "type": "AUDIO",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "speaker",
+          "type": "BREEZE_SPEAKER",
+          "links": [
+            9
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [],
+          "slot_index": 1
+        },
+        {
+          "name": "transcript",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BreezeTTS2Speaker"
+      },
+      "widgets_values": [
+        "老周",
+        "none",
+        "你好，今天的录音已经准备好了。先把门关上，等外面安静下来，我们再从头说一遍。说到哪里不清楚，随时停下来就好。",
+        false,
+        "",
+        1.0
+      ]
+    },
+    {
+      "id": 10,
+      "type": "BreezeTTS2MultiSpeaker",
+      "title": "2 四路固定参考｜四角色、十三轮对话",
+      "pos": [
+        1200,
+        120
+      ],
+      "size": [
+        590,
+        1350
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "breeze_model",
+          "type": "BREEZE_TTS2_MODEL",
+          "link": 5
+        },
+        {
+          "name": "speaker_1",
+          "type": "BREEZE_SPEAKER",
+          "link": 6
+        },
+        {
+          "name": "speaker_2",
+          "type": "BREEZE_SPEAKER",
+          "link": 7
+        },
+        {
+          "name": "speaker_3",
+          "type": "BREEZE_SPEAKER",
+          "link": 8
+        },
+        {
+          "name": "speaker_4",
+          "type": "BREEZE_SPEAKER",
+          "link": 9
+        },
+        {
+          "name": "speaker_5",
+          "type": "BREEZE_SPEAKER",
+          "link": null
+        },
+        {
+          "name": "speaker_6",
+          "type": "BREEZE_SPEAKER",
+          "link": null
+        },
+        {
+          "name": "speaker_7",
+          "type": "BREEZE_SPEAKER",
+          "link": null
+        },
+        {
+          "name": "speaker_8",
+          "type": "BREEZE_SPEAKER",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            10,
+            11
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BreezeTTS2MultiSpeaker"
+      },
+      "widgets_values": [
+        "[\n  {\n    \"speaker\": \"旁白\",\n    \"text\": \"电台下播后，走廊忽然停了电。值班室的门外，有人在慢慢转动把手。\"\n  },\n  {\n    \"speaker\": \"林岚\",\n    \"text\": \"阿卓，先别开门。老周，你不是说楼里没人了吗？\"\n  },\n  {\n    \"speaker\": \"老周\",\n    \"text\": \"[清嗓子] 我锁的是大门。后面那条楼梯，今天有人检修。\"\n  },\n  {\n    \"speaker\": \"阿卓\",\n    \"text\": \"那你怎么不早说？我刚才还把备用灯借给他们了。\"\n  },\n  {\n    \"speaker\": \"林岚\",\n    \"text\": \"门外的，报一下姓名。你们是哪个班组？\"\n  },\n  {\n    \"speaker\": \"旁白\",\n    \"text\": \"门外没有回答。桌上的内线电话响了，阿卓伸手按下免提。\"\n  },\n  {\n    \"speaker\": \"阿卓\",\n    \"text\": \"喂？我们在值班室。走廊为什么没电？\"\n  },\n  {\n    \"speaker\": \"老周\",\n    \"text\": \"别急着说位置，先问他是谁。\"\n  },\n  {\n    \"speaker\": \"阿卓\",\n    \"text\": \"[咳嗽] 对，你是谁？等等，这电话怎么是我自己的声音？\"\n  },\n  {\n    \"speaker\": \"林岚\",\n    \"text\": \"把桌上那台录音机关了。你下午试线路，用的是不是这段录音？\"\n  },\n  {\n    \"speaker\": \"旁白\",\n    \"text\": \"阿卓按下停止键，电话安静了。门外的人终于喊起来，说备用灯没电，请借灯的人开个门。\"\n  },\n  {\n    \"speaker\": \"老周\",\n    \"text\": \"[叹气] 下次借灯，电池也装进去。\"\n  },\n  {\n    \"speaker\": \"阿卓\",\n    \"text\": \"[笑] 行，这回我亲自送。你们可别把门锁了。\"\n  }\n]",
+        0.25,
+        750,
+        0.9,
+        50,
+        1.0,
+        1.1,
+        0.9,
+        50,
+        1.0,
+        20261110,
+        "fixed"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "LocalSaveAudioWAV",
+      "title": "3 保存并试听完整对话",
+      "pos": [
+        1900,
+        120
+      ],
+      "size": [
+        390,
+        260
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LocalSaveAudioWAV"
+      },
+      "widgets_values": [
+        "BreezeTTS2/四角色固定参考多轮对话/dialogue"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "PreviewAudio",
+      "title": "4 试听固定参考版本",
+      "pos": [
+        1900,
+        460
+      ],
+      "size": [
+        390,
+        260
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewAudio"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 13,
+      "type": "MarkdownNote",
+      "title": "使用说明｜每位角色固定一条参考，多轮复用",
+      "pos": [
+        2400,
+        120
+      ],
+      "size": [
+        800,
+        1430
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "# 四角色固定参考、多轮对话\n每个 Load Audio → 对应 Speaker.reference_audio → Multi-Speaker.speaker_1…4。\n本图已接入四条不同角色参考；Speaker 的 audio 下拉框虽然为 none，接线的 reference_audio 会优先使用，因此实际走参考克隆。\n## 日常使用\n1. 保留参考文件；修改 Multi-Speaker 的 text 即可生成新台词。\n2. 换角色声线时更换左侧对应的 Load Audio，同时更新 Speaker.reference_text 为这条参考的完整准确转写。\n3. 本图基线为 instruction 留空、CFG=1.0，先比较声线稳定性，再按需要加情绪指令。\n4. 使用固定正 seed，并保持同一角色的 speaker_槽位。seed 的作用不能替代真实参考。\n## 多参考的含义\n当前接入四个角色，每人一路参考。最多可接八个 Speaker；单个 Speaker 没有多条独立参考输入。\n复制一组 Load Audio + Speaker 后接到未用的 speaker_5…8，保持角色名唯一，并在脚本中用同名 speaker。\n## 脚本与停顿\n支持“林岚: 台词”等 ASCII 冒号行，或 JSON 数组 [{\"speaker\":\"林岚\",\"text\":\"台词\"}]。\npause_between_speakers=.25：每两个脚本条目之间额外插入 0.25 秒静音，片段原有首尾空白另算。\n中文已确认声音事件：[笑]、[咳嗽]、[清嗓子]、[叹气]；它们写在正文。不要添加未经支持的 [pause]、SSML 或拼音标注。\n## 情绪与身份\n参考负责声线身份，instruction 可写表演要求。需要明显情绪时可从 CFG≈4 对照，但要回听声音是否漂移。\n当前角色 instruction 对该角色所有轮次生效；JSON 的额外 emotion/instruction/pause 键不会控制单轮。\n逐句变情绪需用同一参考分段生成；重叠抢话需后期分轨混音。本图按轮次顺序生成后拼接。\n## 参考更换流程\n候选参考可在配套“四角色参考音色库-生成与试听”工作流生成、试听。选定后再手动替换本图参考。\n本图的常规运行只加载固定参考，不执行音色设计。声线一致性仍需实际听审。\n指南：Director/docs/workflow/references/breezetts2-guide.md\n输出：ComfyUI-clean-data/output/BreezeTTS2/四角色固定参考多轮对话/"
+      ],
+      "color": "#432",
+      "bgcolor": "#654"
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      3,
+      0,
+      "AUDIO"
+    ],
+    [
+      2,
+      4,
+      0,
+      5,
+      0,
+      "AUDIO"
+    ],
+    [
+      3,
+      6,
+      0,
+      7,
+      0,
+      "AUDIO"
+    ],
+    [
+      4,
+      8,
+      0,
+      9,
+      0,
+      "AUDIO"
+    ],
+    [
+      5,
+      1,
+      0,
+      10,
+      0,
+      "BREEZE_TTS2_MODEL"
+    ],
+    [
+      6,
+      3,
+      0,
+      10,
+      1,
+      "BREEZE_SPEAKER"
+    ],
+    [
+      7,
+      5,
+      0,
+      10,
+      2,
+      "BREEZE_SPEAKER"
+    ],
+    [
+      8,
+      7,
+      0,
+      10,
+      3,
+      "BREEZE_SPEAKER"
+    ],
+    [
+      9,
+      9,
+      0,
+      10,
+      4,
+      "BREEZE_SPEAKER"
+    ],
+    [
+      10,
+      10,
+      0,
+      11,
+      0,
+      "AUDIO"
+    ],
+    [
+      11,
+      10,
+      0,
+      12,
+      0,
+      "AUDIO"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "模型",
+      "bounding": [
+        50,
+        70,
+        490,
+        380
+      ],
+      "color": "#555555",
+      "font_size": 22
+    },
+    {
+      "title": "四条固定参考音频",
+      "bounding": [
+        50,
+        470,
+        490,
+        1860
+      ],
+      "color": "#555555",
+      "font_size": 22
+    },
+    {
+      "title": "角色绑定与准确转写",
+      "bounding": [
+        590,
+        470,
+        530,
+        2000
+      ],
+      "color": "#345b70",
+      "font_size": 22
+    },
+    {
+      "title": "多轮脚本",
+      "bounding": [
+        1170,
+        70,
+        650,
+        1430
+      ],
+      "color": "#356344",
+      "font_size": 22
+    },
+    {
+      "title": "保存与试听",
+      "bounding": [
+        1870,
+        70,
+        450,
+        680
+      ],
+      "color": "#6b487e",
+      "font_size": 22
+    },
+    {
+      "title": "操作说明",
+      "bounding": [
+        2370,
+        70,
+        860,
+        1510
+      ],
+      "color": "#79603d",
+      "font_size": 22
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.43,
+      "offset": [
+        20,
+        20
+      ]
+    },
+    "fixed_reference_manifest": "breeze-fixed-speaker-references.json"
+  },
+  "version": 0.4
+}

@@ -20,6 +20,7 @@ import argparse
 from array import array
 import json
 import math
+import os
 import operator
 import re
 import shutil
@@ -1550,7 +1551,8 @@ def render(
                 "素材在出点附近可能不够帧，先把出点提前一帧"
             )
 
-    with tempfile.TemporaryDirectory() as scratch:
+    # Keep full-length video and PCM intermediates off the system temp filesystem.
+    with tempfile.TemporaryDirectory(prefix=".render-", dir=output_root) as scratch:
         listing = Path(scratch) / "segments.txt"
         listing.write_text(
             "".join(f"file '{segment.as_posix()}'\n" for segment in segments), encoding="utf-8"
@@ -1621,6 +1623,7 @@ def render(
         if remotion_cues or layers:
             overlay_path = _render_remotion_overlay(
                 output_root, remotion_cues, layers, canvas, sum(spans), remotion_workspace,
+                temp_directory=Path(scratch).resolve(),
                 concurrency=remotion_concurrency,
                 needed_for="画面文字" if layers else "字幕",
             )
@@ -2221,6 +2224,8 @@ def _render_remotion_overlay(
     canvas: dict[str, Any],
     duration: float,
     workspace_root: Path,
+    *,
+    temp_directory: Path,
     concurrency: int = DEFAULT_REMOTION_CONCURRENCY,
     needed_for: str = "字幕",
 ) -> Path:
@@ -2270,6 +2275,8 @@ def _render_remotion_overlay(
          f"--props={props}", "--log=error",
          f"--concurrency={max(1, concurrency)}"],
         cwd=str(workspace), capture_output=True, text=True, check=False,
+        env={**os.environ, "TMPDIR": str(temp_directory),
+             "TMP": str(temp_directory), "TEMP": str(temp_directory)},
     )
     if result.returncode != 0 or not overlay.is_file():
         raise EditError(

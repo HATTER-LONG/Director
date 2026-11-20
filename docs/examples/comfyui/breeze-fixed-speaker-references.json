@@ -1,0 +1,66 @@
+{
+  "purpose": "四角色固定参考多轮对话演示，非创作者已采用声线",
+  "mode": "每角色一路固定参考，Speaker CFG=1.0，instruction留空",
+  "speakers": [
+    {
+      "name": "旁白",
+      "instruction": "四十岁左右的男性，普通话，中低音，音色清楚厚实，平静自然，用日常说话的语速读完整段文字。",
+      "seed": 2026111001,
+      "reference_text": "你好，今天的录音已经准备好了。先把门关上，等外面安静下来，我们再从头说一遍。说到哪里不清楚，随时停下来就好。",
+      "reference_text_basis": "Voice Design 生成输入；本地 large-v3-turbo 转写内容一致（忽略标点），尚未听审",
+      "input_audio": "BreezeTTS2/固定角色参考/20261110-48818988/旁白.wav",
+      "output_audio": "BreezeTTS2/固定角色参考/20261110/旁白_00001_.wav",
+      "duration": 9.2,
+      "sample_rate": 24000,
+      "channels": 1,
+      "generation_prompt_id": "48818988-f142-4bda-ad02-e5d1552016b4",
+      "asr_model": "faster-whisper large-v3-turbo / CPU int8",
+      "asr_text": "你好,今天的录音已经准备好了,先把门关上,等外面安静下来,我们再从头说一遍,说到哪里不清楚,随时停下来就好。"
+    },
+    {
+      "name": "林岚",
+      "instruction": "三十岁左右的女性，普通话，中低音，音色温暖清楚，略带沙哑，平静自然，用日常说话的语速读完整段文字。",
+      "seed": 2026111002,
+      "reference_text": "你好，今天的录音已经准备好了。先把门关上，等外面安静下来，我们再从头说一遍。说到哪里不清楚，随时停下来就好。",
+      "reference_text_basis": "Voice Design 生成输入；本地 large-v3-turbo 转写内容一致（忽略标点），尚未听审",
+      "input_audio": "BreezeTTS2/固定角色参考/20261110-48818988/林岚.wav",
+      "output_audio": "BreezeTTS2/固定角色参考/20261110/林岚_00001_.wav",
+      "duration": 11.12,
+      "sample_rate": 24000,
+      "channels": 1,
+      "generation_prompt_id": "48818988-f142-4bda-ad02-e5d1552016b4",
+      "asr_model": "faster-whisper large-v3-turbo / CPU int8",
+      "asr_text": "你好,今天的录音已经准备好了,先把门关上,等外面安静下来,我们再从头说一遍,说到哪里不清楚,随时停下来就好。"
+    },
+    {
+      "name": "阿卓",
+      "instruction": "二十岁左右的年轻男性，普通话，声音偏亮，音色轻快清楚，平静自然，用日常说话的语速读完整段文字。",
+      "seed": 2026111003,
+      "reference_text": "你好，今天的录音已经准备好了。先把门关上，等外面安静下来，我们再从头说一遍。说到哪里不清楚，随时停下来就好。",
+      "reference_text_basis": "Voice Design 生成输入；本地 large-v3-turbo 转写内容一致（忽略标点），尚未听审",
+      "input_audio": "BreezeTTS2/固定角色参考/20261110-48818988/阿卓.wav",
+      "output_audio": "BreezeTTS2/固定角色参考/20261110/阿卓_00001_.wav",
+      "duration": 9.2,
+      "sample_rate": 24000,
+      "channels": 1,
+      "generation_prompt_id": "48818988-f142-4bda-ad02-e5d1552016b4",
+      "asr_model": "faster-whisper large-v3-turbo / CPU int8",
+      "asr_text": "你好,今天的录音已经准备好了,先把门关上,等外面安静下来,我们再从头说一遍,说到哪里不清楚,随时停下来就好。"
+    },
+    {
+      "name": "老周",
+      "instruction": "六十岁左右的男性，普通话，音色低沉，略带沙哑，有自然的年龄感，平静自然，用日常说话的语速读完整段文字。",
+      "seed": 2026111004,
+      "reference_text": "你好，今天的录音已经准备好了。先把门关上，等外面安静下来，我们再从头说一遍。说到哪里不清楚，随时停下来就好。",
+      "reference_text_basis": "Voice Design 生成输入；本地 large-v3-turbo 转写内容一致（忽略标点），尚未听审",
+      "input_audio": "BreezeTTS2/固定角色参考/20261110-48818988/老周.wav",
+      "output_audio": "BreezeTTS2/固定角色参考/20261110/老周_00001_.wav",
+      "duration": 10.4,
+      "sample_rate": 24000,
+      "channels": 1,
+      "generation_prompt_id": "48818988-f142-4bda-ad02-e5d1552016b4",
+      "asr_model": "faster-whisper large-v3-turbo / CPU int8",
+      "asr_text": "你好,今天的录音已经准备好了,先把门关上,等外面安静下来,我们再从头说一遍,说到哪里不清楚,随时停下来就好。"
+    }
+  ]
+}

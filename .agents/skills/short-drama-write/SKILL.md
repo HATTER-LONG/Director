@@ -65,7 +65,7 @@ license: MIT
 - 台词要用中文以外的语言写，或要把中文剧本改成另一种语言：[非中文台词](references/dialogue-craft.md#63-非中文台词从场景直接写不逐句翻译)
 - 声源、留白与 sound bridge：[场景声音戏剧](references/scene-sound-dramaturgy.md)
 - 同一故事义务需要备选拍法时怎样保住戏剧功能：[可替换拍法](references/substitutable-realization.md)
-- 长单集跨上下文时的最小交接：[场景交接摘要](references/scene-handoff-capsule.md)，只留在上下文
+- 长单集跨上下文时的最小交接：[场景交接摘要](references/scene-handoff-capsule.md)，跨会话时保存到已有制作记录
 - 本集要用 `[VO]` 或内心独白交代信息，或有痛点要交代：[能演的不说](references/script-craft.md#44-能演的不说vo内心独白与痛点)
 - `short-drama.json` 里有 `status` 为 `accepted` 的 `creator_authority.rhythm_profile`：[项目节奏档案](references/script-craft.md#65-项目节奏档案)
 
